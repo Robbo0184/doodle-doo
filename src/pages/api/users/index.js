@@ -4,7 +4,7 @@ import Tweet from "../../../../db/models/Tweet";
 
 
 export default async function handler(request, response) {
-    console.log("get stuff");
+    
     await dbConnect()
 
 

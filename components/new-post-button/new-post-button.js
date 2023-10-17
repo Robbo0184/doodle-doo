@@ -1,5 +1,7 @@
 import styled from "styled-components"
 import Link from "next/link"
+import { useSession } from "next-auth/react";
+
 
 const StyledButton = styled.button`
    background-color: blue;
@@ -9,9 +11,11 @@ const StyledButton = styled.button`
    height: 50px;
    `
 export default function NewPostButton() {
+    const { data: session } = useSession();
+    const id = session && session.user ? session.user.userId : null;
 
     return (
-        <Link href="/users/[userId]/new-post-form">
+        <Link href={`/users/${id}/new-post-form`}>
         <StyledButton> + </StyledButton>
         </Link>
     )
