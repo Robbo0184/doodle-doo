@@ -4,7 +4,8 @@ const { Schema } = mongoose;
 
 const tweetSchema = new Schema({
   name: String,
-  comment: String
+  tweet: String,
+  date: { type: Date, default: Date.now }
 });
 
 const Tweet = mongoose.models.Tweet || mongoose.model("Tweet", tweetSchema);
