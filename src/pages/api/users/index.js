@@ -10,7 +10,7 @@ export default async function handler(request, response) {
 
     if (request.method === "GET") {
         const users = await User.find();
-        console.log("users", users);
+       
 
         if (!users) {
             return response.status(404).json({ status: "Not found" })

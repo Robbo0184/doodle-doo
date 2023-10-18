@@ -6,15 +6,15 @@ import Tweet from "../../../../../db/models/Tweet";
 export default async function handler(request, response) {
     await dbConnect()
     const {id} = request.query;
-   console.log("i am looging id:", id);
+    console.log("id:", id);
     
     if(!id) {
         return;
     }
 
     if (request.method === "GET") {
-        const user = await User.findById(id);
-        console.log("user", user)
+        const user = await User.findById(id).populate("tweets");
+        
         if (!user) {
             return response.status(404).json({ status: "Not found"})
         }

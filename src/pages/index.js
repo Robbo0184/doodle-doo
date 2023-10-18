@@ -8,7 +8,7 @@ export default function Home() {
   
   const { data: users, isLoading } = useSWR("/api/users")
   const { data: session } = useSession();
-  
+  console.log(users)
   if (isLoading) {
     return
   }
