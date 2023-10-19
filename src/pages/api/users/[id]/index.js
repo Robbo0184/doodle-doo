@@ -1,6 +1,6 @@
 import dbConnect from "../../../../../db/connect";
 import User from "../../../../../db/models/User";
-import Tweet from "../../../../../db/models/Tweet";
+
 
 
 export default async function handler(request, response) {

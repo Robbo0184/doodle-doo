@@ -1,6 +1,5 @@
 import dbConnect from "../../../../db/connect";
 import User from "../../../../db/models/User";
-import Tweet from "../../../../db/models/Tweet";
 
 
 export default async function handler(request, response) {
@@ -9,8 +8,8 @@ export default async function handler(request, response) {
 
 
     if (request.method === "GET") {
-        const users = await User.find();
-       
+        const users = await User.find().populate('tweets');
+       console.log("users from backend", users);
 
         if (!users) {
             return response.status(404).json({ status: "Not found" })
