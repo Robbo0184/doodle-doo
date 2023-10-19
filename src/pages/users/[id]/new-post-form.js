@@ -27,17 +27,38 @@ export default function NewPostForm() {
 
     async function handleSubmitTweet(event) {
         event.preventDefault();
+        
+       
+        const userData = data;
+    
+        if (!userData) {
+            console.error("User data not available");
+            return;
+        }
+    
+        
+        const userName = userData.name;
+    
         const formData = new FormData(event.target);
-        const tweetData = Object.fromEntries(formData);
+        const tweetContent = formData.get('tweet');
+    
+        
+        const tweetData = {
+            tweet: tweetContent,
+            userName: userName,
+            
+        };
+    
         const currentDate = new Date().toLocaleDateString('en-US', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit'
         });
-
         tweetData.date = currentDate;
-
+    
         setTweet('');
+    
+        
         const response = await fetch(`/api/users/${id}/tweets`, {
             method: "POST",
             headers: {
@@ -45,17 +66,17 @@ export default function NewPostForm() {
             },
             body: JSON.stringify(tweetData),
         });
+    
         if (response.ok) {
-            
             mutate();
         } else {
             console.error(`Error: ${response.status}`);
         }
-
+    
         router.push(`/users/${id}`);
-        
         console.log("Tweet data:", tweetData);
     }
+    
 
     return (
         <>
@@ -64,6 +85,7 @@ export default function NewPostForm() {
                     <TextArea
                         name="tweet"
                         value={tweet}
+                        placeholder="whats on your mind???"
                         onChange={(e) => setTweet(e.target.value)}
                     ></TextArea>
                     <button type="submit">Submit</button>

@@ -2,13 +2,31 @@ import { useRouter } from "next/router";
 import Navbar from "../../../../components/navbar/navbar";
 import ProfilePageIcon from "../../../../components/profile-icon/profile-icon";
 import useSWR from "swr";
+import styled from "styled-components";
+
+const StyledDiv = styled.div`
+    display: flex;
+    flex-direction: column; 
+    text-align: center;
+    align-items: center;
+`
+
+const StyledLi = styled.li`
+   border: 0.2rem solid white;
+   box-shadow: 0 0 0 0.1rem blue;
+   border-radius: 15%;
+   padding: 0.5rem;
+   margin: 1rem;
+   max-width: 40vw;
+
+`
 
 
 export default function ProfilePage() {
     const router = useRouter();
     const { id } = router.query
     const { data: user, isLoading, mutate, error } = useSWR(id ? `/api/users/${id}` : null);
-
+    console.log(user);
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -39,6 +57,7 @@ export default function ProfilePage() {
 
     return (
         <>
+        <StyledDiv>
         <h1>Hi from {user.name}s profile page.</h1>
         {user.tweets.length > 0 ? (
           user.tweets.map((tweet) => {
@@ -50,9 +69,9 @@ export default function ProfilePage() {
       
             return (
               <div key={tweet._id}>
-                <li>
+                <StyledLi>
                   {tweet.tweet} - {formattedDate}
-                </li>
+                </StyledLi>
                 <button type="button" onClick={() => handleDeleteTweet(tweet._id)}> ❌</button>
               </div>
             );
@@ -63,6 +82,7 @@ export default function ProfilePage() {
         <Navbar>
           <ProfilePageIcon />
         </Navbar>
+        </StyledDiv>
       </>
     )
 
