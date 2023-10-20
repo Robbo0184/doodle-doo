@@ -21,8 +21,8 @@ const StyledDiv = styled.div`
 
 export default function NewPostForm() {
     const router = useRouter()
-    const { id } = router.query
-    const { mutate, data } = useSWR(`/api/users/${id}`);
+    const { id: userId } = router.query
+    const { mutate, data } = useSWR(`/api/users/${userId}`);
     const [tweet, setTweet] = useState("");
 
     async function handleSubmitTweet(event) {
@@ -59,7 +59,7 @@ export default function NewPostForm() {
         setTweet('');
     
         
-        const response = await fetch(`/api/users/${id}/tweets`, {
+        const response = await fetch(`/api/users/${userId}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -73,8 +73,8 @@ export default function NewPostForm() {
             console.error(`Error: ${response.status}`);
         }
     
-        router.push(`/users/${id}`);
-        console.log("Tweet data:", tweetData);
+        router.push(`/users/${userId}`);
+        
     }
     
 

@@ -4,6 +4,8 @@ import { useSession } from "next-auth/react";
 import SignIn from "../../components/sign-in/sign-in";
 import AuthButton from "../../components/auth-button/AuthButton";
 import styled from "styled-components";
+import LikeButton from "../../components/like-button/like-button";
+
 
 const StyledDiv = styled.div`
   display: flex;
@@ -14,6 +16,7 @@ const StyledDiv = styled.div`
   line-height: 2rem;
   padding-top: 0.5rem;
   gap: 1rem;
+
 `;
 
 const StyledLi = styled.li`
@@ -22,6 +25,8 @@ const StyledLi = styled.li`
    border-radius: 15%;
    padding: 0.5rem;
    margin: 1rem;
+   max-width: 30vw;
+   position: relative;
 
 `
 
@@ -30,20 +35,22 @@ const StyledLi = styled.li`
 export default function Home() {
   const { data: users, isLoading, isError } = useSWR("/api/users");
   const { data: session } = useSession();
+ 
   const userName = session?.user?.name;
 
-  console.log(users);
+ 
 
   if (isLoading) {
     return <div>...Loading</div>;
   }
 
-  if (isError || users === undefined) { 
-    return <div>Error loading users data</div>; 
+  if (isError || users === undefined) {
+    return <div>Error loading users data</div>;
   }
 
   return (
     <>
+
       <StyledDiv>
         {session ? (
           <>
@@ -53,13 +60,13 @@ export default function Home() {
                 if (user.tweets && user.tweets.length > 0) {
                   return user.tweets.map((tweet) => (
                     <StyledLi key={tweet._id}>
-                      {tweet.tweet} {tweet.userName}
-                    </StyledLi>
+                      {tweet.tweet} {tweet.userName} {tweet.likes?.length }
+                      
+                      <LikeButton tweetId={tweet._id} />
+                      </StyledLi>
+
                   ));
-                } else {
-                
-                  return <StyledLi key={user._id}>No tweets</StyledLi>;
-                }
+                } 
               })}
             </ul>
             <Navbar />
