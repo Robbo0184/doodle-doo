@@ -5,9 +5,13 @@ import SignIn from "../../components/sign-in/sign-in";
 import AuthButton from "../../components/auth-button/AuthButton";
 import styled from "styled-components";
 import LikeButton from "../../components/like-button/like-button";
+import CommentModal from "../../components/comment-modal/comment-modal";
+import { useState } from "react";
 
 import Image from "next/image";
 import { mutate } from "swr";
+
+
 
 
 const StyledDiv = styled.div`
@@ -38,13 +42,19 @@ const StyledLi = styled.li`
 export default function Home() {
   const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
   const { data: session } = useSession();
+  const [showModal, setShowModal] = useState(false);
   const userId = session?.user?.userId;
   const userName = session?.user?.name;
- 
+
+
+
+  console.log('USERS: ', users);
+
+
 
   async function handleToggleLikes(tweetId) {
-  
-   const response = await fetch(`/api/tweets/${tweetId}`, {
+
+    const response = await fetch(`/api/tweets/${tweetId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -72,17 +82,31 @@ export default function Home() {
       <StyledDiv>
         {session ? (
           <>
-
-            <h1>Hiya {userName}.</h1>
-            <ul>
-              {users.map((user) => {
-                if (user.tweets && user.tweets.length > 0) {
-                  return user.tweets.map((tweet) => (
-                    <StyledLi key={tweet._id}>
+          
+          <h1>Hiya {userName}.</h1>
+          <ul>
+          {users.map((user) => {
+            if (user.tweets && user.tweets.length > 0) {
+              return user.tweets.map((tweet) => (
+                <StyledLi key={tweet._id}>
+                {console.log("tweets.id", tweet._id)}
                       {tweet.tweet} {tweet.userName} <br></br>
                       {tweet.likes?.length}<p>likes</p>
-
+                      {tweet.comments.length > 0 && (
+                        <div>
+                          Comments:
+                          {tweet.comments.map((comment, index) => (
+                            <div key={index}>{comment.comment}{comment.userName}</div>
+                          ))}
+                        </div>
+                      )}
                       <LikeButton isLiked={tweet.likes.includes(userId)} tweetId={tweet._id} handleToggleLikes={handleToggleLikes} />
+                      <button onClick={() => setShowModal(true)}>Add comment</button>
+                      {showModal &&
+                        <CommentModal tweetId={tweet._id} onClose={() => setShowModal(false)}>
+
+                        </CommentModal>
+                      }
                     </StyledLi>
 
                   ));
