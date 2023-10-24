@@ -8,7 +8,16 @@ export default async function handler(request, response) {
     await dbConnect()
 
     if (request.method === "GET") {
-        const users = await User.find().populate('tweets');
+        const users = await User.find().populate({
+            path: "tweets",
+            populate: {
+                path: "comments",
+                model: "Comment"
+            }
+        })
+      
+        
+        
         
 
         if (!users) {
