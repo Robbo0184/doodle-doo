@@ -16,7 +16,7 @@ export const authOptions = {
                     email: data.email,
                     image: data.avatar_url,
                     admin: false,
-                    
+
                 };
             },
         }),
@@ -27,7 +27,7 @@ export const authOptions = {
     callbacks: {
         async session({ session, user }) {
             session.user.userId = user.id;
-           
+
             return session;
         },
     },

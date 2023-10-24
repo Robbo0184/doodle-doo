@@ -12,20 +12,20 @@ export default async function handler(request, response) {
   }
 
 
- if (request.method === "DELETE") {
-    try {
+//  if (request.method === "DELETE") {
+//     try {
 
-      const tweetToDelete = await Tweet.findByIdAndDelete(request.body.id);
-      await User.findByIdAndUpdate(id, {
-        $pull: { tweets: tweetToDelete._id },
-      });
+//       const tweetToDelete = await Tweet.findByIdAndDelete(request.body.id);
+//       await User.findByIdAndUpdate(id, {
+//         $pull: { tweets: tweetToDelete._id },
+//       });
 
-      return response
-        .status(200)
-        .json({ success: "tweet successfully deleted" });
-    } catch (e) {
-      console.log(e);
-    }
-  }
+//       return response
+//         .status(200)
+//         .json({ success: "tweet successfully deleted" });
+//     } catch (e) {
+//       console.log(e);
+//     }
+//   }
 
 }

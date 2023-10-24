@@ -6,6 +6,9 @@ import AuthButton from "../../components/auth-button/AuthButton";
 import styled from "styled-components";
 import LikeButton from "../../components/like-button/like-button";
 
+import Image from "next/image";
+import { mutate } from "swr";
+
 
 const StyledDiv = styled.div`
   display: flex;
@@ -33,12 +36,27 @@ const StyledLi = styled.li`
 
 
 export default function Home() {
-  const { data: users, isLoading, isError } = useSWR("/api/users");
+  const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
   const { data: session } = useSession();
- 
+  const userId = session?.user?.userId;
   const userName = session?.user?.name;
-
  
+
+  async function handleToggleLikes(tweetId) {
+  
+   const response = await fetch(`/api/tweets/${tweetId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userId),
+    })
+    if (response.ok) {
+      await response.json()
+      mutate()
+    }
+  }
+
 
   if (isLoading) {
     return <div>...Loading</div>;
@@ -54,19 +72,21 @@ export default function Home() {
       <StyledDiv>
         {session ? (
           <>
-            <h1>Hiya {userName} xx</h1>
+
+            <h1>Hiya {userName}.</h1>
             <ul>
               {users.map((user) => {
                 if (user.tweets && user.tweets.length > 0) {
                   return user.tweets.map((tweet) => (
                     <StyledLi key={tweet._id}>
-                      {tweet.tweet} {tweet.userName} {tweet.likes?.length }
-                      
-                      <LikeButton tweetId={tweet._id} />
-                      </StyledLi>
+                      {tweet.tweet} {tweet.userName} <br></br>
+                      {tweet.likes?.length}<p>likes</p>
+
+                      <LikeButton isLiked={tweet.likes.includes(userId)} tweetId={tweet._id} handleToggleLikes={handleToggleLikes} />
+                    </StyledLi>
 
                   ));
-                } 
+                }
               })}
             </ul>
             <Navbar />
