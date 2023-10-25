@@ -1,18 +1,14 @@
+import React, { useState } from "react";
 import Navbar from "../../components/navbar/navbar";
 import useSWR from "swr";
+
 import { useSession } from "next-auth/react";
 import SignIn from "../../components/sign-in/sign-in";
 import AuthButton from "../../components/auth-button/AuthButton";
 import styled from "styled-components";
 import LikeButton from "../../components/like-button/like-button";
 import CommentModal from "../../components/comment-modal/comment-modal";
-import { useState } from "react";
-
-import Image from "next/image";
-import { mutate } from "swr";
-
-
-
+import { useRouter } from "next/router";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -23,7 +19,6 @@ const StyledDiv = styled.div`
   line-height: 2rem;
   padding-top: 0.5rem;
   gap: 1rem;
-
 `;
 
 const StyledLi = styled.li`
@@ -34,38 +29,55 @@ const StyledLi = styled.li`
    margin: 1rem;
    max-width: 30vw;
    position: relative;
-
-`
-
-
+   list-style-type: none;
+`;
 
 export default function Home() {
   const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
   const { data: session } = useSession();
   const [showModal, setShowModal] = useState(false);
+  const [visibleComments, setVisibleComments] = useState({});
+  const [getTweetId, setTweetId] = useState("")
+  const router = useRouter()
+
+
+  const toggleComments = (tweetId) => {
+    setVisibleComments((prevComments) => ({
+      ...prevComments,
+      [tweetId]: !prevComments[tweetId],
+    }));
+  };
+
   const userId = session?.user?.userId;
   const userName = session?.user?.name;
 
-  const [getTweetId, setTweetId] = useState("")
-
-  console.log('USERS: ', users);
-
-
-
   async function handleToggleLikes(tweetId) {
-
     const response = await fetch(`/api/tweets/${tweetId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(userId),
-    })
+    });
     if (response.ok) {
-      await response.json()
-      mutate()
+      await response.json();
+      mutate();
     }
   }
+
+  async function handleDeleteTweet(tweetId) {
+    const response = await fetch(`/api/tweets/${tweetId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: userId }),
+    });
+    mutate()
+    console.log("response:", response);
+    
+  }
+
 
 
   if (isLoading) {
@@ -78,53 +90,66 @@ export default function Home() {
 
   return (
     <>
-
       <StyledDiv>
         {session ? (
           <>
-
             <h1>Hiya {userName}.</h1>
             <ul>
               {users.map((user) => {
                 if (user.tweets && user.tweets.length > 0) {
                   return user.tweets.map((tweet) => (
                     <StyledLi key={tweet._id}>
-                      {tweet.tweet} {tweet.userName} 
+                      {tweet.tweet} {tweet.userName}
                       {tweet.likes?.length}<p>likes</p>
                       {tweet.comments.length > 0 && (
                         <div>
-                          Comments:
-                          {tweet.comments.map((comment, index) => (
-                            <div key={index}>{comment.comment}{comment.userName}</div>
-                          ))}
+                          <button onClick={() => toggleComments(tweet._id)}>
+                            {visibleComments[tweet._id] ? "Hide" : "Show"} Comments
+                          </button>
+                          {visibleComments[tweet._id] &&
+                            tweet.comments.map((comment, index) => (
+                              <div key={index}>
+                                {comment.comment} {comment.userName}
+                              </div>
+                            ))}
                         </div>
                       )}
-                      <LikeButton isLiked={tweet.likes.includes(userId)} tweetId={tweet._id} handleToggleLikes={handleToggleLikes} />
-
-                      <button onClick={() => {
-                        setShowModal(true)
-                        setTweetId(tweet._id)
-                      }}>Add comment</button>
-
+                      <LikeButton
+                        isLiked={tweet.likes.includes(userId)}
+                        tweetId={tweet._id}
+                        handleToggleLikes={handleToggleLikes}
+                      />
+                      <button
+                        onClick={() => {
+                          setShowModal(true);
+                          setTweetId(tweet._id);
+                        }}
+                      >
+                        Add comment
+                      </button>
+                      {session?.user?.name === tweet.userName && (
+                        <button type="button" onClick={() => handleDeleteTweet(tweet._id)}> ❌</button>
+                      )}
                     </StyledLi>
-
                   ));
                 }
               })}
-              {showModal &&
-                <CommentModal tweetId={getTweetId} onClose={() => setShowModal(false)}>
+              {showModal && (
+                <CommentModal
+                  tweetId={getTweetId}
+                  onClose={() => setShowModal(false)}
 
-                </CommentModal>
-              }
+                />
+              )}
             </ul>
-            <Navbar />
-            <AuthButton />
           </>
         ) : (
           <SignIn />
-        )
-        }
-      </StyledDiv >
+        )}
+      </StyledDiv>
+      <Navbar />
+      <AuthButton />
     </>
   );
 }
+
