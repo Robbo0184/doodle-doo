@@ -45,24 +45,35 @@ export default function ProfilePage() {
 
   if (!user) return;
 
+  // async function handleDeleteTweet(tweetId) {
+  //   const response = await fetch(`/api/tweets/${tweetId}`, {
+  //     method: "DELETE",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ id: userId }),
+  //   });
+  //   if (response.ok) {
+     
+  //     await response.json();
+  //     mutate();
+  //   } else {
+  //     console.error(`Error: ${response.status}`)
+  //   }
+  // }
+
   async function handleDeleteTweet(tweetId) {
     const response = await fetch(`/api/tweets/${tweetId}`, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
+        "Content-type": "application/json",
       },
       body: JSON.stringify({ id: userId }),
     });
-    if (response.ok) {
-     
-      await response.json();
-      mutate();
-    } else {
-      console.error(`Error: ${response.status}`)
-    }
+    mutate()
+    console.log("response:", response);
+    
   }
-
-  
 
 
 

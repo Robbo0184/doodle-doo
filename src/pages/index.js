@@ -69,7 +69,7 @@ export default function Home() {
     const response = await fetch(`/api/tweets/${tweetId}`, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
+        "Content-type": "application/json",
       },
       body: JSON.stringify({ id: userId }),
     });
@@ -78,7 +78,19 @@ export default function Home() {
     
   }
 
-
+ 
+  async function handleDeleteComment(commentId) {
+    const response = await fetch(`/api/comments/${commentId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ id: userId }),
+    });
+    mutate()
+    console.log("response:", response);
+    
+  }
 
   if (isLoading) {
     return <div>...Loading</div>;
@@ -109,16 +121,20 @@ export default function Home() {
                           {visibleComments[tweet._id] &&
                             tweet.comments.map((comment, index) => (
                               <div key={index}>
-                                {comment.comment} {comment.userName}
+                                {comment.comment} - {comment.userName}
+                                {session?.user?.name === comment.userName && (
+                                  <button type="button" onClick={() => handleDeleteComment(comment._id)}> ❌</button>
+                                )}
+                               
                               </div>
-                            ))}
-                        </div>
-                      )}
-                      <LikeButton
-                        isLiked={tweet.likes.includes(userId)}
-                        tweetId={tweet._id}
-                        handleToggleLikes={handleToggleLikes}
-                      />
+                              ))}
+                              </div>
+                              )}
+                              <LikeButton
+                              isLiked={tweet.likes.includes(userId)}
+                              tweetId={tweet._id}
+                              handleToggleLikes={handleToggleLikes}
+                              />
                       <button
                         onClick={() => {
                           setShowModal(true);

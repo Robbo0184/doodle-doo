@@ -5,7 +5,7 @@ import Comment from "../../../../db/models/Comment";
 
 export default async function handler(request, response) {
     await dbConnect()
-
+    
 
     // if (request.method === "GET") {
     //     const user = await findById(userId).populate("comments");
@@ -20,8 +20,10 @@ export default async function handler(request, response) {
 
    if(request.method === "POST") {
         try {
-        const {tweetId, comment, userName} = request.body
+        const {tweetId, comment, userName, commentId} = request.body
         console.log("Tweet id:", tweetId);
+        console.log("logging comment:", commentId);
+
         
         const newComment = await Comment.create({comment, userName});
         await Tweet.findByIdAndUpdate(
@@ -34,5 +36,22 @@ export default async function handler(request, response) {
           console.log(error);
         }
     }
+
+    if (request.method === "DELETE") {
+        try {
+          const { id: tweetId } = request.body
+          const commentToDelete = await Comment.findByIdAndDelete(commentId);
+          await Tweet.findByIdAndUpdate(tweetId, {
+            $pull: { tweets: tweetId },
+          });
+          console.log("tweetToDelete", tweetToDelete);
+    
+          return response
+            .status(200)
+            .json(tweetToDelete);
+        } catch (e) {
+          console.log(e);
+        }
+      }
 
 }

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { useSession } from "next-auth/react";
+import useSWR, { useSWRConfig } from 'swr';
+
 
 const CommentModal = ({ tweetId, onClose }) => {
   const [comment, setComment] = useState("");
   const { data: session } = useSession();
+  const { mutate } = useSWRConfig()
 
   const userName = session?.user?.name
 
@@ -24,7 +27,8 @@ const CommentModal = ({ tweetId, onClose }) => {
         },
         body: JSON.stringify({ comment, tweetId, userName }),
       });
-
+      mutate("/api/users")
+      
       if (response.ok) {
         const data = await response.json();
         onClose();
