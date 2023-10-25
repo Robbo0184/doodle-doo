@@ -46,7 +46,7 @@ export default function Home() {
   const userId = session?.user?.userId;
   const userName = session?.user?.name;
 
-
+  const [getTweetId, setTweetId] = useState("")
 
   console.log('USERS: ', users);
 
@@ -82,15 +82,14 @@ export default function Home() {
       <StyledDiv>
         {session ? (
           <>
-          
-          <h1>Hiya {userName}.</h1>
-          <ul>
-          {users.map((user) => {
-            if (user.tweets && user.tweets.length > 0) {
-              return user.tweets.map((tweet) => (
-                <StyledLi key={tweet._id}>
-                {console.log("tweets.id", tweet._id)}
-                      {tweet.tweet} {tweet.userName} <br></br>
+
+            <h1>Hiya {userName}.</h1>
+            <ul>
+              {users.map((user) => {
+                if (user.tweets && user.tweets.length > 0) {
+                  return user.tweets.map((tweet) => (
+                    <StyledLi key={tweet._id}>
+                      {tweet.tweet} {tweet.userName} 
                       {tweet.likes?.length}<p>likes</p>
                       {tweet.comments.length > 0 && (
                         <div>
@@ -101,25 +100,31 @@ export default function Home() {
                         </div>
                       )}
                       <LikeButton isLiked={tweet.likes.includes(userId)} tweetId={tweet._id} handleToggleLikes={handleToggleLikes} />
-                      <button onClick={() => setShowModal(true)}>Add comment</button>
-                      {showModal &&
-                        <CommentModal tweetId={tweet._id} onClose={() => setShowModal(false)}>
 
-                        </CommentModal>
-                      }
+                      <button onClick={() => {
+                        setShowModal(true)
+                        setTweetId(tweet._id)
+                      }}>Add comment</button>
+
                     </StyledLi>
 
                   ));
                 }
               })}
+              {showModal &&
+                <CommentModal tweetId={getTweetId} onClose={() => setShowModal(false)}>
+
+                </CommentModal>
+              }
             </ul>
             <Navbar />
             <AuthButton />
           </>
         ) : (
           <SignIn />
-        )}
-      </StyledDiv>
+        )
+        }
+      </StyledDiv >
     </>
   );
 }
