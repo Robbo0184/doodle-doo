@@ -16,10 +16,6 @@ export default async function handler(request, response) {
             }
         })
       
-        
-        
-        
-
         if (!users) {
             return response.status(404).json({ status: "Not found" })
         }

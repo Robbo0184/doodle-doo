@@ -7,24 +7,13 @@ export default async function handler(request, response) {
     await dbConnect()
     
 
-    // if (request.method === "GET") {
-    //     const user = await findById(userId).populate("comments");
-        
-    //     if (!user) {
-    //         return response.status(404).json({ status: "Not found"})
-    //     }
-    //     response.status(200).json(user)
-       
-    // }
-    
+  
 
    if(request.method === "POST") {
         try {
         const {tweetId, comment, userName, commentId} = request.body
-        console.log("Tweet id:", tweetId);
-        console.log("logging comment:", commentId);
+       
 
-        
         const newComment = await Comment.create({comment, userName});
         await Tweet.findByIdAndUpdate(
             tweetId,

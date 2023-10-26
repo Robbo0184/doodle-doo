@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../../components/navbar/navbar";
 import useSWR from "swr";
-
 import { useSession } from "next-auth/react";
 import SignIn from "../../components/sign-in/sign-in";
 import AuthButton from "../../components/auth-button/AuthButton";
@@ -9,6 +8,8 @@ import styled from "styled-components";
 import LikeButton from "../../components/like-button/like-button";
 import CommentModal from "../../components/comment-modal/comment-modal";
 import { useRouter } from "next/router";
+import DoodleDooLogo from "../../public/assets/doodledoo.png"
+import Image from "next/image";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -31,6 +32,11 @@ const StyledLi = styled.li`
    position: relative;
    list-style-type: none;
 `;
+// const StyledImg = styled.img`
+//     border-radius: 15%;
+//     width: 100px;
+//     height: 200px;
+// `
 
 export default function Home() {
   const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
@@ -39,7 +45,6 @@ export default function Home() {
   const [visibleComments, setVisibleComments] = useState({});
   const [getTweetId, setTweetId] = useState("")
   const router = useRouter()
-
 
   const toggleComments = (tweetId) => {
     setVisibleComments((prevComments) => ({
@@ -69,27 +74,28 @@ export default function Home() {
     const response = await fetch(`/api/tweets/${tweetId}`, {
       method: "DELETE",
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ id: userId }),
     });
     mutate()
     console.log("response:", response);
-    
+
   }
 
- 
-  async function handleDeleteComment(commentId) {
+
+  async function handleDeleteComment(commentId, tweetId) {
+
     const response = await fetch(`/api/comments/${commentId}`, {
       method: "DELETE",
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id: userId }),
+      body: JSON.stringify({ id: tweetId }),
     });
     mutate()
     console.log("response:", response);
-    
+
   }
 
   if (isLoading) {
@@ -103,6 +109,7 @@ export default function Home() {
   return (
     <>
       <StyledDiv>
+        <Image src={DoodleDooLogo} width={200} alt="logo" />
         {session ? (
           <>
             <h1>Hiya {userName}.</h1>
@@ -123,18 +130,18 @@ export default function Home() {
                               <div key={index}>
                                 {comment.comment} - {comment.userName}
                                 {session?.user?.name === comment.userName && (
-                                  <button type="button" onClick={() => handleDeleteComment(comment._id)}> ❌</button>
+                                  <button type="button" onClick={() => handleDeleteComment(comment._id, tweet._id)}> ❌</button>
                                 )}
-                               
+
                               </div>
-                              ))}
-                              </div>
-                              )}
-                              <LikeButton
-                              isLiked={tweet.likes.includes(userId)}
-                              tweetId={tweet._id}
-                              handleToggleLikes={handleToggleLikes}
-                              />
+                            ))}
+                        </div>
+                      )}
+                      <LikeButton
+                        isLiked={tweet.likes.includes(userId)}
+                        tweetId={tweet._id}
+                        handleToggleLikes={handleToggleLikes}
+                      />
                       <button
                         onClick={() => {
                           setShowModal(true);

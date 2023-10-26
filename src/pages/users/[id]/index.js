@@ -1,13 +1,11 @@
 import { useRouter } from "next/router";
 import Navbar from "../../../../components/navbar/navbar";
-import ImageUpload from "../../../../components/image-upload/image-upload";
 import ProfilePageIcon from "../../../../components/profile-icon/profile-icon";
 import useSWR from "swr";
 import styled from "styled-components";
-import { useState } from "react";
 import Image from "next/image";
-import { mutate } from "swr";
-import { useSession } from "next-auth/react";
+import DoodleDoLogo from "../../../../public/assets/doodledoo.png"
+
 
 const StyledDiv = styled.div`
     display: flex;
@@ -45,22 +43,7 @@ export default function ProfilePage() {
 
   if (!user) return;
 
-  // async function handleDeleteTweet(tweetId) {
-  //   const response = await fetch(`/api/tweets/${tweetId}`, {
-  //     method: "DELETE",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ id: userId }),
-  //   });
-  //   if (response.ok) {
-     
-  //     await response.json();
-  //     mutate();
-  //   } else {
-  //     console.error(`Error: ${response.status}`)
-  //   }
-  // }
+ 
 
   async function handleDeleteTweet(tweetId) {
     const response = await fetch(`/api/tweets/${tweetId}`, {
@@ -79,6 +62,7 @@ export default function ProfilePage() {
 
   return (
     <>
+      <Image src={DoodleDoLogo} width={140} alt="doodle-doo-logo" />
       <Image src={user.image} width={160} height={160} alt="profile-pic"></Image>
       <StyledDiv>
         <h1>Hi from {user.name}s profile page.</h1>
