@@ -33,3 +33,23 @@
   font-size: 25px;
 }
 
+.profile--page--header {
+  font-family: 'Playpen Sans', sans-serif;
+}
+
+.homepage--header {
+  font-family: 'Playpen Sans', sans-serif;
+}
+
+.auth--button {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.main--feed--logo{
+  position: fixed;
+  top: 0;
+  left: 5px;
+}
+

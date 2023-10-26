@@ -8,7 +8,7 @@ import styled from "styled-components";
 import LikeButton from "../../components/like-button/like-button";
 import CommentModal from "../../components/comment-modal/comment-modal";
 import { useRouter } from "next/router";
-import DoodleDooLogo from "../../public/assets/doodledoo.png"
+import DoodleDooLogo from "../../public/assets/hen.png"
 import Image from "next/image";
 
 const StyledDiv = styled.div`
@@ -23,20 +23,36 @@ const StyledDiv = styled.div`
 `;
 
 const StyledLi = styled.li`
-   border: 0.2rem solid white;
-   box-shadow: 0 0 0 0.1rem blue;
-   border-radius: 15%;
+   border: 2px solid #CCCCCC;
+   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+   border-radius: 20%;
    padding: 0.5rem;
    margin: 1rem;
    max-width: 30vw;
    position: relative;
    list-style-type: none;
+   transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+   &:hover {
+      background-color: #ffcccb; 
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); 
+   }
 `;
-// const StyledImg = styled.img`
-//     border-radius: 15%;
-//     width: 100px;
-//     height: 200px;
-// `
+
+const StyledButton = styled.button`
+   background-color: #3498db; /* Button Background Color */
+   color: #fff; /* Button Text Color */
+   border: none;
+   border-radius: 0.5rem; /* Button Border Radius */
+   padding: 0.5rem 1rem;
+   margin-right: 1rem; /* Adjust margin as needed */
+   cursor: pointer;
+   transition: background-color 0.3s ease; /* Smooth Transition Effect */
+
+   &:hover {
+      background-color: #2980b9; /* Darker Button Background Color on Hover */
+   }
+`;
+
 
 export default function Home() {
   const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
@@ -109,10 +125,12 @@ export default function Home() {
   return (
     <>
       <StyledDiv>
-        <Image src={DoodleDooLogo} width={200} alt="logo" />
+        <Image className="main--feed--logo" src={DoodleDooLogo} width={200} alt="logo" />
+
+
         {session ? (
           <>
-            <h1>Hiya {userName}.</h1>
+            <h1 className="homepage--header">Hiya {userName}.</h1>
             <ul>
               {users.map((user) => {
                 if (user.tweets && user.tweets.length > 0) {
@@ -122,9 +140,9 @@ export default function Home() {
                       {tweet.likes?.length}<p>likes</p>
                       {tweet.comments.length > 0 && (
                         <div>
-                          <button onClick={() => toggleComments(tweet._id)}>
+                          <StyledButton onClick={() => toggleComments(tweet._id)}>
                             {visibleComments[tweet._id] ? "Hide" : "Show"} Comments
-                          </button>
+                          </StyledButton>
                           {visibleComments[tweet._id] &&
                             tweet.comments.map((comment, index) => (
                               <div key={index}>
@@ -142,14 +160,14 @@ export default function Home() {
                         tweetId={tweet._id}
                         handleToggleLikes={handleToggleLikes}
                       />
-                      <button
+                      <StyledButton
                         onClick={() => {
                           setShowModal(true);
                           setTweetId(tweet._id);
                         }}
                       >
                         Add comment
-                      </button>
+                      </StyledButton>
                       {session?.user?.name === tweet.userName && (
                         <button type="button" onClick={() => handleDeleteTweet(tweet._id)}> ❌</button>
                       )}
@@ -170,8 +188,8 @@ export default function Home() {
           <SignIn />
         )}
       </StyledDiv>
-      <Navbar />
       <AuthButton />
+      <Navbar />
     </>
   );
 }

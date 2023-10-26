@@ -4,7 +4,7 @@ import ProfilePageIcon from "../../../../components/profile-icon/profile-icon";
 import useSWR from "swr";
 import styled from "styled-components";
 import Image from "next/image";
-import DoodleDoLogo from "../../../../public/assets/doodledoo.png"
+import DoodleDoLogo from "../../../../public/assets/hen.png"
 
 
 const StyledDiv = styled.div`
@@ -14,9 +14,14 @@ const StyledDiv = styled.div`
     align-items: center;
 `
 
+const ImagesDiv = styled.div`
+    display: flex;
+    justify-content: space-around;
+`
+
 const StyledLi = styled.li`
-   border: 0.2rem solid white;
-   box-shadow: 0 0 0 0.1rem blue;
+   border: 2px solid #CCCCCC;
+   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
    border-radius: 15%;
    padding: 0.5rem;
    margin: 1rem;
@@ -30,9 +35,7 @@ export default function ProfilePage() {
  
   const router = useRouter();
   const { id: userId } = router.query
- 
   const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -62,10 +65,14 @@ export default function ProfilePage() {
 
   return (
     <>
-      <Image src={DoodleDoLogo} width={140} alt="doodle-doo-logo" />
-      <Image src={user.image} width={160} height={160} alt="profile-pic"></Image>
+      <ImagesDiv>
+      <Image src={user.image} width={160} height={160} alt="profile-pic" style={{ borderRadius: '50%' }}></Image>
+      <Image src={DoodleDoLogo} width={160} alt="doodle-doo-logo" />
+      </ImagesDiv>
       <StyledDiv>
-        <h1>Hi from {user.name}s profile page.</h1>
+      <h1 className="profile--page--header">Hi from {user.name}{user.name.slice(-1).toLowerCase() === 's' ? "'" : "'s"} profile page.</h1>
+
+
         {user.tweets.length > 0 ? (
           user.tweets.map((tweet) => {
             const formattedDate = new Date(tweet.date).toLocaleDateString('en-US', {
