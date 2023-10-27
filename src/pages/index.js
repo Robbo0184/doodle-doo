@@ -33,11 +33,11 @@ const StyledLi = styled.li`
    font-family: 'Playpen Sans', sans-serif;
    position: relative;
    list-style-type: none;
-   transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+   transition: box-shadow 0.3s ease; 
    &:hover {
-      background-color: #ffcccb; 
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); 
+     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
    }
+ 
 `;
 
 const StyledButton = styled.button`
@@ -137,7 +137,11 @@ export default function Home() {
                   return user.tweets.map((tweet) => (
                     <StyledLi key={tweet._id}>
                       {tweet.tweet} <br></br> {tweet.userName}<br></br>
-                      {tweet.likes?.length}<p>likes</p>
+                      {tweet.likes?.length === 1 ? (
+                        <p>1 like</p>
+                      ) : (
+                        <p>{tweet.likes?.length} likes</p>
+                      )}
                       {tweet.comments.length > 0 && (
                         <div>
                           <StyledButton onClick={() => toggleComments(tweet._id)}>
