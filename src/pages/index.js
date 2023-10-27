@@ -21,6 +21,9 @@ const StyledDiv = styled.div`
   padding-top: 0.5rem;
   gap: 1rem;
   margin-bottom: 40px;
+  
+
+
 `;
 
 const StyledLi = styled.li`
@@ -53,6 +56,26 @@ const StyledButton = styled.button`
    &:hover {
       background-color: #2980b9; 
    }
+`;
+
+const CommentContainer = styled.div`
+  margin-bottom: 0.5rem; /* Add margin to create space between comments */
+`;
+
+const DeleteButton = styled.button`
+  background-color: transparent;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background-color: #ccc;
+    color: #fff;
+  }
 `;
 
 
@@ -143,20 +166,20 @@ export default function Home() {
                         <p>{tweet.likes?.length} likes</p>
                       )}
                       {tweet.comments.length > 0 && (
-                        <div>
+                        <>
                           <StyledButton onClick={() => toggleComments(tweet._id)}>
                             {visibleComments[tweet._id] ? "Hide" : "Show"} Comments
                           </StyledButton>
                           {visibleComments[tweet._id] &&
                             tweet.comments.map((comment, index) => (
-                              <div key={index}>
+                              <CommentContainer key={index}>
                                 {comment.comment} - {comment.userName}
                                 {session?.user?.name === comment.userName && (
-                                  <button type="button" onClick={() => handleDeleteComment(comment._id, tweet._id)}> ❌</button>
+                                  <DeleteButton type="button" onClick={() => handleDeleteComment(comment._id, tweet._id)}> ❌</DeleteButton>
                                 )}
-                              </div>
+                              </CommentContainer>
                             ))}
-                        </div>
+                        </>
                       )}
                       <LikeButton
                         className="like--button"
@@ -173,7 +196,7 @@ export default function Home() {
                         Add comment
                       </StyledButton>
                       {session?.user?.name === tweet.userName && (
-                        <button type="button" onClick={() => handleDeleteTweet(tweet._id)}> ❌</button>
+                        <DeleteButton type="button" onClick={() => handleDeleteTweet(tweet._id)}> ❌</DeleteButton>
                       )}
                     </StyledLi>
                   ));

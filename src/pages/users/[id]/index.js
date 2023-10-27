@@ -110,7 +110,7 @@ export default function ProfilePage() {
           <Image src={DoodleDoLogo} width={160} alt="doodle-doo-logo" />
         </ImagesDiv>
         <EmailDiv>
-          <h3>{user.email}</h3>
+          <h3 className="user--email--heading">{user.email}</h3>
         </EmailDiv>
         {user.tweets.length > 0 ? (
           user.tweets.map((tweet) => {

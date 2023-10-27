@@ -49,11 +49,14 @@
 
 .main--feed--logo{
   position: fixed;
-  top: 0;
-  left: 5px;
+  top: 2px;
+  left: 8px;
 }
 
 .user--image{
     margin-left: 20px;
 }
 
+.user--email--heading{
+  font-family: 'Playpen Sans', sans-serif;
+}
