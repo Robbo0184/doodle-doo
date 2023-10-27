@@ -27,9 +27,10 @@ const StyledLi = styled.li`
    border: 2px solid #CCCCCC;
    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
    border-radius: 20%;
-   padding: 0.5rem;
+   padding: 0.9rem;
    margin: 1rem;
    max-width: 30vw;
+   font-family: 'Playpen Sans', sans-serif;
    position: relative;
    list-style-type: none;
    transition: background-color 0.3s ease, box-shadow 0.3s ease; 
@@ -126,9 +127,7 @@ export default function Home() {
   return (
     <>
       <StyledDiv>
-        <Image className="main--feed--logo" src={DoodleDooLogo} width={200} alt="logo" />
-
-
+        <Image className="main--feed--logo" src={DoodleDooLogo} width={140} alt="logo" />
         {session ? (
           <>
             <h1 className="homepage--header">Hiya {userName}.</h1>
@@ -137,7 +136,7 @@ export default function Home() {
                 if (user.tweets && user.tweets.length > 0) {
                   return user.tweets.map((tweet) => (
                     <StyledLi key={tweet._id}>
-                      {tweet.tweet} {tweet.userName}
+                      {tweet.tweet} <br></br> {tweet.userName}<br></br>
                       {tweet.likes?.length}<p>likes</p>
                       {tweet.comments.length > 0 && (
                         <div>
@@ -151,12 +150,12 @@ export default function Home() {
                                 {session?.user?.name === comment.userName && (
                                   <button type="button" onClick={() => handleDeleteComment(comment._id, tweet._id)}> ❌</button>
                                 )}
-
                               </div>
                             ))}
                         </div>
                       )}
                       <LikeButton
+                        className="like--button"
                         isLiked={tweet.likes.includes(userId)}
                         tweetId={tweet._id}
                         handleToggleLikes={handleToggleLikes}
@@ -180,7 +179,6 @@ export default function Home() {
                 <CommentModal
                   tweetId={getTweetId}
                   onClose={() => setShowModal(false)}
-
                 />
               )}
             </ul>
@@ -190,7 +188,7 @@ export default function Home() {
         )}
       </StyledDiv>
       <AuthButton />
-      <Navbar />
+      {session && <Navbar />}
     </>
   );
 }
