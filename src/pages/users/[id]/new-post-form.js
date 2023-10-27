@@ -1,23 +1,48 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
-// import Tweet from "../../../../db/models/Tweet";
+import Image from "next/image";
+import DoodleDooLogo from "../../../../public/assets/hen.png"
 import Navbar from "../../../../components/navbar/navbar";
 import styled from "styled-components";
 import { useState } from "react";
-const TextArea = styled.textarea`
-        width: 40vw;
-        min-height: 40vh;
-        color: black;
-    `
-    ;
-const StyledDiv = styled.div`
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     padding-top: 2rem;
-       
+
+const ImageDiv = styled.div`
+   display: flex;
+   justify-content: flex-end;
 `
-    ;
+
+const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+`;
+
+const TextArea = styled.textarea`
+  width: 80%;
+  min-height: 300px;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+`;
+
+const SubmitButton = styled.button`
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #45a049;
+  }
+`;
 
 export default function NewPostForm() {
     const router = useRouter()
@@ -80,7 +105,10 @@ export default function NewPostForm() {
 
     return (
         <>
-            <StyledDiv>
+        <ImageDiv>
+        <Image src={DoodleDooLogo} width={140} alt="logo"></Image>
+        </ImageDiv>
+            <FormContainer>
                 <form onSubmit={handleSubmitTweet}>
                     <TextArea
                         name="tweet"
@@ -88,9 +116,9 @@ export default function NewPostForm() {
                         placeholder="whats on your mind???"
                         onChange={(e) => setTweet(e.target.value)}
                     ></TextArea>
-                    <button type="submit">Submit</button>
+                    <SubmitButton type="submit">Submit</SubmitButton>
                 </form>
-            </StyledDiv>
+            </FormContainer>
             <Navbar />
 
         </>

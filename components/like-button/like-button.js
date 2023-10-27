@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 export const StyledButton = styled.button`
   border: none;
   background-color: white;
+  
 `;
 
 export default function LikeButton({ tweetId, isLiked, handleToggleLikes }) {
