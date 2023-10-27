@@ -20,6 +20,7 @@ const StyledDiv = styled.div`
   line-height: 2rem;
   padding-top: 0.5rem;
   gap: 1rem;
+  margin-bottom: 40px;
 `;
 
 const StyledLi = styled.li`
@@ -39,17 +40,17 @@ const StyledLi = styled.li`
 `;
 
 const StyledButton = styled.button`
-   background-color: #3498db; /* Button Background Color */
-   color: #fff; /* Button Text Color */
+   background-color: #3498db; 
+   color: #fff; 
    border: none;
-   border-radius: 0.5rem; /* Button Border Radius */
+   border-radius: 0.5rem; 
    padding: 0.5rem 1rem;
-   margin-right: 1rem; /* Adjust margin as needed */
+   margin-right: 1rem; 
    cursor: pointer;
-   transition: background-color 0.3s ease; /* Smooth Transition Effect */
+   transition: background-color 0.3s ease; 
 
    &:hover {
-      background-color: #2980b9; /* Darker Button Background Color on Hover */
+      background-color: #2980b9; 
    }
 `;
 

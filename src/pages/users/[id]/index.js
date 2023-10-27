@@ -12,11 +12,12 @@ const StyledDiv = styled.div`
     flex-direction: column; 
     text-align: center;
     align-items: center;
+    
 `
 
 const ImagesDiv = styled.div`
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 `
 
 const StyledLi = styled.li`
@@ -26,6 +27,7 @@ const StyledLi = styled.li`
    padding: 0.5rem;
    margin: 1rem;
    max-width: 40vw;
+   list-style-type: none;
 
 `
 
@@ -66,11 +68,12 @@ export default function ProfilePage() {
   return (
     <>
       <ImagesDiv>
-      <Image src={user.image} width={160} height={160} alt="profile-pic" style={{ borderRadius: '50%' }}></Image>
+      <Image className="user--image" src={user.image} width={160} height={160} alt="profile-pic" style={{ borderRadius: '50%' }}></Image>
+      <h1 className="profile--page--header">Hi from {user.name}{user.name.slice(-1).toLowerCase() === 's' ? "'" : "'s"} profile page.</h1>
       <Image src={DoodleDoLogo} width={160} alt="doodle-doo-logo" />
       </ImagesDiv>
+      <h3>{user.email}</h3>
       <StyledDiv>
-      <h1 className="profile--page--header">Hi from {user.name}{user.name.slice(-1).toLowerCase() === 's' ? "'" : "'s"} profile page.</h1>
 
 
         {user.tweets.length > 0 ? (
@@ -91,7 +94,7 @@ export default function ProfilePage() {
             );
           })
         ) : (
-          <p>No tweets to display</p>
+          <p>No doodle doos to display</p>
         )}
         
         <Navbar>
