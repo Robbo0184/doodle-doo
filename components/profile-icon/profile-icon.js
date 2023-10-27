@@ -1,4 +1,4 @@
-import profilePageIcon from "../../public/assets/profile-page.svg"
+import profilePageIcon from "../../public/assets/profile.png"
 import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -10,7 +10,7 @@ export default function ProfilePageIcon() {
     
     return (
         <Link href={`/users/${id}`}>
-            <Image src={profilePageIcon} alt="Profile-page-icon" />
+            <Image src={profilePageIcon} width={78} alt="Profile-page-icon" />
         </Link>
     )
 }
