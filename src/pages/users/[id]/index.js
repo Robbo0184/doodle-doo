@@ -21,6 +21,8 @@ const ImagesDiv = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 15rem;
+    text-align: center;
+    align-items: center;
 `
 const EmailDiv = styled.div`
     display: flex;
