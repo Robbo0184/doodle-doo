@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import DoodleDooLogo from "../../public/assets/hen.png"
 import Image from "next/image";
 
+
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,7 +31,7 @@ const StyledLi = styled.li`
    border: 2px solid #CCCCCC;
    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
    border-radius: 20%;
-   padding: 0.9rem;
+   padding: 1.4rem;
    margin: 1rem;
    max-width: 30vw;
    font-family: 'Playpen Sans', sans-serif;
@@ -59,7 +60,7 @@ const StyledButton = styled.button`
 `;
 
 const CommentContainer = styled.div`
-  margin-bottom: 0.5rem; /* Add margin to create space between comments */
+  margin-bottom: 0.5rem; 
 `;
 
 const DeleteButton = styled.button`
@@ -111,6 +112,8 @@ export default function Home() {
     }
   }
 
+  
+
   async function handleDeleteTweet(tweetId) {
     const response = await fetch(`/api/tweets/${tweetId}`, {
       method: "DELETE",
@@ -147,6 +150,9 @@ export default function Home() {
     return <div>Error loading users data</div>;
   }
 
+
+
+
   return (
     <>
       <StyledDiv>
@@ -154,6 +160,7 @@ export default function Home() {
         {session ? (
           <>
             <h1 className="homepage--header">Hiya {userName}.</h1>
+           
             <ul>
               {users.map((user) => {
                 if (user.tweets && user.tweets.length > 0) {

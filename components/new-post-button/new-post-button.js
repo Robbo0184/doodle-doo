@@ -1,7 +1,8 @@
 import styled from "styled-components"
 import Link from "next/link"
 import { useSession } from "next-auth/react";
-
+import NewPostIcon from "../../public/assets/new-post.png"
+import Image from "next/image";
 
 const StyledButton = styled.button`
    background-color: blue;
@@ -16,7 +17,7 @@ export default function NewPostButton() {
 
     return (
         <Link href={`/users/${id}/new-post-form`}>
-        <StyledButton> + </StyledButton>
+        <Image src={NewPostIcon} width={70} alt="new post icon"/>
         </Link>
     )
 
