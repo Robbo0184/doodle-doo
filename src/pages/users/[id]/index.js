@@ -32,7 +32,7 @@ const EmailDiv = styled.div`
     
     align-items: center;
     
-    margin-right: 85rem;
+    margin-right: 83rem;
 
 `
 const StyledLi = styled.li`
