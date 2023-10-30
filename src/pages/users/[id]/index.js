@@ -26,8 +26,14 @@ const ImagesDiv = styled.div`
 `
 const EmailDiv = styled.div`
     display: flex;
-    justify-content: flex-start;
-    width: 95vw;
+    justify-content: center;
+    width: fit-content;
+    text-align: center;
+    
+    align-items: center;
+    
+    margin-right: 85rem;
+
 `
 const StyledLi = styled.li`
   border: 2px solid #CCCCCC;
@@ -107,12 +113,12 @@ export default function ProfilePage() {
     <>
       <StyledDiv>
         <ImagesDiv>
-          <Image className="user--image" src={user.image} width={160} height={160} alt="profile-pic" style={{ borderRadius: '50%' }}></Image>
-          <h1 className="profile--page--header">Hi from {user.name}{user.name.slice(-1).toLowerCase() === 's' ? "'" : "'s"} profile page.</h1>
-          <Image src={DoodleDoLogo} width={160} alt="doodle-doo-logo" />
+        <Image className="user--image" src={user.image} width={160} height={160} alt="profile-pic" style={{ borderRadius: '50%' }}></Image>
+        <h1 className="profile--page--header">Hi from {user.name}{user.name.slice(-1).toLowerCase() === 's' ? "'" : "'s"} profile page.</h1>
+        <Image src={DoodleDoLogo} width={160} alt="doodle-doo-logo" />
         </ImagesDiv>
         <EmailDiv>
-          <h3 className="user--email--heading">{user.email}</h3>
+        <h3 className="user--email--heading">{user.email}</h3>
         </EmailDiv>
         {user.tweets.length > 0 ? (
           user.tweets.map((tweet) => {

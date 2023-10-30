@@ -166,9 +166,15 @@ export default function Home() {
                 if (user.tweets && user.tweets.length > 0) {
                   return user.tweets.map((tweet) => (
                     <StyledLi key={tweet._id}>
-                      {tweet.tweet} <br></br> {tweet.userName}<br></br>
-                      {tweet.likes?.length === 1 ? (
-                        <p>1 like</p>
+                    {tweet.tweet} <br></br> {tweet.userName}<br></br>
+                    <LikeButton
+                      className="like--button"
+                      isLiked={tweet.likes.includes(userId)}
+                      tweetId={tweet._id}
+                      handleToggleLikes={handleToggleLikes}
+                    />
+                    {tweet.likes?.length === 1 ? (
+                      <p>1 like</p>
                       ) : (
                         <p>{tweet.likes?.length} likes</p>
                       )}
@@ -186,25 +192,19 @@ export default function Home() {
                                 )}
                               </CommentContainer>
                             ))}
-                        </>
-                      )}
-                      <LikeButton
-                        className="like--button"
-                        isLiked={tweet.likes.includes(userId)}
-                        tweetId={tweet._id}
-                        handleToggleLikes={handleToggleLikes}
-                      />
+                            </>
+                            )}
                       <StyledButton
-                        onClick={() => {
-                          setShowModal(true);
-                          setTweetId(tweet._id);
-                        }}
+                      onClick={() => {
+                        setShowModal(true);
+                        setTweetId(tweet._id);
+                      }}
                       >
-                        Add comment
+                      Add comment
                       </StyledButton>
                       {session?.user?.name === tweet.userName && (
                         <DeleteButton type="button" onClick={() => handleDeleteTweet(tweet._id)}> ❌</DeleteButton>
-                      )}
+                        )}
                     </StyledLi>
                   ));
                 }
