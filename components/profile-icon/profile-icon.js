@@ -10,7 +10,7 @@ export default function ProfilePageIcon() {
     
     return (
         <Link href={`/users/${id}`}>
-            <Image src={profilePageIcon} width={78} alt="Profile-page-icon" />
+            <Image className="profile--pic--icon" src={profilePageIcon} width={78} alt="Profile-page-icon" />
         </Link>
     )
 }

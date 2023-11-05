@@ -53,9 +53,7 @@
   left: 12px;
 }
 
-/* .user--image{
-    margin-right: 200px;
-} */
+
 
 .user--email--heading{
   font-family: 'Playpen Sans', sans-serif;
@@ -67,3 +65,25 @@
   
 }
 
+@media screen and (max-width: 500px) {
+    .profile--page--header{
+      font-size: 0.9rem;
+      
+    }
+
+    .home--icon{
+      width: 60px;
+      height: 60px;
+    }
+
+    .new--post--icon{
+      width: 55px;
+      height: 50px;
+    }
+
+    .profile--pic--icon{
+      width: 60px;
+      height: 60px;
+    }
+
+}

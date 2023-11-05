@@ -17,7 +17,7 @@ export default function NewPostButton() {
 
     return (
         <Link href={`/users/${id}/new-post-form`}>
-        <Image src={NewPostIcon} width={70} alt="new post icon"/>
+        <Image className="new--post--icon" src={NewPostIcon} width={70} alt="new post icon"/>
         </Link>
     )
 

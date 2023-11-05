@@ -17,12 +17,45 @@ const StyledDiv = styled.div`
 `
 
 
+
+
 const ImagesDiv = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 15rem;
     text-align: center;
     align-items: center;
+
+    @media screen and (max-width: 500px) {
+      flex-direction: row; 
+      justify-content: space-evenly; 
+      padding: 1rem; 
+      position: relative;
+      width: 100%; 
+      align-items: flex-start;
+    
+
+    .user--image {
+      border-radius: 50%;
+      margin: 0; 
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      top: 1rem; 
+      left: 0.8rem; 
+    }
+  
+    .doodle--doo--logo {
+      margin: 0; 
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      top: 1rem; 
+      right: 0.1rem; 
+    }
+  }
+
+  
 `
 const EmailDiv = styled.div`
     display: flex;
@@ -111,41 +144,42 @@ export default function ProfilePage() {
 
   return (
     <>
-      <StyledDiv>
-        <ImagesDiv>
-        <Image className="user--image" src={user.image} width={160} height={160} alt="profile-pic" style={{ borderRadius: '50%' }}></Image>
-        <h1 className="profile--page--header">Hi from {user.name}{user.name.slice(-1).toLowerCase() === 's' ? "'" : "'s"} profile page.</h1>
-        <Image src={DoodleDoLogo} width={160} alt="doodle-doo-logo" />
-        </ImagesDiv>
-        <EmailDiv>
-        <h3 className="user--email--heading">{user.email}</h3>
-        </EmailDiv>
-        {user.tweets.length > 0 ? (
-          user.tweets.map((tweet) => {
-            const formattedDate = new Date(tweet.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit'
-            });
+      <main className="profile--page--main">
+        <StyledDiv>
+          <ImagesDiv className="profile--page--images--div">
+            <Image className="user--image" src={user.image} width={160} height={160} alt="profile-pic" style={{ borderRadius: '50%' }}></Image>
+            <h1 className="profile--page--header">Hi from {user.name}{user.name.slice(-1).toLowerCase() === 's' ? "'" : "'s"} profile page.</h1>
+            <Image className="doodle--doo--logo" src={DoodleDoLogo} width={160} alt="doodle-doo-logo" />
+          </ImagesDiv>
+          <EmailDiv className="email--div">
+            <h3 className="user--email--heading">{user.email}</h3>
+          </EmailDiv>
+          {user.tweets.length > 0 ? (
+            user.tweets.map((tweet) => {
+              const formattedDate = new Date(tweet.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+              });
 
-            return (
-              <div key={tweet._id}>
-                <StyledLi>
-                  {tweet.tweet} - {formattedDate}
-                  <DeleteButton onClick={() => handleDeleteTweet(tweet._id)}>❌</DeleteButton>
-                </StyledLi>
-              </div>
-            );
-          })
-        ) : (
-          <p>No doodle doos to display</p>
+              return (
+                <div key={tweet._id}>
+                  <StyledLi>
+                    {tweet.tweet} - {formattedDate}
+                    <DeleteButton onClick={() => handleDeleteTweet(tweet._id)}>❌</DeleteButton>
+                  </StyledLi>
+                </div>
+              );
+            })
+          ) : (
+            <p>No doodle doos to display</p>
 
-        )}
-      </StyledDiv>
-      <Navbar>
-        <ProfilePageIcon />
-      </Navbar>
-
+          )}
+        </StyledDiv>
+        <Navbar>
+          <ProfilePageIcon />
+        </Navbar>
+      </main>
 
     </>
   )
