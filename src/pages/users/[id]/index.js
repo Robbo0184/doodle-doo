@@ -17,8 +17,6 @@ const StyledDiv = styled.div`
 `
 
 
-
-
 const ImagesDiv = styled.div`
     display: flex;
     justify-content: space-between;
@@ -30,6 +28,7 @@ const ImagesDiv = styled.div`
       flex-direction: row; 
       justify-content: space-evenly; 
       padding: 1rem; 
+      margin-top: -0.8rem;
       position: relative;
       width: 100%; 
       align-items: flex-start;
@@ -54,19 +53,30 @@ const ImagesDiv = styled.div`
       right: 0.1rem; 
     }
   }
-
-  
 `
+
+const EmailDivContainer = styled.div`
+    position: relative;
+    width: 100vw;
+    margin-bottom: 2rem;
+
+`
+
+
 const EmailDiv = styled.div`
     display: flex;
-    justify-content: center;
+    position: absolute;
     width: fit-content;
     text-align: center;
-    
-    align-items: center;
-    
-    margin-right: 83rem;
+    left: 1.5rem;
 
+    @media screen and (max-width: 500px){
+      
+      left: 0rem;
+      top: -0.8rem;
+      
+    }
+    
 `
 const StyledLi = styled.li`
   border: 2px solid #CCCCCC;
@@ -151,9 +161,11 @@ export default function ProfilePage() {
             <h1 className="profile--page--header">Hi from {user.name}{user.name.slice(-1).toLowerCase() === 's' ? "'" : "'s"} profile page.</h1>
             <Image className="doodle--doo--logo" src={DoodleDoLogo} width={160} alt="doodle-doo-logo" />
           </ImagesDiv>
+          <EmailDivContainer>
           <EmailDiv className="email--div">
             <h3 className="user--email--heading">{user.email}</h3>
           </EmailDiv>
+          </EmailDivContainer>
           {user.tweets.length > 0 ? (
             user.tweets.map((tweet) => {
               const formattedDate = new Date(tweet.date).toLocaleDateString('en-US', {
