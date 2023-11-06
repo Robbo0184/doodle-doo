@@ -5,8 +5,8 @@
 
 .modal {
   background: white;
-  height:100%;
-  width:100%;
+  height: 100%;
+  width: 100%;
   border-radius: 15px;
   padding: 15px;
 }
@@ -47,7 +47,7 @@
   right: 0;
 }
 
-.main--feed--logo{
+.main--feed--logo {
   position: fixed;
   top: 2px;
   left: 12px;
@@ -55,35 +55,51 @@
 
 
 
-.user--email--heading{
+.user--email--heading {
   font-family: 'Playpen Sans', sans-serif;
-  margin-left: 14rem
 }
 
-.sign--in--text{
+.sign--in--text {
   font-family: 'Playpen Sans', sans-serif;
-  
+
+}
+
+.profile--page--main {
+  position: relative;
 }
 
 @media screen and (max-width: 500px) {
-    .profile--page--header{
-      font-size: 0.9rem;
-      
-    }
 
-    .home--icon{
-      width: 60px;
-      height: 60px;
-    }
+  .profile--page--header {
+    font-size: 0.9rem;
+  }
 
-    .new--post--icon{
-      width: 55px;
-      height: 50px;
-    }
+  .email--div {
+    position: absolute;
+    margin-left: 2px;
+  }
 
-    .profile--pic--icon{
-      width: 60px;
-      height: 60px;
-    }
+  .home--icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .user--email--heading{
+    font-size: 0.7rem;
+    margin-left: 0.2rem;
+    
+    
+   
+  }
+
+  .new--post--icon {
+    width: 55px;
+    height: 50px;
+  }
+
+  .profile--pic--icon {
+    width: 60px;
+    height: 60px;
+  }
 
 }
