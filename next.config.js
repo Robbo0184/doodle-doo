@@ -6,8 +6,7 @@ const nextConfig = {
     styledComponents: true
   },
   images: {
-    domains: ['avatars.githubusercontent.com'], 
-    domains: ['lh3.googleusercontent.com'],
+    domains: ['avatars.githubusercontent.com', 'lh3.googleusercontent.com']
   },
 }
 
