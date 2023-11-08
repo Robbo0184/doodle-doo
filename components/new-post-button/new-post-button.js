@@ -5,9 +5,7 @@ import NewPostIcon from "../../public/assets/new-post.png"
 import Image from "next/image";
 
 const StyledButton = styled.button`
-   background-color: blue;
-   border-radius: 1rem;
-   border: none;
+   
    width: 50px;
    height: 50px;
    `
@@ -17,7 +15,7 @@ export default function NewPostButton() {
 
     return (
         <Link href={`/users/${id}/new-post-form`}>
-        <Image className="new--post--icon" src={NewPostIcon} width={70} alt="new post icon"/>
+            <Image className="new--post--icon" src={NewPostIcon} width={70} alt="new post icon" />
         </Link>
     )
 

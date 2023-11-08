@@ -12,11 +12,17 @@ const StyledButton = styled.button`
    top: 10px;
    right: 10px;
    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); 
-   transition: background-color 0.3s ease, color 0.3s ease; /* Smooth Transition Effect */
+   transition: background-color 0.3s ease, color 0.3s ease; 
    &:hover {
-      background-color: #b0b0e6; /* Darker Background on Hover */
-      color: #fff; /* Text Color on Hover */
+      background-color: #b0b0e6; 
+      color: #fff; 
    }
+
+   @media screen and (max-width: 500px) {
+    width: 60px;
+    height: 60px
+    
+  }
 `
 export default function AuthButton() {
     const { data: session } = useSession();

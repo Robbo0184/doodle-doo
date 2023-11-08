@@ -41,6 +41,10 @@ const StyledLi = styled.li`
    &:hover {
      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
    }
+
+   @media screen and (max-width: 500px){
+        font-size: 0.8rem;
+      }
  
 `;
 
@@ -56,6 +60,11 @@ const StyledButton = styled.button`
 
    &:hover {
       background-color: #2980b9; 
+   }
+
+   @media screen and (max-width: 500px){
+    font-size: 0.7rem;
+    padding: 0.3rem
    }
 `;
 
@@ -86,7 +95,6 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
   const [getTweetId, setTweetId] = useState("")
-  const router = useRouter()
 
   const toggleComments = (tweetId) => {
     setVisibleComments((prevComments) => ({
@@ -112,7 +120,7 @@ export default function Home() {
     }
   }
 
-  
+
 
   async function handleDeleteTweet(tweetId) {
     const response = await fetch(`/api/tweets/${tweetId}`, {
@@ -159,22 +167,22 @@ export default function Home() {
         <Image className="main--feed--logo" src={DoodleDooLogo} width={140} alt="logo" />
         {session ? (
           <>
-            <h1 className="homepage--header">Hiya {userName}.</h1>
-           
+            <h1 className="homepage--header">Hiya {userName}</h1>
+
             <ul>
               {users.map((user) => {
                 if (user.tweets && user.tweets.length > 0) {
                   return user.tweets.map((tweet) => (
                     <StyledLi key={tweet._id}>
-                    {tweet.tweet} <br></br> {tweet.userName}<br></br>
-                    <LikeButton
-                      className="like--button"
-                      isLiked={tweet.likes.includes(userId)}
-                      tweetId={tweet._id}
-                      handleToggleLikes={handleToggleLikes}
-                    />
-                    {tweet.likes?.length === 1 ? (
-                      <p>1 like</p>
+                      {tweet.tweet} <br></br> {tweet.userName}<br></br>
+                      <LikeButton
+                        className="like--button"
+                        isLiked={tweet.likes.includes(userId)}
+                        tweetId={tweet._id}
+                        handleToggleLikes={handleToggleLikes}
+                      />
+                      {tweet.likes?.length === 1 ? (
+                        <p>1 like</p>
                       ) : (
                         <p>{tweet.likes?.length} likes</p>
                       )}
@@ -192,19 +200,19 @@ export default function Home() {
                                 )}
                               </CommentContainer>
                             ))}
-                            </>
-                            )}
+                        </>
+                      )}
                       <StyledButton
-                      onClick={() => {
-                        setShowModal(true);
-                        setTweetId(tweet._id);
-                      }}
+                        onClick={() => {
+                          setShowModal(true);
+                          setTweetId(tweet._id);
+                        }}
                       >
-                      Add comment
+                        Add comment
                       </StyledButton>
                       {session?.user?.name === tweet.userName && (
                         <DeleteButton type="button" onClick={() => handleDeleteTweet(tweet._id)}> ❌</DeleteButton>
-                        )}
+                      )}
                     </StyledLi>
                   ));
                 }

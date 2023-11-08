@@ -7,6 +7,9 @@ import Image from "next/image";
 import DoodleDoLogo from "../../../../public/assets/hen.png"
 
 
+
+
+
 const StyledDiv = styled.div`
     display: flex;
     flex-direction: column; 
@@ -162,9 +165,9 @@ export default function ProfilePage() {
             <Image className="doodle--doo--logo" src={DoodleDoLogo} width={160} alt="doodle-doo-logo" />
           </ImagesDiv>
           <EmailDivContainer>
-          <EmailDiv className="email--div">
-            <h3 className="user--email--heading">{user.email}</h3>
-          </EmailDiv>
+            <EmailDiv className="email--div">
+              <h3 className="user--email--heading">{user.email}</h3>
+            </EmailDiv>
           </EmailDivContainer>
           {user.tweets.length > 0 ? (
             user.tweets.map((tweet) => {
@@ -189,7 +192,6 @@ export default function ProfilePage() {
           )}
         </StyledDiv>
         <Navbar>
-          <ProfilePageIcon />
         </Navbar>
       </main>
 
