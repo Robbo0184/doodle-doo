@@ -7,7 +7,7 @@ import HomeIcon from "../../public/assets/home.png"
 export default function HomeNavIcon () {
     return (
          <Link href={"/"}>
-         <Image className="home--icon" src={HomeIcon} width={100} alt="Home-icon"/>
+         <Image className="home--icon" src={HomeIcon} width={100} height={60} alt="Home-icon"/>
          </Link>
     )
 }
