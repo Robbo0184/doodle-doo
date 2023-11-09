@@ -55,7 +55,7 @@ const CommentModal = ({ tweetId, onClose }) => {
           <div className="modal-body">
             <form onSubmit={handleSubmit}>
               <label>
-                <textarea placeholder="say what you feel..." rows={8} cols={60} value={comment} onChange={handleCommentChange} />
+                <textarea className="modal--textarea" placeholder="say what you feel..." rows={8} cols={60} value={comment} onChange={handleCommentChange} />
               </label>
               <button type="submit">Add Comment</button>
             </form>

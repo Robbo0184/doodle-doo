@@ -1,9 +1,44 @@
-
-
 .modal-wrapper {
   width: 500px;
   height: 240px;
 }
+
+
+/* @media screen and (max-width: 750px){
+
+} */
+
+
+
+
+
+
+
+@media (max-width: 750px) {
+  .modal-wrapper {
+    width: 80%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .modal {
+    background: white;
+    width: 100%;
+    border-radius: 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .modal--textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+}
+
 
 .modal {
   background: white;
@@ -11,6 +46,8 @@
   width: 100%;
   border-radius: 15px;
   padding: 15px;
+
+  
 }
 
 .modal-overlay {
@@ -70,16 +107,27 @@
 
 @media screen and (max-width: 500px) {
 
-  .main--feed--logo{
+  /* .modal{
+    width: 25%;
+  }
+
+  .modal--textarea{
+    width: 23%;
+  } */
+  
+  
+  
+  .main--feed--logo {
     height: 60px;
     width: 60px;
-    margin-top: 0.5rem;;
+    margin-top: 0.5rem;
+    ;
   }
-  
-  .homepage--header{
+
+  .homepage--header {
     font-size: 1.4rem;
   }
-  
+
   .profile--page--header {
     font-size: 0.9rem;
   }
@@ -94,12 +142,12 @@
     height: 60px;
   }
 
-  .user--email--heading{
+  .user--email--heading {
     font-size: 0.7rem;
     margin-left: 0.2rem;
-    
-    
-   
+
+
+
   }
 
   .new--post--icon {
@@ -114,3 +162,32 @@
 
 }
 
+@media screen and (max-height: 610px) {
+  .home--icon {
+    height: 50px;
+  }
+
+  .new--post--icon {
+
+    height: 50px;
+  }
+
+  .profile--pic--icon {
+
+    height: 50px;
+  }
+}
+
+@media screen and (max-height: 536px) {
+  .home--icon {
+    height: 20px;
+  }
+
+  .new--post--icon {
+    height: 20px;
+  }
+
+  .profile--pic--icon {
+    height: 20px;
+  }
+}
