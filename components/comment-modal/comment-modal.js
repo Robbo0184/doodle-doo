@@ -15,7 +15,6 @@ const CommentModal = ({ tweetId, onClose }) => {
     setComment(e.target.value);
 
   };
-  console.log("tweetsId", tweetId)
 
   const handleSubmit = async (e) => {
     e.preventDefault();

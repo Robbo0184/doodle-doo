@@ -16,9 +16,7 @@ const StyledDiv = styled.div`
     margin-bottom: 100px;
   `
 
-// const TweetFeedContainer = styled.div`
-//        margin-top: 1rem;
-//   `
+
 const ImagesDiv = styled.div`
     display: flex;
     justify-content: space-between;
@@ -63,6 +61,8 @@ const EmailDivContainer = styled.div`
     margin-bottom: 2rem;
 
 `
+
+
 const EmailDiv = styled.div`
     display: flex;
     position: relative;
@@ -79,6 +79,22 @@ const EmailDiv = styled.div`
       
     }
     
+`
+
+const BioDiv = styled.div`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+    margin-left: -18.3rem;
+
+    @media screen and (max-width: 500px){
+     margin-left: -11.1rem;
+     margin-top: 1.4rem;
+     font-size: 0.8rem;
+
+    }
+
 `
 const StyledLi = styled.li`
   border: 2px solid #CCCCCC;
@@ -184,6 +200,9 @@ return (
           <EmailDivContainer>
             <EmailDiv className="email--div">
               <h3 className="user--email--heading">{user.email}</h3>
+              <BioDiv>
+              <p className="user--bio">{user.bio}</p>
+              </BioDiv>
               <AddBioButton onClick={() => {
                 setShowModal(true);
               }}>Add Bio</AddBioButton>
@@ -191,9 +210,9 @@ return (
                 <BioModal onClose={() => setShowModal(false)}>
                     Hello from the modal!
                 </BioModal>
-            }
-            </EmailDiv>
-          </EmailDivContainer>
+              }
+              </EmailDiv>
+            </EmailDivContainer>
           
             {user.tweets.length > 0 ? (
               user.tweets.map((tweet) => {

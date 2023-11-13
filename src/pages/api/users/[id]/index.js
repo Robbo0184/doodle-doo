@@ -25,7 +25,6 @@ export default async function handler(request, response) {
 
     if (request.method === "POST") {
         try {
-          console.log("request body", request.body);
           const newTweet = await Tweet.create(request.body);
           await User.findByIdAndUpdate(
             userId,
