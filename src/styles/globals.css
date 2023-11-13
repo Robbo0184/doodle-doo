@@ -4,16 +4,6 @@
 }
 
 
-/* @media screen and (max-width: 750px){
-
-} */
-
-
-
-
-
-
-
 @media (max-width: 750px) {
   .modal-wrapper {
     width: 80%;
@@ -107,17 +97,8 @@
 
 @media screen and (max-width: 500px) {
 
-  /* .modal{
-    width: 25%;
-  }
-
-  .modal--textarea{
-    width: 23%;
-  } */
   
-  
-  
-  .main--feed--logo {
+.main--feed--logo {
     height: 60px;
     width: 60px;
     margin-top: 0.5rem;

@@ -6,6 +6,7 @@ const userSchema = new Schema({
   name: String,
   image: String,
   coverImage: String,
+  bio: String,
   tweets: {type: [Schema.Types.ObjectId], ref: Tweet }
 });
 

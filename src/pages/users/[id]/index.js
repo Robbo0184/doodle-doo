@@ -1,13 +1,11 @@
 import { useRouter } from "next/router";
 import Navbar from "../../../../components/navbar/navbar";
-import ProfilePageIcon from "../../../../components/profile-icon/profile-icon";
 import useSWR from "swr";
 import styled from "styled-components";
 import Image from "next/image";
 import DoodleDoLogo from "../../../../public/assets/hen.png"
-
-
-
+import BioModal from "../../../../components/bio-modal/bio-modal";
+import { useState } from "react";
 
 
 const StyledDiv = styled.div`
@@ -16,10 +14,11 @@ const StyledDiv = styled.div`
     text-align: center;
     align-items: center;
     margin-bottom: 100px;
-    
-`
+  `
 
-
+// const TweetFeedContainer = styled.div`
+//        margin-top: 1rem;
+//   `
 const ImagesDiv = styled.div`
     display: flex;
     justify-content: space-between;
@@ -64,15 +63,15 @@ const EmailDivContainer = styled.div`
     margin-bottom: 2rem;
 
 `
-
-
 const EmailDiv = styled.div`
     display: flex;
-    position: absolute;
-    width: fit-content;
+    position: relative;
+    width: 100%vw;
     text-align: center;
+    
     left: 1.5rem;
-
+    
+    gap: 0.5rem;
     @media screen and (max-width: 500px){
       
       left: 0rem;
@@ -95,8 +94,27 @@ const StyledLi = styled.li`
 
   &:hover {
     background-color: #f0f0f0; 
+  };
+
+  @media screen and (max-width: 500px){
+    padding: 0.7rem;
+    font-size: 0.8rem;
   }
+
+
 `;
+
+const AddBioButton = styled.button`
+      position: absolute;
+      right: 9.4rem;
+      top: 1.5rem;
+      
+      @media screen and (max-width: 500px){
+        position: absolute;
+        top: 0.6rem;
+        right: 0rem;
+      }
+`
 
 const DeleteButton = styled.button`
   position: absolute;
@@ -124,7 +142,7 @@ const DeleteButton = styled.button`
 
 
 export default function ProfilePage() {
-
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const { id: userId } = router.query
   const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
@@ -154,8 +172,7 @@ export default function ProfilePage() {
   }
 
 
-
-  return (
+return (
     <>
       <main className="profile--page--main">
         <StyledDiv>
@@ -167,33 +184,43 @@ export default function ProfilePage() {
           <EmailDivContainer>
             <EmailDiv className="email--div">
               <h3 className="user--email--heading">{user.email}</h3>
+              <AddBioButton onClick={() => {
+                setShowModal(true);
+              }}>Add Bio</AddBioButton>
+              {showModal &&
+                <BioModal onClose={() => setShowModal(false)}>
+                    Hello from the modal!
+                </BioModal>
+            }
             </EmailDiv>
           </EmailDivContainer>
-          {user.tweets.length > 0 ? (
-            user.tweets.map((tweet) => {
-              const formattedDate = new Date(tweet.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-              });
+          
+            {user.tweets.length > 0 ? (
+              user.tweets.map((tweet) => {
+                const formattedDate = new Date(tweet.date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit'
+                });
 
-              return (
-                <div key={tweet._id}>
-                  <StyledLi>
-                    {tweet.tweet} - {formattedDate}
-                    <DeleteButton onClick={() => handleDeleteTweet(tweet._id)}>❌</DeleteButton>
-                  </StyledLi>
-                </div>
-              );
-            })
-          ) : (
-            <p>No doodle doos to display</p>
+                return (
+                  <div key={tweet._id}>
+                    <StyledLi>
+                      {tweet.tweet} - {formattedDate}
+                      <DeleteButton onClick={() => handleDeleteTweet(tweet._id)}>❌</DeleteButton>
+                    </StyledLi>
+                  </div>
+                );
+              })
+            ) : (
+              <p>No doodle doos to display</p>
 
-          )}
+            )}
+          
         </StyledDiv>
         <Navbar>
         </Navbar>
-      </main>
+      </main >
 
     </>
   )
