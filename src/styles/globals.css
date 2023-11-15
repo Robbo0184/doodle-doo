@@ -3,6 +3,14 @@
   height: 240px;
 }
 
+.user--email--heading{
+  margin-left: 8rem;
+}
+
+.profile--page--header{
+  margin-top: -5rem;
+}
+
 
 
 
@@ -108,10 +116,11 @@
   }
 
   .homepage--header {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 
   .profile--page--header {
+    margin-top: 0.3rem;
     font-size: 0.9rem;
   }
 
@@ -128,10 +137,8 @@
   .user--email--heading {
     font-size: 0.7rem;
     margin-left: 0.2rem;
-
-
-
-  }
+    margin-top: 1rem;
+}
 
   .new--post--icon {
     width: 55px;
