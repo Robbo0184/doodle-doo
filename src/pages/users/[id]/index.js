@@ -100,6 +100,7 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 
 const BioDiv = styled.div`
 position: relative;
+display: flex;
 @media screen and (max-width: 500px){
   
  font-size: 0.8rem;
@@ -147,15 +148,30 @@ const DeleteButton = styled.button`
 `;
 
 const AddBioButton = styled.button`
-      position: absolute;
-      right: 15.3rem;
-      top: 1.5rem;
-      
-      @media screen and (max-width: 500px){
-        position: absolute;
-        top: 0.9rem;
-        right: 0rem;
-      }
+position: absolute;
+right: 14.4rem;
+top: 1.4rem;
+padding: 0.5rem 1rem;
+border: none;
+border-radius: 5px;
+color: white;
+font-size: 1rem;
+background: linear-gradient(135deg, #4e54c8, #8f94fb);
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+&:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+@media screen and (max-width: 500px) {
+  position: absolute;
+  top: 0.9rem;
+  right: 0rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.9rem;
+}
 `
 
 
