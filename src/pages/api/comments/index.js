@@ -1,5 +1,4 @@
 import dbConnect from "../../../../db/connect";
-import User from "../../../../db/models/User";
 import Tweet from "../../../../db/models/Tweet";
 import Comment from "../../../../db/models/Comment";
 

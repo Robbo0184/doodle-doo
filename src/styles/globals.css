@@ -3,15 +3,18 @@
   height: 240px;
 }
 
+.user--email--heading{
+  margin-left: 8rem;
+}
 
-/* @media screen and (max-width: 750px){
+.profile--page--header{
+  margin-top: -5rem;
+}
 
-} */
-
-
-
-
-
+.user--bio{
+  font-family: 'Playpen Sans', sans-serif;
+  margin-left: -35rem;
+}
 
 
 @media (max-width: 750px) {
@@ -107,17 +110,8 @@
 
 @media screen and (max-width: 500px) {
 
-  /* .modal{
-    width: 25%;
-  }
-
-  .modal--textarea{
-    width: 23%;
-  } */
   
-  
-  
-  .main--feed--logo {
+.main--feed--logo {
     height: 60px;
     width: 60px;
     margin-top: 0.5rem;
@@ -125,10 +119,11 @@
   }
 
   .homepage--header {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 
   .profile--page--header {
+    margin-top: 0.3rem;
     font-size: 0.9rem;
   }
 
@@ -145,10 +140,8 @@
   .user--email--heading {
     font-size: 0.7rem;
     margin-left: 0.2rem;
-
-
-
-  }
+    margin-top: 1rem;
+}
 
   .new--post--icon {
     width: 55px;
@@ -158,6 +151,10 @@
   .profile--pic--icon {
     width: 60px;
     height: 60px;
+  }
+
+  .user--bio{
+    margin-left: -0rem;
   }
 
 }

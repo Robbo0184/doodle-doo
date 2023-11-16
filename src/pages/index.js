@@ -167,7 +167,7 @@ export default function Home() {
         <Image className="main--feed--logo" src={DoodleDooLogo} width={140} alt="logo" />
         {session ? (
           <>
-            <h1 className="homepage--header">Hiya {userName}</h1>
+            <h1 className="homepage--header">Whats Happening</h1>
 
             <ul>
               {users.map((user) => {
