@@ -18,8 +18,10 @@ const BioModal = ({ tweetId, onClose }) => {
   const handleBioChange = (e) => {
     // setBio(e.target.value);
     const inputValue = e.target.value;
-    setBio(inputValue);
-    setCharCount(inputValue.length); 
+    const capitalizedBio = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+
+    setBio(capitalizedBio);
+    setCharCount(capitalizedBio.length); 
 
   };
 
