@@ -1,0 +1,39 @@
+.homepage--header {
+    font-family: 'Playpen Sans', sans-serif;
+  }
+  
+  .auth--button {
+    position: fixed;
+    top: 0;
+    right: 0;
+  }
+  
+  .main--feed--logo {
+    position: fixed;
+    top: 2px;
+    left: 12px;
+  }
+  
+  .sign--in--text {
+    font-family: 'Playpen Sans', sans-serif;
+  }
+  
+  @media screen and (max-width: 500px) {
+
+  
+    .main--feed--logo {
+        height: 60px;
+        width: 60px;
+        margin-top: 0.5rem;
+        ;
+      }
+    
+      .homepage--header {
+        font-size: 1.2rem;
+      }
+    
+    
+
+      
+    
+    }

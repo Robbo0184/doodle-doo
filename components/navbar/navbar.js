@@ -12,6 +12,8 @@ const StyledNav = styled.nav`
        background-color: #D6D6D6;
        position: fixed;
        bottom: 0
+
+    
        `
 
 

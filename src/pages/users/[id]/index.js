@@ -6,76 +6,9 @@ import Image from "next/image";
 import DoodleDoLogo from "../../../../public/assets/hen.png"
 import BioModal from "../../../../components/bio-modal/bio-modal";
 import { useState } from "react";
+import Head from "next/head";
 
 
-const StyledDiv = styled.div`
-display: flex;
-flex-direction: column; 
-text-align: center;
-align-items: center;
-margin-bottom: 100px;
-`
-const ImagesDiv = styled.div`
-display: flex;
-justify-content: space-between;
-gap: 15rem;
-text-align: center;
-align-items: center;
-
-@media screen and (max-width: 500px) {
-  flex-direction: row; 
-  justify-content: space-evenly; 
-  padding: 1rem; 
-  margin-top: -0.8rem;
-  position: relative;
-  width: 100%; 
-  align-items: flex-start;
-  
-
-  .user--image {
-    border-radius: 50%;
-    margin: 0; 
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    top: 1rem; 
-    left: 0.8rem; 
-  }
-  
-  .doodle--doo--logo {
-    margin: 0; 
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    top: 1rem; 
-    right: 0.1rem; 
-  }
-}
-`
-
-const EmailDivContainer = styled.div`
-position: relative;
-width: 100vw;
-margin-bottom: 2rem;
-height: 3vh;
-`
-
-const EmailDiv = styled.div`
-display: flex;
-position: relative;
-width: 100%vw;
-text-align: center;
-
-left: 1.5rem;
-
-gap: 0.5rem;
-@media screen and (max-width: 500px){
-  
-  left: 0rem;
-  top: -0.8rem;
-  
-}
-`
 const StyledLi = styled.li`
 border: 2px solid #CCCCCC;
 box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -98,21 +31,6 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
 
-const BioDiv = styled.div`
-position: relative;
-display: flex;
-@media screen and (max-width: 500px){
-  
- font-size: 0.8rem;
- margin-right: 240px;
- margin-top: -2rem;
- min-width: 35vw;
- padding: 0 2rem;
- 
-  
-}
-
-`
 const DeleteButton = styled.button`
   position: absolute;
   top: 0;
@@ -126,17 +44,15 @@ const DeleteButton = styled.button`
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
 
+  .user--bio-container:hover & {
+    opacity: 1;
+  }
+
   ${StyledLi}:hover & {
     opacity: 1;
   }
   
- ${BioDiv}:hover & {
-    opacity: 1;
-  }
 
-  &:hover {
-    background-color: 
-  }
 
   @media screen and (max-width: 500px) {
     opacity: 1;
@@ -148,14 +64,10 @@ const DeleteButton = styled.button`
 `;
 
 const AddBioButton = styled.button`
-position: absolute;
-right: 14.4rem;
-top: 1.4rem;
-padding: 0.5rem 1rem;
 border: none;
 border-radius: 5px;
 color: white;
-font-size: 1rem;
+font-size: rem;
 background: linear-gradient(135deg, #4e54c8, #8f94fb);
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -165,13 +77,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
   transform: translateY(-2px);
 }
 
-@media screen and (max-width: 500px) {
-  position: absolute;
-  top: 0.9rem;
-  right: 0rem;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.9rem;
-}
+
 `
 
 
@@ -220,31 +126,62 @@ export default function ProfilePage() {
 
   return (
     <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
       <main className="profile--page--main">
-        <StyledDiv>
-          <ImagesDiv className="profile--page--images--div">
-            <Image className="user--image" src={user.image} width={160} height={160} alt="profile-pic" style={{ borderRadius: '50%' }}></Image>
-            <h1 className="profile--page--header"> {user.name}</h1>
-            <Image className="doodle--doo--logo" src={DoodleDoLogo} width={160} alt="doodle-doo-logo" />
-          </ImagesDiv>
-          <EmailDivContainer>
-            <EmailDiv className="email--div">
-              <h3 className="user--email--heading">{user.email}</h3>
-              <AddBioButton onClick={() => {
-                setShowModal(true);
-              }}>{user?.bio?.length > 0 ? 'Edit Bio' : 'Add Bio'}</AddBioButton>
-              {showModal &&
-                <BioModal onClose={() => setShowModal(false)}>
-                  Hello from the modal!
-                </BioModal>
-              }
-            </EmailDiv>
-          </EmailDivContainer>
-          <BioDiv>
-            <p className="user--bio">{user.bio}</p>
-            {user?.bio?.length > 0 && <DeleteButton onClick={() => handleDeleteBio(user._id)}>❌</DeleteButton>}
-          </BioDiv>
+        <div className="profile-page-main-container">
+          <div className="personal--content--div">
+            <Image
+              className="user--image"
+              src={user.image}
+              width={160}
+              height={160}
+              alt="profile-pic"
+              style={{ borderRadius: '50%' }}
+            />
 
+            <h1 className="profile--page--header">
+              {user.name}
+            </h1>
+
+            <Image
+              className="doodle--doo--logo"
+              src={DoodleDoLogo}
+              width={160}
+              alt="doodle-doo-logo"
+            />
+
+            <h3 className="user--email--heading">
+              {user.email}
+            </h3>
+
+            <AddBioButton
+              className="bio--button"
+              onClick={() => setShowModal(true)}
+            >
+              {user?.bio?.length > 0 ? 'Edit Bio' : 'Add Bio'}
+            </AddBioButton>
+
+            {user.bio && (
+              <div className="user--bio-container">
+                <p className="user--bio">
+                  {user.bio}
+                </p>
+                <DeleteButton onClick={() => handleDeleteBio(user._id)}>❌</DeleteButton>
+              </div>
+            )}
+
+            {showModal && (
+              <BioModal onClose={() => setShowModal(false)}>
+                Hello from the modal!
+
+                {user?.bio?.length > 0 && (
+                  <DeleteButton onClick={() => handleDeleteBio(user._id)}>❌</DeleteButton>
+                )}
+              </BioModal>
+            )}
+          </div>
           {user.tweets.length > 0 ? (
             user.tweets.map((tweet) => {
               const formattedDate = new Date(tweet.date).toLocaleDateString('en-US', {
@@ -267,7 +204,7 @@ export default function ProfilePage() {
 
           )}
 
-        </StyledDiv>
+        </div>
         <Navbar>
         </Navbar>
       </main >

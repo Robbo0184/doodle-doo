@@ -12,6 +12,7 @@ import DoodleDooLogo from "../../public/assets/hen.png"
 import Image from "next/image";
 
 
+
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,6 +29,7 @@ const StyledDiv = styled.div`
 `;
 
 const StyledLi = styled.li`
+   
    border: 2px solid #CCCCCC;
    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
    border-radius: 20%;
@@ -44,6 +46,7 @@ const StyledLi = styled.li`
 
    @media screen and (max-width: 500px){
         font-size: 0.8rem;
+        min-width: 40vw;
       }
  
 `;
@@ -163,6 +166,7 @@ export default function Home() {
 
   return (
     <>
+      
       <StyledDiv>
         <Image className="main--feed--logo" src={DoodleDooLogo} width={140} alt="logo" />
         {session ? (

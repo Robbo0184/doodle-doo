@@ -1,19 +1,16 @@
+@import url("./profile-page.css");
+@import url("./homepage.css");
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
 .modal-wrapper {
   width: 500px;
   height: 240px;
-}
-
-.user--email--heading{
-  margin-left: 8rem;
-}
-
-.profile--page--header{
-  margin-top: -5rem;
-}
-
-.user--bio{
-  font-family: 'Playpen Sans', sans-serif;
-  margin-left: -35rem;
 }
 
 
@@ -75,75 +72,16 @@
   font-size: 25px;
 }
 
-.profile--page--header {
-  font-family: 'Playpen Sans', sans-serif;
-}
-
-.homepage--header {
-  font-family: 'Playpen Sans', sans-serif;
-}
-
-.auth--button {
-  position: fixed;
-  top: 0;
-  right: 0;
-}
-
-.main--feed--logo {
-  position: fixed;
-  top: 2px;
-  left: 12px;
-}
-
-
-
-.user--email--heading {
-  font-family: 'Playpen Sans', sans-serif;
-}
-
-.sign--in--text {
-  font-family: 'Playpen Sans', sans-serif;
-
-}
-
 
 
 @media screen and (max-width: 500px) {
-
-  
-.main--feed--logo {
-    height: 60px;
-    width: 60px;
-    margin-top: 0.5rem;
-    ;
-  }
-
-  .homepage--header {
-    font-size: 1.2rem;
-  }
-
-  .profile--page--header {
-    margin-top: 0.3rem;
-    font-size: 0.9rem;
-  }
-
-  .email--div {
-    position: absolute;
-    margin-left: 2px;
-  }
 
   .home--icon {
     width: 60px;
     height: 60px;
   }
 
-  .user--email--heading {
-    font-size: 0.7rem;
-    margin-left: 0.2rem;
-    margin-top: 1rem;
-}
-
-  .new--post--icon {
+ .new--post--icon {
     width: 55px;
     height: 50px;
   }
@@ -153,11 +91,7 @@
     height: 60px;
   }
 
-  .user--bio{
-    margin-left: -0rem;
-  }
-
-}
+ }
 
 @media screen and (max-height: 610px) {
   .home--icon {
