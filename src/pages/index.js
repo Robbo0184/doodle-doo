@@ -10,6 +10,7 @@ import CommentModal from "../../components/comment-modal/comment-modal";
 import { useRouter } from "next/router";
 import DoodleDooLogo from "../../public/assets/hen.png"
 import Image from "next/image";
+import Link from "next/link";
 
 
 
@@ -178,7 +179,7 @@ export default function Home() {
                 if (user.tweets && user.tweets.length > 0) {
                   return user.tweets.map((tweet) => (
                     <StyledLi key={tweet._id}>
-                      {tweet.tweet} <br></br> {tweet.userName}<br></br>
+                      {tweet.tweet} <br></br> <Link href={`../users/${user._id}`} style={{ textDecoration: 'none' }}>{tweet.userName}</Link><br></br>
                       <LikeButton
                         className="like--button"
                         isLiked={tweet.likes.includes(userId)}
