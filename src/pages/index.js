@@ -52,6 +52,18 @@ const StyledLi = styled.li`
  
 `;
 
+const StyledLink = styled.a`
+  text-decoration: none;
+  color: #1565c0; 
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #1e88e5;
+  }
+`;
+
+
+
 const StyledButton = styled.button`
    background-color: #3498db; 
    color: #fff; 
@@ -179,7 +191,8 @@ export default function Home() {
                 if (user.tweets && user.tweets.length > 0) {
                   return user.tweets.map((tweet) => (
                     <StyledLi key={tweet._id}>
-                      {tweet.tweet} <br></br> <Link href={`../users/${user._id}`} style={{ textDecoration: 'none' }}>{tweet.userName}</Link><br></br>
+                      {tweet.tweet} <br></br> <StyledLink href={`../users/${user._id}`}>
+                      <span>{tweet.userName}</span></StyledLink><br></br>
                       <LikeButton
                         className="like--button"
                         isLiked={tweet.likes.includes(userId)}
