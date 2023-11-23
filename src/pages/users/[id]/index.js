@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import Navbar from "../../../../components/navbar/navbar";
 import useSWR from "swr";
 import styled from "styled-components";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import DoodleDoLogo from "../../../../public/assets/hen.png"
 import BioModal from "../../../../components/bio-modal/bio-modal";
@@ -81,11 +82,10 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 `
 
 
-
-
-
 export default function ProfilePage() {
   const [showModal, setShowModal] = useState(false);
+  const { data: session } = useSession();
+  console.log("logging session", session);
   const router = useRouter();
   const { id: userId } = router.query
   const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
@@ -155,14 +155,14 @@ export default function ProfilePage() {
             <h3 className="user--email--heading">
               {user.email}
             </h3>
-
+            {session?.user?.userId === userId &&
             <AddBioButton
               className="bio--button"
               onClick={() => setShowModal(true)}
             >
               {user?.bio?.length > 0 ? 'Edit Bio' : 'Add Bio'}
             </AddBioButton>
-
+            }
             {user.bio && (
               <div className="user--bio-container">
                 <p className="user--bio">
@@ -194,7 +194,9 @@ export default function ProfilePage() {
                 <div key={tweet._id}>
                   <StyledLi>
                     {tweet.tweet} - {formattedDate}
+                    {session?.user?.userId === userId &&
                     <DeleteButton onClick={() => handleDeleteTweet(tweet._id)}>❌</DeleteButton>
+                    }
                   </StyledLi>
                 </div>
               );
