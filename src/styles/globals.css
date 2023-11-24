@@ -13,6 +13,19 @@
   height: 240px;
 }
 
+.modal {
+  background: white;
+  height: 100%;
+  width: 100%;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.modal--textarea{
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
 
 @media (max-width: 750px) {
   .modal-wrapper {
@@ -31,24 +44,9 @@
     box-sizing: border-box;
     text-align: center;
   }
-
-  .modal--textarea {
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 15px;
-}
 }
 
 
-.modal {
-  background: white;
-  height: 100%;
-  width: 100%;
-  border-radius: 15px;
-  padding: 15px;
-
-  
-}
 
 .modal-overlay {
   position: fixed;

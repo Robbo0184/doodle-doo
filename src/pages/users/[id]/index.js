@@ -85,22 +85,21 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 export default function ProfilePage() {
   const [showModal, setShowModal] = useState(false);
   const { data: session } = useSession();
-  console.log("logging session", session);
   const router = useRouter();
   const { id: userId } = router.query
   const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
+  
   if (error) {
     return <div>Error loading user data: {error.message} </div>;
   }
-
+  
   if (!user) return;
-
-
-
+  
+  
+  
   async function handleDeleteTweet(tweetId) {
     const response = await fetch(`/api/tweets/${tweetId}`, {
       method: "DELETE",
@@ -111,7 +110,7 @@ export default function ProfilePage() {
     });
     mutate()
   }
-
+  
   async function handleDeleteBio(userId) {
     const response = await fetch('/api/bio', {
       method: "DELETE",
@@ -122,69 +121,74 @@ export default function ProfilePage() {
     });
     mutate()
   }
-
-
+  
+  
   return (
     <>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </Head>
-      <main className="profile--page--main">
-        <div className="profile-page-main-container">
-          <div className="personal--content--div">
-            <Image
-              className="user--image"
-              src={user.image}
-              width={160}
-              height={160}
-              alt="profile-pic"
-              style={{ borderRadius: '50%' }}
-            />
-
-            <h1 className="profile--page--header">
-              {user.name}
-            </h1>
-
-            <Image
-              className="doodle--doo--logo"
-              src={DoodleDoLogo}
-              width={160}
-              alt="doodle-doo-logo"
-            />
-
-            <h3 className="user--email--heading">
-              {user.email}
-            </h3>
-            {session?.user?.userId === userId &&
-            <AddBioButton
-              className="bio--button"
-              onClick={() => setShowModal(true)}
-            >
-              {user?.bio?.length > 0 ? 'Edit Bio' : 'Add Bio'}
-            </AddBioButton>
-            }
-            {user.bio && (
-              <div className="user--bio-container">
-                <p className="user--bio">
-                  {user.bio}
-                </p>
-                <DeleteButton onClick={() => handleDeleteBio(user._id)}>❌</DeleteButton>
-              </div>
-            )}
-
-            {showModal && (
-              <BioModal onClose={() => setShowModal(false)}>
-                Hello from the modal!
-
-                {user?.bio?.length > 0 && (
-                  <DeleteButton onClick={() => handleDeleteBio(user._id)}>❌</DeleteButton>
-                )}
-              </BioModal>
-            )}
+    <Head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </Head>
+    <main className="profile--page--main">
+    <div className="profile-page-main-container">
+    <div className="personal--content--div">
+    <Image
+    className="user--image"
+    src={user.image}
+    width={160}
+    height={160}
+    alt="profile-pic"
+    style={{ borderRadius: '50%' }}
+    />
+    
+    <h1 className="profile--page--header">
+    {user.name}
+    </h1>
+    
+    <Image
+    className="doodle--doo--logo"
+    src={DoodleDoLogo}
+    width={160}
+    alt="doodle-doo-logo"
+    />
+    
+    <h3 className="user--email--heading">
+    {user.email}
+    </h3>
+    {session?.user?.userId === userId &&
+      <AddBioButton
+      className="bio--button"
+      onClick={() => setShowModal(true)}
+      >
+      {user?.bio?.length > 0 ? 'Edit Bio' : 'Add Bio'}
+      </AddBioButton>
+    }
+    {user.bio && (
+      <div className="user--bio-container">
+      <p className="user--bio">
+      {user.bio}
+      </p>
+      {session?.user?.userId === userId &&
+      <DeleteButton onClick={() => handleDeleteBio(user._id)}>❌</DeleteButton>
+      }
+      </div>
+     
+      )}
+      
+      {showModal && (
+        <BioModal onClose={() => setShowModal(false)}>
+        Hello from the modal!
+        
+        {user?.bio?.length > 0 && (
+          <DeleteButton onClick={() => handleDeleteBio(user._id)}>❌</DeleteButton>
+          )}
+          </BioModal>
+          )}
           </div>
           {user.tweets.length > 0 ? (
             user.tweets.map((tweet) => {
-              const formattedDate = new Date(tweet.date).toLocaleDateString('en-US', {
+              console.log('logging userId', userId )
+              console.log("logging session.user.userId", session.user.userId);
+                const formattedDate = new Date(tweet.date).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit'
