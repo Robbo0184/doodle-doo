@@ -76,7 +76,7 @@
 }
 
 .modal form button[type="submit"] {
-  background-color: #ffc107;
+  background-color: #ffa000;
   color: #fff;
   border: none;
   padding: 5px 10px;
@@ -90,7 +90,7 @@
 }
 
 .bio--modal form button[type="submit"] {
-  background-color: #ffc107;
+  background-color: #ffa000;
   color: #fff;
   border: none;
   padding: 5px 10px;
@@ -101,9 +101,13 @@
   margin-top: -0.5rem;
 }
 
-.modal form button,
+
 .bio--modal form button[type="submit"]:hover {
-  background-color: #ffa000;
+  background-color: #ffc107;
+}
+
+.modal form button[type="submit"]:hover {
+  background-color: #ffc107;
 }
 
 @media (max-width: 750px) {
