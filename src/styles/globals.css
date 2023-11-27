@@ -1,7 +1,7 @@
 @import url("./profile-page.css");
 @import url("./homepage.css");
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -14,17 +14,96 @@
 }
 
 .modal {
+  box-shadow: 10px 4px 8px rgba(0, 0, 0, 0.1);
   background: white;
   height: 100%;
   width: 100%;
   border-radius: 15px;
-  padding: 15px;
+  padding: 5px 15px 15px;
 }
 
-.modal--textarea{
+.bio--modal {
+  height: 100%;
+  width: 100%;
+  border-radius: 15px;
+  background: white;
+  padding: 5px 15px 15px;
+
+}
+
+.bio--modal form {
+  position: relative;
+}
+
+.current1 {
+  position: absolute;
+  bottom: 10px;
+  right: 40px;
+}
+
+.maximum {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+
+
+.modal--textarea {
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 15px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 1px;
+  resize: vertical;
+  font-size: 14px;
+}
+
+
+.modal--textarea:focus {
+  border-color: #ffc107;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.modal form .modal-body {
+  flex-grow: 1;
+}
+
+.modal form button[type="submit"] {
+  background-color: #ffc107;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: -0.4rem;
+  align-self: center;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.bio--modal form button[type="submit"] {
+  background-color: #ffc107;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: -0.5rem;
+}
+
+.modal form button,
+.bio--modal form button[type="submit"]:hover {
+  background-color: #ffa000;
 }
 
 @media (max-width: 750px) {
@@ -79,7 +158,7 @@
     height: 60px;
   }
 
- .new--post--icon {
+  .new--post--icon {
     width: 55px;
     height: 50px;
   }
@@ -89,7 +168,7 @@
     height: 60px;
   }
 
- }
+}
 
 @media screen and (max-height: 610px) {
   .home--icon {
