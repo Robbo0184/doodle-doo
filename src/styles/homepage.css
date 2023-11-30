@@ -17,20 +17,29 @@
   .sign--in--text {
     font-family: 'Playpen Sans', sans-serif;
   }
-  
-  @media screen and (max-width: 500px) {
 
   
-    .main--feed--logo {
-        height: 60px;
-        width: 60px;
-        margin-top: 0.5rem;
-        ;
-      }
+  #commentButtonsDiv{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  @media screen and (max-width: 500px) {
     
-      .homepage--header {
-        font-size: 1.2rem;
-      }
+    .main--feed--logo {
+      height: 60px;
+      width: 60px;
+      margin-top: 0.5rem;
+      ;
+    }
+    
+    .homepage--header {
+      font-size: 1.2rem;
+    }
+    
+    #tweetImage{
+        width: 120px;
+    }
     
     
 

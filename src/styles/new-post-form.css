@@ -1,0 +1,58 @@
+#imageUpload {
+    display: none;
+}
+
+#formButtonsAndImagePreviewDiv{
+    display: flex;
+    width: 80vw;
+    justify-content: center;
+    gap: 4rem;
+}
+
+.custom-file-upload {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    cursor: pointer;
+    height: 50px;
+    padding-inline: 1rem;
+    background-color: #ffc107;
+    color: #fff;
+    font-family: 'Playpen Sans', sans-serif;
+    border-radius: 5px;
+    border: none;
+}
+
+
+.custom-file-upload:hover {
+    background-color: #ffa000;
+    border-color: #ffa000;
+}
+
+.image--preview{
+    border-radius: 12px;
+}
+
+@media screen and (max-width: 500px) {
+    .image--preview {
+        width: 110px;
+        height: 110px;
+        border-radius: 12%;
+    }
+    .custom-file-upload{
+        width: 80px;
+        height: 50px;
+        font-size: 0.9rem;
+        padding: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+    }
+    #formButtonsAndImagePreviewDiv{
+        display: flex;
+        gap: 0.5rem;
+        width: 100vw;
+        justify-content: space-evenly;
+    }
+}

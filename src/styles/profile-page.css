@@ -147,4 +147,9 @@
         height: 60px;
         margin-right: -35%;
     }
+
+    #profilePageImage{
+        width: 140px;
+        height: 100px;
+    }
 }
