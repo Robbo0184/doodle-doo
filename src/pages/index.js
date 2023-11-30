@@ -30,13 +30,16 @@ const StyledDiv = styled.div`
 `;
 
 const StyledLi = styled.li`
-   
+   display: flex;
+   flex-direction: column;
+   gap: 0.2rem;
+   align-items: center;
    border: 2px solid #CCCCCC;
    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
    border-radius: 20%;
-   padding: 1.4rem;
+   padding: 1rem;
    margin: 1rem;
-   max-width: 30vw;
+   max-width: 50vw;
    font-family: 'Playpen Sans', sans-serif;
    position: relative;
    list-style-type: none;
@@ -48,6 +51,7 @@ const StyledLi = styled.li`
    @media screen and (max-width: 500px){
         font-size: 0.8rem;
         min-width: 40vw;
+        padding-inline: 2rem;
       }
  
 `;
@@ -89,15 +93,28 @@ const CommentContainer = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  background-color: transparent;
+  background-color: #CCCCCC;
   color: #333;
   border: 1px solid #ccc;
   border-radius: 50%;
   padding: 0.2rem 0.4rem;
   font-size: 0.7rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: opacity 0.5s ease, height 0.5s ease;  
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 
+  ${StyledLi}:hover & {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+
+  }
+  
   &:hover {
     background-color: #ccc;
     color: #fff;
@@ -147,7 +164,7 @@ export default function Home() {
       body: JSON.stringify({ id: userId }),
     });
     mutate()
-    console.log("response:", response);
+
 
   }
 
@@ -162,7 +179,7 @@ export default function Home() {
       body: JSON.stringify({ id: tweetId }),
     });
     mutate()
-    console.log("response:", response);
+
 
   }
 
@@ -179,7 +196,7 @@ export default function Home() {
 
   return (
     <>
-      
+
       <StyledDiv>
         <Image className="main--feed--logo" src={DoodleDooLogo} width={140} alt="logo" />
         {session ? (
@@ -191,8 +208,11 @@ export default function Home() {
                 if (user.tweets && user.tweets.length > 0) {
                   return user.tweets.map((tweet) => (
                     <StyledLi key={tweet._id}>
-                      {tweet.tweet} <br></br> <StyledLink href={`../users/${user._id}`}>
-                      <span>{tweet.userName}</span></StyledLink><br></br>
+                      {tweet.tweet}
+                      {tweet.image && <Image id="tweetImage" src={tweet.image} style={{ borderRadius: '12%' }} width={200} height={150} alt="tweet image" />}
+                      <StyledLink href={`../users/${user._id}`}>
+                        <span>{tweet.userName}</span>
+                      </StyledLink>
                       <LikeButton
                         className="like--button"
                         isLiked={tweet.likes.includes(userId)}
@@ -204,30 +224,32 @@ export default function Home() {
                       ) : (
                         <p>{tweet.likes?.length} likes</p>
                       )}
-                      {tweet.comments.length > 0 && (
-                        <>
-                          <StyledButton onClick={() => toggleComments(tweet._id)}>
-                            {visibleComments[tweet._id] ? "Hide" : "Show"} Comments
-                          </StyledButton>
-                          {visibleComments[tweet._id] &&
-                            tweet.comments.map((comment, index) => (
-                              <CommentContainer key={index}>
-                                {comment.comment} - {comment.userName}
-                                {session?.user?.name === comment.userName && (
-                                  <DeleteButton type="button" onClick={() => handleDeleteComment(comment._id, tweet._id)}> ❌</DeleteButton>
-                                )}
-                              </CommentContainer>
-                            ))}
-                        </>
-                      )}
-                      <StyledButton
-                        onClick={() => {
-                          setShowModal(true);
-                          setTweetId(tweet._id);
-                        }}
-                      >
-                        Add comment
-                      </StyledButton>
+                      <div id="commentButtonsDiv">
+                        {tweet.comments.length > 0 && (
+                          <>
+                            <StyledButton onClick={() => toggleComments(tweet._id)}>
+                              {visibleComments[tweet._id] ? "Hide" : "Show"} Comments
+                            </StyledButton>
+                            </>
+                            )}
+                            <StyledButton
+                            onClick={() => {
+                              setShowModal(true);
+                              setTweetId(tweet._id);
+                            }}
+                            >
+                            Add comment
+                            </StyledButton>
+                            </div>
+                            {visibleComments[tweet._id] &&
+                              tweet.comments.map((comment, index) => (
+                                <CommentContainer key={index}>
+                                  {comment.comment} - {comment.userName}
+                                  {session?.user?.name === comment.userName && (
+                                    <DeleteButton type="button" onClick={() => handleDeleteComment(comment._id, tweet._id)}> ❌</DeleteButton>
+                                  )}
+                                </CommentContainer>
+                              ))}
                       {session?.user?.name === tweet.userName && (
                         <DeleteButton type="button" onClick={() => handleDeleteTweet(tweet._id)}> ❌</DeleteButton>
                       )}

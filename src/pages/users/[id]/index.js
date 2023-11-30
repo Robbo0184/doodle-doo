@@ -14,21 +14,30 @@ const StyledLi = styled.li`
 border: 2px solid #CCCCCC;
 box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 15%;
-  padding: 2rem;
+  padding: 1rem;
   font-family: 'Playpen Sans', sans-serif;
   margin: 1rem;
   max-width: 40vw;
   list-style-type: none;
   position: relative; 
   transition: background-color 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
   &:hover {
     background-color: #f0f0f0; 
   };
 
   @media screen and (max-width: 500px){
-    padding: 0.7rem;
+    padding: 1rem;
     font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: 1rem;
+    max-width: 50vw;
   }
 `;
 
@@ -186,8 +195,6 @@ export default function ProfilePage() {
           </div>
           {user.tweets.length > 0 ? (
             user.tweets.map((tweet) => {
-              console.log('logging userId', userId )
-              console.log("logging session.user.userId", session.user.userId);
                 const formattedDate = new Date(tweet.date).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: '2-digit',
@@ -197,7 +204,9 @@ export default function ProfilePage() {
               return (
                 <div key={tweet._id}>
                   <StyledLi>
-                    {tweet.tweet} - {formattedDate}
+                    {tweet.tweet} 
+                    {tweet.image && <Image id="profilePageImage" src={tweet.image} style={{ borderRadius: '12%' }} width={200} height={150} alt="tweet image" />} 
+                    {" "}- {formattedDate}
                     {session?.user?.userId === userId &&
                     <DeleteButton onClick={() => handleDeleteTweet(tweet._id)}>❌</DeleteButton>
                     }

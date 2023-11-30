@@ -7,7 +7,8 @@ const userSchema = new Schema({
   image: String,
   coverImage: String,
   bio: String,
-  tweets: {type: [Schema.Types.ObjectId], ref: Tweet }
+  tweets: {type: [Schema.Types.ObjectId], ref: Tweet },
+  images: [{type: String}]
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
