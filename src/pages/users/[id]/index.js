@@ -6,8 +6,9 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import DoodleDoLogo from "../../../../public/assets/hen.png"
 import BioModal from "../../../../components/bio-modal/bio-modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
+import AddBioButton from "../../../../components/add-bio-button/add-bio-button";
 
 
 const StyledLi = styled.li`
@@ -73,22 +74,7 @@ const DeleteButton = styled.button`
   }
 `;
 
-const AddBioButton = styled.button`
-border: none;
-border-radius: 5px;
-color: white;
-font-size: rem;
-background: linear-gradient(135deg, #4e54c8, #8f94fb);
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-&:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px);
-}
-
-
-`
 
 
 export default function ProfilePage() {
@@ -119,6 +105,8 @@ export default function ProfilePage() {
     });
     mutate()
   }
+
+
   
   async function handleDeleteBio(userId) {
     const response = await fetch('/api/bio', {
@@ -166,10 +154,12 @@ export default function ProfilePage() {
     {session?.user?.userId === userId &&
       <AddBioButton
       className="bio--button"
-      onClick={() => setShowModal(true)}
-      >
-      {user?.bio?.length > 0 ? 'Edit Bio' : 'Add Bio'}
-      </AddBioButton>
+      onClick={() => {
+        setShowModal(true);
+      }}
+     />
+      
+      
     }
     {user.bio && (
       <div className="user--bio-container">
@@ -215,7 +205,7 @@ export default function ProfilePage() {
               );
             })
           ) : (
-            <p>No doodle doos to display</p>
+            <p id="noDoodleDooMessageProfilePage">No doodle doos to display...</p>
 
           )}
 
