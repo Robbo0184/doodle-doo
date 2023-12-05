@@ -4,123 +4,11 @@ import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import SignIn from "../../components/sign-in/sign-in";
 import AuthButton from "../../components/auth-button/AuthButton";
-import styled from "styled-components";
-import LikeButton from "../../components/like-button/like-button";
 import CommentModal from "../../components/comment-modal/comment-modal";
-import { useRouter } from "next/router";
 import DoodleDooLogo from "../../public/assets/hen.png"
 import Image from "next/image";
-import Link from "next/link";
-
-
-
-const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  align-items: center;
-  min-height: 50vh;
-  line-height: 2rem;
-  padding-top: 0.5rem;
-  gap: 1rem;
-  margin-bottom: 40px;
-  
-
-
-`;
-
-const StyledLi = styled.li`
-   display: flex;
-   flex-direction: column;
-   gap: 0.2rem;
-   align-items: center;
-   border: 2px solid #CCCCCC;
-   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-   border-radius: 20%;
-   padding: 1rem;
-   margin: 1rem;
-   max-width: 50vw;
-   font-family: 'Playpen Sans', sans-serif;
-   position: relative;
-   list-style-type: none;
-   transition: box-shadow 0.3s ease; 
-   &:hover {
-     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
-   }
-
-   @media screen and (max-width: 500px){
-        font-size: 0.8rem;
-        min-width: 40vw;
-        padding-inline: 2rem;
-      }
- 
-`;
-
-const StyledLink = styled.a`
-  text-decoration: none;
-  color: #1565c0; 
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #1e88e5;
-  }
-`;
-
-
-
-const StyledButton = styled.button`
-   background-color: #3498db; 
-   color: #fff; 
-   border: none;
-   border-radius: 0.5rem; 
-   padding: 0.5rem 1rem;
-   margin-right: 1rem; 
-   cursor: pointer;
-   transition: background-color 0.3s ease; 
-
-   &:hover {
-      background-color: #2980b9; 
-   }
-
-   @media screen and (max-width: 500px){
-    font-size: 0.7rem;
-    padding: 0.3rem
-   }
-`;
-
-const CommentContainer = styled.div`
-  margin-bottom: 0.5rem; 
-`;
-
-const DeleteButton = styled.button`
-  background-color: #CCCCCC;
-  color: #333;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  padding: 0.2rem 0.4rem;
-  font-size: 0.7rem;
-  cursor: pointer;
-  transition: opacity 0.5s ease, height 0.5s ease;  
-  position: absolute;
-  top: 0;
-  right: 0;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-
-  ${StyledLi}:hover & {
-    opacity: 1;
-    pointer-events: auto;
-    visibility: visible;
-
-  }
-  
-  &:hover {
-    background-color: #ccc;
-    color: #fff;
-  }
-`;
-
+import TweetContainer from "../../components/tweet-container/tweet-container";
+import HomepageMainDiv from "../../components/homepage-main-div/homepage-main-div";
 
 export default function Home() {
   const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
@@ -128,7 +16,6 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
   const [getTweetId, setTweetId] = useState("")
-
   const toggleComments = (tweetId) => {
     setVisibleComments((prevComments) => ({
       ...prevComments,
@@ -137,7 +24,6 @@ export default function Home() {
   };
 
   const userId = session?.user?.userId;
-  const userName = session?.user?.name;
 
   async function handleToggleLikes(tweetId) {
     const response = await fetch(`/api/tweets/${tweetId}`, {
@@ -153,8 +39,6 @@ export default function Home() {
     }
   }
 
-
-
   async function handleDeleteTweet(tweetId) {
     const response = await fetch(`/api/tweets/${tweetId}`, {
       method: "DELETE",
@@ -164,10 +48,12 @@ export default function Home() {
       body: JSON.stringify({ id: userId }),
     });
     mutate()
-
-
   }
 
+  const handleAddCommentClick = (tweetId) => {
+    setShowModal(true);
+    setTweetId(tweetId);
+  };
 
   async function handleDeleteComment(commentId, tweetId) {
 
@@ -179,8 +65,6 @@ export default function Home() {
       body: JSON.stringify({ id: tweetId }),
     });
     mutate()
-
-
   }
 
   if (isLoading) {
@@ -191,69 +75,31 @@ export default function Home() {
     return <div>Error loading users data</div>;
   }
 
-
-
-
   return (
     <>
 
-      <StyledDiv>
+      <HomepageMainDiv>
         <Image className="main--feed--logo" src={DoodleDooLogo} width={140} alt="logo" />
         {session ? (
           <>
             <h1 className="homepage--header">Whats Happening</h1>
-
             <ul>
               {users.map((user) => {
-                if (user.tweets && user.tweets.length > 0) {
+                if (user.tweets.length > 0) {
                   return user.tweets.map((tweet) => (
-                    <StyledLi key={tweet._id}>
-                      {tweet.tweet}
-                      {tweet.image && <Image id="tweetImage" src={tweet.image} style={{ borderRadius: '12%' }} width={200} height={150} alt="tweet image" />}
-                      <StyledLink href={`../users/${user._id}`}>
-                        <span>{tweet.userName}</span>
-                      </StyledLink>
-                      <LikeButton
-                        className="like--button"
-                        isLiked={tweet.likes.includes(userId)}
-                        tweetId={tweet._id}
-                        handleToggleLikes={handleToggleLikes}
-                      />
-                      {tweet.likes?.length === 1 ? (
-                        <p>1 like</p>
-                      ) : (
-                        <p>{tweet.likes?.length} likes</p>
-                      )}
-                      <div id="commentButtonsDiv">
-                        {tweet.comments.length > 0 && (
-                          <>
-                            <StyledButton onClick={() => toggleComments(tweet._id)}>
-                              {visibleComments[tweet._id] ? "Hide" : "Show"} Comments
-                            </StyledButton>
-                            </>
-                            )}
-                            <StyledButton
-                            onClick={() => {
-                              setShowModal(true);
-                              setTweetId(tweet._id);
-                            }}
-                            >
-                            Add comment
-                            </StyledButton>
-                            </div>
-                            {visibleComments[tweet._id] &&
-                              tweet.comments.map((comment, index) => (
-                                <CommentContainer key={index}>
-                                  {comment.comment} - {comment.userName}
-                                  {session?.user?.name === comment.userName && (
-                                    <DeleteButton type="button" onClick={() => handleDeleteComment(comment._id, tweet._id)}> ❌</DeleteButton>
-                                  )}
-                                </CommentContainer>
-                              ))}
-                      {session?.user?.name === tweet.userName && (
-                        <DeleteButton type="button" onClick={() => handleDeleteTweet(tweet._id)}> ❌</DeleteButton>
-                      )}
-                    </StyledLi>
+                    <TweetContainer
+                      key={tweet._id}
+                      tweet={tweet}
+                      user={user}
+                      userId={userId}
+                      handleToggleLikes={handleToggleLikes}
+                      handleAddCommentClick={handleAddCommentClick}
+                      toggleComments={toggleComments}
+                      visibleComments={visibleComments}
+                      handleDeleteComment={handleDeleteComment}
+                      handleDeleteTweet={handleDeleteTweet}
+                      session={session}
+                    />
                   ));
                 }
               })}
@@ -268,7 +114,7 @@ export default function Home() {
         ) : (
           <SignIn />
         )}
-      </StyledDiv>
+      </HomepageMainDiv>
       <AuthButton />
       {session && <Navbar />}
     </>
