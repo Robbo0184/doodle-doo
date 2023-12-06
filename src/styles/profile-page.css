@@ -24,19 +24,6 @@
 
     grid-template-columns: 200px auto 200px;
     grid-template-rows: auto auto auto;
-
-
-
-}
-
-.user--bio-container {
-    display: inline-block;
-    grid-area: bio;
-    position: relative;
-    margin-top: 15%;
-    margin-left: -60%;
-    padding-right: 30%;
-
 }
 
 #noDoodleDooMessageProfilePage{
