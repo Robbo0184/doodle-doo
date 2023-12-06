@@ -12,6 +12,13 @@ position: relative;
 margin-top: 15%;
 margin-left: -60%;
 padding-right: 30%;
+
+@media screen and (max-width: 500px){
+    margin-left: -10%;
+    margin-right: 20%;
+    margin-top: -1%;
+    display: flex;
+}
 `
 
 export default function UserBioContainer({user, handleDeleteBio}) {

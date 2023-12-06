@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import Navbar from "../../../../components/navbar/navbar";
 import useSWR from "swr";
-import styled from "styled-components";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import DoodleDoLogo from "../../../../public/assets/hen.png"
@@ -9,41 +8,8 @@ import BioModal from "../../../../components/bio-modal/bio-modal";
 import { useState } from "react";
 import Head from "next/head";
 import AddBioButton from "../../../../components/add-bio-button/add-bio-button";
-import DeleteButton from "../../../../components/profile-page-delete-button/profile-page-delete-buton";
 import UserBioContainer from "../../../../components/user-bio-container/user-bio-container";
-
-const StyledLi = styled.li`
-border: 2px solid #CCCCCC;
-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 15%;
-  padding: 1rem;
-  font-family: 'Playpen Sans', sans-serif;
-  margin: 1rem;
-  max-width: 40vw;
-  list-style-type: none;
-  position: relative; 
-  transition: background-color 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  &:hover {
-    background-color: #f0f0f0; 
-  };
-
-  @media screen and (max-width: 500px){
-    padding: 1rem;
-    font-size: 0.8rem;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-    gap: 1rem;
-    max-width: 50vw;
-  }
-`;
-
-
+import ProfilePageTweetContainer from "../../../../components/profile-page-tweet-container/profile-page-tweet-container";
 
 
 export default function ProfilePage() {
@@ -63,8 +29,6 @@ export default function ProfilePage() {
 
   if (!user) return;
 
-
-
   async function handleDeleteTweet(tweetId) {
     const response = await fetch(`/api/tweets/${tweetId}`, {
       method: "DELETE",
@@ -76,8 +40,6 @@ export default function ProfilePage() {
     mutate()
   }
 
-
-
   async function handleDeleteBio(userId) {
     const response = await fetch('/api/bio', {
       method: "DELETE",
@@ -88,7 +50,6 @@ export default function ProfilePage() {
     });
     mutate()
   }
-
 
   return (
     <>
@@ -128,44 +89,16 @@ export default function ProfilePage() {
                   setShowModal(true);
                 }}
               />
-              }
+            }
             {user.bio && (
-              <UserBioContainer user={user} handleDeleteBio={handleDeleteBio}/>
-
+              <UserBioContainer user={user} handleDeleteBio={handleDeleteBio} />
             )}
             {showModal && (
               <BioModal onClose={() => setShowModal(false)}>
               </BioModal>
             )}
           </div>
-          {user.tweets.length > 0 ? (
-            user.tweets.map((tweet) => {
-              const formattedDate = new Date(tweet.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-              });
-
-              return (
-                <div key={tweet._id}>
-                  <StyledLi
-                    onMouseEnter={() => setShowDeleteButton(true)}
-                    onMouseLeave={() => setShowDeleteButton(false)}>
-                    {tweet.tweet}
-                    {tweet.image && <Image id="profilePageImage" src={tweet.image} style={{ borderRadius: '12%' }} width={200} height={150} alt="tweet image" />}
-                    {" "}- {formattedDate}
-                    {session?.user?.userId === userId &&
-                      <DeleteButton showonhover={showDeleteButton} handleDeleteTweet={() => handleDeleteTweet(tweet._id)} tweetId={tweet._id}>❌</DeleteButton>
-                    }
-                  </StyledLi>
-                </div>
-              );
-            })
-          ) : (
-            <p id="noDoodleDooMessageProfilePage">No doodle doos to display...</p>
-
-          )}
-
+          <ProfilePageTweetContainer handleDeleteTweet={handleDeleteTweet} tweets={user.tweets} />
         </div>
         <Navbar>
         </Navbar>
