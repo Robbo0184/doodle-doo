@@ -24,19 +24,11 @@
 
     grid-template-columns: 200px auto 200px;
     grid-template-rows: auto auto auto;
-
-
-
 }
 
-.user--bio-container {
-    display: inline-block;
-    grid-area: bio;
-    position: relative;
-    margin-top: 15%;
-    margin-left: -60%;
-    padding-right: 30%;
-
+#noDoodleDooMessageProfilePage{
+    font-family: 'Playpen Sans', sans-serif;
+    font-size: 1.1rem;
 }
 
 .user--email--heading {
@@ -117,13 +109,7 @@
         margin-right: -15%;
     }
 
-    .user--bio-container {
-        margin-left: -10%;
-        margin-right: 20%;
-        margin-top: -1%;
-        display: flex;
-    }
-
+ 
 
     .user--bio {
         font-size: 0.7rem;
@@ -131,9 +117,9 @@
     }
 
     .user--email--heading {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         margin-top: 5%;
-        margin-left: -40%;
+        margin-left: -38%;
     }
 
     .user--image {

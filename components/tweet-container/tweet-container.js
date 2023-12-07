@@ -27,17 +27,12 @@ transition: box-shadow 0.3s ease;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-
-
 @media screen and (max-width: 500px){
      font-size: 0.8rem;
      min-width: 40vw;
      padding-inline: 2rem;
    }
 `;
-
-
-
 
 export default function TweetContainer({
   tweet,
