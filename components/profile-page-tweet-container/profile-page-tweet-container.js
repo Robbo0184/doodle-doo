@@ -34,7 +34,7 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
     align-items: center;
     gap: 1rem;
-    max-width: 50vw;
+    max-width: 65vw;
   }
 `;
 
