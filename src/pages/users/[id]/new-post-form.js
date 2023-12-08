@@ -3,62 +3,8 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import DoodleDooLogo from "../../../../public/assets/hen.png"
 import Navbar from "../../../../components/navbar/navbar";
-import styled from "styled-components";
 import { useState } from "react";
-
-const ImageDiv = styled.div`
-   display: flex;
-   justify-content: flex-end;
-`
-
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 2rem;
-  text-align: center;  
-  
-`;
-
-const TextArea = styled.textarea`
-  width: 60%;
-  min-height: 300px;
-  margin-bottom: 20px;
-  padding: 10px;
-  font-size: 16px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  resize: vertical;
-`;
-
-const SubmitButton = styled.button`
-  background-color: #4caf50;
-  color: white;
-  display: flex;
-  text-align: center;
-  align-items: center;
-  height: 50px;
-  padding-inline: 2rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  font-family: 'Playpen Sans', sans-serif;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #45a049;
-  }
-
-  @media screen and (max-width: 500px){
-        width: 80px;
-        height: 50px;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-  }
-`;
+import SubmitButton from "../../../../components/new-post-form-submitbutton/new-post-form-submitbutton";
 
 export default function NewPostForm() {
     const [imageSrc, setImageSrc] = useState();
@@ -125,8 +71,6 @@ export default function NewPostForm() {
 
             setTweet('');
 
-
-
             const response = await fetch(`/api/users/${userId}`, {
                 method: "POST",
                 headers: {
@@ -148,17 +92,18 @@ export default function NewPostForm() {
 
     return (
         <>
-            <ImageDiv>
+            <div id="imageDiv">
                 <Image src={DoodleDooLogo} width={140} alt="logo"></Image>
-            </ImageDiv>
-            <FormContainer>
+            </div>
+            <div id="formContainer">
                 <form method="post" onSubmit={handleSubmitTweet}>
-                    <TextArea
+                    <textarea
+                        id="newPostFormTextArea"
                         name="tweet"
                         value={tweet}
                         placeholder="whats on your mind?"
                         onChange={(e) => setTweet(e.target.value)}
-                    ></TextArea>
+                    ></textarea>
                     <div id="formButtonsAndImagePreviewDiv">
                         <label htmlFor="imageUpload" className="custom-file-upload">
                             Choose Image
@@ -175,7 +120,7 @@ export default function NewPostForm() {
                         <SubmitButton type="submit">Submit</SubmitButton>
                     </div>
                 </form>
-            </FormContainer>
+            </div>
             <Navbar />
 
         </>
