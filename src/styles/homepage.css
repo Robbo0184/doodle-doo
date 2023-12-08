@@ -1,48 +1,57 @@
 .homepage--header {
-    font-family: 'Playpen Sans', sans-serif;
+  font-family: 'Playpen Sans', sans-serif;
+}
+
+.auth--button {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.main--feed--logo {
+  position: fixed;
+  top: 2px;
+  left: 12px;
+}
+
+.sign--in--text {
+  font-family: 'Playpen Sans', sans-serif;
+}
+
+
+#commentButtonsDiv {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 640px) {
+  #tweetImage {
+    height: 220px;
+    width: 300px;
   }
-  
-  .auth--button {
-    position: fixed;
-    top: 0;
-    right: 0;
-  }
-  
+
+}
+
+@media screen and (max-width: 500px) {
+
   .main--feed--logo {
-    position: fixed;
-    top: 2px;
-    left: 12px;
-  }
-  
-  .sign--in--text {
-    font-family: 'Playpen Sans', sans-serif;
+    height: 60px;
+    width: 60px;
+    margin-top: 0.5rem;
+    ;
   }
 
-  
-  #commentButtonsDiv{
-    display: flex;
-    justify-content: space-between;
+  .homepage--header {
+    font-size: 1.2rem;
   }
-  
-  @media screen and (max-width: 500px) {
-    
-    .main--feed--logo {
-      height: 60px;
-      width: 60px;
-      margin-top: 0.5rem;
-      ;
-    }
-    
-    .homepage--header {
-      font-size: 1.2rem;
-    }
-    
-    #tweetImage{
-        width: 120px;
-    }
-    
-    
 
-      
-    
-    }
+  #tweetImage {
+    height: 200px;
+    width: 200px;
+  }
+
+
+
+
+
+}

@@ -8,7 +8,7 @@ const StyledButton = styled.button`
   color: #555; 
   border: none;
   border-radius: 50%;
-  padding: 0.4rem 0.8rem;
+  padding: 0.2rem 0.4rem;
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
