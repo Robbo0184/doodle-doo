@@ -16,9 +16,9 @@ align-items: center;
 border: 2px solid #CCCCCC;
 box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 border-radius: 20%;
-padding: 1rem;
+padding: 1.5rem 2rem 2rem;
 margin: 1rem;
-max-width: 50vw;
+max-width: 65vw;
 font-family: 'Playpen Sans', sans-serif;
 position: relative;
 list-style-type: none;
@@ -55,7 +55,7 @@ export default function TweetContainer({
       onMouseLeave={() => setShowDeleteButton(false)}>
       {tweet.tweet}
       {tweet.image && (
-        <Image id="tweetImage" src={tweet.image} style={{ borderRadius: '12%' }} width={200} height={150} alt="tweet image" />
+        <Image id="tweetImage" src={tweet.image} style={{ borderRadius: '12%' }} width={400} height={300} alt="tweet image" />
       )}
       <ProfilePageLink user={user} tweet={tweet} />
       <LikeButton

@@ -11,7 +11,7 @@ const StyledLi = styled.li`
 border: 2px solid #CCCCCC;
 box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 15%;
-  padding: 1rem;
+  padding: 1.5rem;
   font-family: 'Playpen Sans', sans-serif;
   margin: 1rem;
   max-width: 40vw;
@@ -67,8 +67,8 @@ export default function ProfilePageTweetContainer({ tweets, handleDeleteTweet })
                       id="profilePageImage"
                       src={tweet.image}
                       style={{ borderRadius: '12%' }}
-                      width={200}
-                      height={150}
+                      width={400}
+                      height={250}
                       alt="tweet image"
                     />
                   )}

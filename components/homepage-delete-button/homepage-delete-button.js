@@ -6,13 +6,13 @@ const StyledButton = styled.button`
   color: #333;
   border: 1px solid #ccc;
   border-radius: 50%;
-  padding: 0.2rem 0.4rem;
+  padding: 0.3rem 0.6rem;
   font-size: 0.7rem;
   cursor: pointer;
   transition: opacity 0.5s ease, height 0.5s ease;  
   position: absolute;
   top: 0;
-  right: 0;
+  right: 20px;
   opacity: 0;
   pointer-events: none;
   
@@ -27,6 +27,9 @@ const StyledButton = styled.button`
       visibility: visible;
     }
   
+    @media screen and (max-width: 500px){
+      right: 10px;
+    }
  
  
 `;
