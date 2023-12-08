@@ -7,6 +7,7 @@ import ToggleCommentsButton from '../toggle-comments-button/toggle-comments-butt
 import AddCommentButton from '../add-comment-button/add-comment-button';
 import CommentContainer from '../comment-container/comment-container';
 import DeleteButton from '../homepage-delete-button/homepage-delete-button';
+import Link from 'next/link';
 
 const StyledLi = styled.li`
 display: flex;
@@ -55,7 +56,9 @@ export default function TweetContainer({
       onMouseLeave={() => setShowDeleteButton(false)}>
       {tweet.tweet}
       {tweet.image && (
-        <Image id="tweetImage" src={tweet.image} style={{ borderRadius: '12%' }} width={400} height={300} alt="tweet image" />
+        <Link href={`../users/${user._id}/tweet/${tweet._id}`}>
+          <Image id="tweetImage" src={tweet.image} style={{ borderRadius: '12%' }} width={400} height={300} alt="tweet image" />
+        </Link>
       )}
       <ProfilePageLink user={user} tweet={tweet} />
       <LikeButton
