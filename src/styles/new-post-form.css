@@ -2,11 +2,35 @@
     display: none;
 }
 
-#formButtonsAndImagePreviewDiv{
+#formButtonsAndImagePreviewDiv {
     display: flex;
     width: 80vw;
     justify-content: center;
     gap: 4rem;
+}
+
+#formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+#newPostFormTextArea {
+    width: 60%;
+    min-height: 300px;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+#imageDiv {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .custom-file-upload {
@@ -29,7 +53,7 @@
     border-color: #ffa000;
 }
 
-.image--preview{
+.image--preview {
     border-radius: 12px;
 }
 
@@ -39,7 +63,8 @@
         height: 110px;
         border-radius: 12%;
     }
-    .custom-file-upload{
+
+    .custom-file-upload {
         width: 80px;
         height: 50px;
         font-size: 0.9rem;
@@ -47,9 +72,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        
+
     }
-    #formButtonsAndImagePreviewDiv{
+
+    #formButtonsAndImagePreviewDiv {
         display: flex;
         gap: 0.5rem;
         width: 100vw;
