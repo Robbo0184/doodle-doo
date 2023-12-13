@@ -25,7 +25,17 @@ export default function Home() {
 
   const userId = session?.user?.userId;
 
-  async function handleToggleLikes(tweetId) {
+  let allTweets = [];
+  if (users) {
+    allTweets = users.reduce((tweets, user) => {
+      tweets.push(...user.tweets);
+      return tweets;
+    }, []);
+
+    allTweets.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+
+async function handleToggleLikes(tweetId) {
     const response = await fetch(`/api/tweets/${tweetId}`, {
       method: "PATCH",
       headers: {
@@ -75,7 +85,7 @@ export default function Home() {
     return <div>Error loading users data</div>;
   }
 
-  return (
+return (
     <>
 
       <HomepageMainDiv>
@@ -84,25 +94,24 @@ export default function Home() {
           <>
             <h1 className="homepage--header">Whats Happening</h1>
             <ul>
-              {users.map((user) => {
-                if (user.tweets.length > 0) {
-                  return user.tweets.map((tweet) => (
-                    <TweetContainer
-                      key={tweet._id}
-                      tweet={tweet}
-                      user={user}
-                      userId={userId}
-                      handleToggleLikes={handleToggleLikes}
-                      handleAddCommentClick={handleAddCommentClick}
-                      toggleComments={toggleComments}
-                      visibleComments={visibleComments}
-                      handleDeleteComment={handleDeleteComment}
-                      handleDeleteTweet={handleDeleteTweet}
-                      session={session}
-                    />
-                  ));
-                }
-              })}
+              {allTweets.map((tweet) => (
+                <TweetContainer
+                  key={tweet._id}
+                  tweet={tweet}
+                  user={users.find((user) =>
+                    user.tweets.some((t) => t._id === tweet._id)
+                  )} 
+                  userId={userId}
+                  handleToggleLikes={handleToggleLikes}
+                  handleAddCommentClick={handleAddCommentClick}
+                  toggleComments={toggleComments}
+                  visibleComments={visibleComments}
+                  handleDeleteComment={handleDeleteComment}
+                  handleDeleteTweet={handleDeleteTweet}
+                  session={session}
+                />
+              ))}
+
               {showModal && (
                 <CommentModal
                   tweetId={getTweetId}

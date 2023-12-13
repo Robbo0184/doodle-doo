@@ -47,11 +47,14 @@
 
   #tweetImage {
     height: 200px;
-    width: 200px;
+    width: 160px;
   }
+}
 
-
-
-
+@media screen and (max-width: 350px){
+  #tweetImage {
+    height: 100px;
+    width: 60px;
+  }
 
 }
