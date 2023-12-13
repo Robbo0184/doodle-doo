@@ -74,6 +74,20 @@
 
 }
 
+@media screen and (max-width: 1150px){
+    #profilePageImage{
+        width: 250px;
+        height: 150px;
+    }
+}
+
+@media screen and (max-width: 750px){
+    #profilePageImage{
+        width: 150px;
+        height: 150px;
+    }
+}
+
 
 @media screen and (max-width: 500px) {
 

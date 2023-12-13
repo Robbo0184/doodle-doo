@@ -44,16 +44,22 @@ export default function ProfilePageTweetContainer({ tweets, handleDeleteTweet })
     const router = useRouter();
     const { id: userId } = router.query;
     const { data: user, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
-  
+    
+    let sortedTweets = [];
+
+    if (user) {
+      sortedTweets = user.tweets.sort((a,b) => new Date(b.date) - new Date(a.date))
+    }
     return (
       <>
-        {user.tweets.length > 0 ? (
-          user.tweets.map((tweet) => {
-            const formattedDate = new Date(tweet.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-            });
+        
+      {sortedTweets.length > 0 ? (
+        sortedTweets.map((tweet) => {
+          const formattedDate = new Date(tweet.date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          });
   
             return (
               <div key={tweet._id}>

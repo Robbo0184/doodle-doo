@@ -30,7 +30,7 @@ transition: box-shadow 0.3s ease;
 
 @media screen and (max-width: 500px){
      font-size: 0.8rem;
-     min-width: 40vw;
+     width: 55vw;
      padding-inline: 2rem;
    }
 `;
@@ -39,7 +39,6 @@ export default function TweetContainer({
   tweet,
   user,
   userId,
-  tweetId,
   handleToggleLikes,
   handleAddCommentClick,
   toggleComments,
