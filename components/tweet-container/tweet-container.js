@@ -19,7 +19,7 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 border-radius: 20%;
 padding: 1.5rem 2rem 2rem;
 margin: 1rem;
-max-width: 65vw;
+width: 35vw;
 font-family: 'Playpen Sans', sans-serif;
 position: relative;
 list-style-type: none;
@@ -49,16 +49,19 @@ export default function TweetContainer({
 }) {
   const [showDeleteButton, setShowDeleteButton] = useState(false);
 
+  const tweetElementId = `tweet-${tweet._id}`;
+
   return (
     <StyledLi key={tweet._id}
+      id={tweetElementId}
       onMouseEnter={() => setShowDeleteButton(true)}
       onMouseLeave={() => setShowDeleteButton(false)}>
-      {tweet.tweet}
-      {tweet.image && (
-        <Link href={`../users/${user._id}/tweet/${tweet._id}`}>
+      <Link id='mainFeedTweetLink' href={`../users/${user._id}/tweet/${tweet._id}`}>
+        {tweet.tweet}
+        {tweet.image && (
           <Image id="tweetImage" src={tweet.image} style={{ borderRadius: '12%' }} width={400} height={300} alt="tweet image" />
-        </Link>
-      )}
+        )}
+      </Link>
       <ProfilePageLink user={user} tweet={tweet} />
       <LikeButton
         className="like--button"

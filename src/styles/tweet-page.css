@@ -1,0 +1,18 @@
+#tweetPageMain{
+    position: relative;
+}
+
+#tweetPageHomepageLinkContainer{
+    position: absolute;
+    left: 1%;
+}
+
+#tweetPageHomepageLink{
+    text-decoration: none;
+}
+
+#tweetPageImageContainer{
+    justify-content: center;
+    display: flex;
+    margin-top: 1rem;
+}

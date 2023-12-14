@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../components/navbar/navbar";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
@@ -9,10 +9,13 @@ import DoodleDooLogo from "../../public/assets/hen.png"
 import Image from "next/image";
 import TweetContainer from "../../components/tweet-container/tweet-container";
 import HomepageMainDiv from "../../components/homepage-main-div/homepage-main-div";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
   const { data: session } = useSession();
+  const router = useRouter();
+  const { tweetId } = router.query;
   const [showModal, setShowModal] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
   const [getTweetId, setTweetId] = useState("")
@@ -34,6 +37,16 @@ export default function Home() {
 
     allTweets.sort((a, b) => new Date(b.date) - new Date(a.date));
   }
+
+  useEffect(() => {
+    const currentTweetId = sessionStorage.getItem('currentTweetId');
+    const tweetElement = document.getElementById(`tweet-${currentTweetId}`);
+    if (tweetElement) {
+      tweetElement.scrollIntoView({ behavior: 'instant' });
+      
+    }
+  }, []);
+
 
 async function handleToggleLikes(tweetId) {
     const response = await fetch(`/api/tweets/${tweetId}`, {

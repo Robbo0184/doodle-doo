@@ -1,6 +1,7 @@
 @import url("./profile-page.css");
 @import url("./homepage.css");
 @import url("./new-post-form.css");
+@import url("./tweet-page.css");
 
 * {
   margin: 0;
