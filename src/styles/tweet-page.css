@@ -1,18 +1,56 @@
-#tweetPageMain{
+#tweetPageMain {
     position: relative;
 }
 
-#tweetPageHomepageLinkContainer{
-    position: absolute;
-    left: 1%;
+#tweetPageTweetContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.5rem;
 }
 
-#tweetPageHomepageLink{
+#tweetPageLink {
     text-decoration: none;
+    font-family: 'Playpen Sans', sans-serif;
+    position: absolute;
+    left: 0.4rem;
+    top: 0.2rem;
+    ;
 }
 
-#tweetPageImageContainer{
+#tweetPageImageContainer {
     justify-content: center;
     display: flex;
     margin-top: 1rem;
+}
+
+.tweetPageTweetTextContainer {
+    margin-top: 1rem;
+}
+
+.center-tweet-container {
+    margin-top: 40vh;
+    min-width: 40vw;
+    text-align: center;
+    border: 0.5px solid ;
+    border-radius: 20px;
+    padding: 2rem;
+}
+
+#tweetPageTweetText {
+    font-family: 'Playpen Sans', sans-serif;
+}
+
+@media screen and (max-width: 500px) {
+    #tweetPageImage {
+        width: 80vw;
+        height: 50vh;
+        border-radius: 12%;
+    }
+
+    #tweetPageImageContainer {
+        justify-content: center;
+        display: flex;
+        margin-top: 1.3rem;
+    }
 }

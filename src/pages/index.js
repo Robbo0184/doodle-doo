@@ -9,13 +9,11 @@ import DoodleDooLogo from "../../public/assets/hen.png"
 import Image from "next/image";
 import TweetContainer from "../../components/tweet-container/tweet-container";
 import HomepageMainDiv from "../../components/homepage-main-div/homepage-main-div";
-import { useRouter } from "next/router";
+import { handleToggleLikes } from "@/utils/handleToggleLikes";
 
 export default function Home() {
   const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
   const { data: session } = useSession();
-  const router = useRouter();
-  const { tweetId } = router.query;
   const [showModal, setShowModal] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
   const [getTweetId, setTweetId] = useState("")
@@ -26,9 +24,12 @@ export default function Home() {
     }));
   };
 
+ 
+
   const userId = session?.user?.userId;
 
   let allTweets = [];
+
   if (users) {
     allTweets = users.reduce((tweets, user) => {
       tweets.push(...user.tweets);
@@ -43,24 +44,10 @@ export default function Home() {
     const tweetElement = document.getElementById(`tweet-${currentTweetId}`);
     if (tweetElement) {
       tweetElement.scrollIntoView({ behavior: 'instant' });
-      
+
     }
   }, []);
 
-
-async function handleToggleLikes(tweetId) {
-    const response = await fetch(`/api/tweets/${tweetId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userId),
-    });
-    if (response.ok) {
-      await response.json();
-      mutate();
-    }
-  }
 
   async function handleDeleteTweet(tweetId) {
     const response = await fetch(`/api/tweets/${tweetId}`, {
@@ -91,14 +78,14 @@ async function handleToggleLikes(tweetId) {
   }
 
   if (isLoading) {
-    return <div>...Loading</div>;
+    return <div id="isLoadingText">...Loading</div>;
   }
 
   if (isError || users === undefined) {
     return <div>Error loading users data</div>;
   }
 
-return (
+  return (
     <>
 
       <HomepageMainDiv>
@@ -113,7 +100,7 @@ return (
                   tweet={tweet}
                   user={users.find((user) =>
                     user.tweets.some((t) => t._id === tweet._id)
-                  )} 
+                  )}
                   userId={userId}
                   handleToggleLikes={handleToggleLikes}
                   handleAddCommentClick={handleAddCommentClick}

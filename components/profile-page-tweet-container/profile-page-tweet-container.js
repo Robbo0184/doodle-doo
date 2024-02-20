@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 const StyledLi = styled.li`
 border: 2px solid #CCCCCC;
 box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 15%;
+  border-radius: 15px;
   padding: 1.5rem;
   font-family: 'Playpen Sans', sans-serif;
   margin: 1rem;
@@ -72,7 +72,7 @@ export default function ProfilePageTweetContainer({ tweets, handleDeleteTweet })
                     <Image
                       id="profilePageImage"
                       src={tweet.image}
-                      style={{ borderRadius: '12%' }}
+                      style={{ borderRadius: '15px' }}
                       width={400}
                       height={250}
                       alt="tweet image"

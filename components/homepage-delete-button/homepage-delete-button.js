@@ -47,7 +47,7 @@ export default function DeleteButton({ showonhover, handleDeleteTweet, handleDel
   }
   return (
     <>
-      <StyledButton type="button" showonhover={showonhover} onClick={handleDeleteClick}> ❌</StyledButton>
+      <StyledButton type="button" showonhover={showonhover.toString()} onClick={handleDeleteClick}> ❌</StyledButton>
     </>
   )
 }

@@ -16,7 +16,7 @@ gap: 0.2rem;
 align-items: center;
 border: 2px solid #CCCCCC;
 box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-border-radius: 20%;
+border-radius: 20px;
 padding: 1.5rem 2rem 2rem;
 margin: 1rem;
 width: 35vw;
@@ -57,9 +57,9 @@ export default function TweetContainer({
       onMouseEnter={() => setShowDeleteButton(true)}
       onMouseLeave={() => setShowDeleteButton(false)}>
       <Link id='mainFeedTweetLink' href={`../users/${user._id}/tweet/${tweet._id}`}>
-        {tweet.tweet}
+        <p id='homeFeedTweetText'>{tweet.tweet}</p>
         {tweet.image && (
-          <Image id="tweetImage" src={tweet.image} style={{ borderRadius: '12%' }} width={400} height={300} alt="tweet image" />
+          <Image id="tweetImage" src={tweet.image} style={{ borderRadius: '15px' }} width={400} height={300} alt="tweet image" />
         )}
       </Link>
       <ProfilePageLink user={user} tweet={tweet} />
@@ -67,7 +67,7 @@ export default function TweetContainer({
         className="like--button"
         isLiked={tweet.likes.includes(userId)}
         tweetId={tweet._id}
-        handleToggleLikes={() => handleToggleLikes(tweet._id)}
+        handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
       />
       {tweet.likes?.length === 1 ? (
         <p>1 like</p>
