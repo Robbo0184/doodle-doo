@@ -26,6 +26,8 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #f0f0f0; 
   };
 
+  
+
   @media screen and (max-width: 500px){
     padding: 1rem;
     font-size: 0.8rem;
@@ -82,6 +84,7 @@ export default function ProfilePageTweetContainer({ tweets, handleDeleteTweet })
                   {session?.user?.userId === userId && (
                     <DeleteButton
                       showonhover={showDeleteButton}
+                      className="delete-button"
                       handleDeleteTweet={() => handleDeleteTweet(tweet._id)}
                       tweetId={tweet._id}
                     >

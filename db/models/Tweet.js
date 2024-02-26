@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import User from "./User";
 import Comment from "./Comment";
 
 const { Schema } = mongoose;

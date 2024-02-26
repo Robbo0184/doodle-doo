@@ -1,5 +1,7 @@
 #tweetPageMain {
     position: relative;
+    font-family: 'Playpen Sans', sans-serif;
+   
 }
 
 #tweetPageTweetContainer {
@@ -7,15 +9,19 @@
     flex-direction: column;
     align-items: center;
     margin-top: 0.5rem;
+    gap: 1rem;
 }
 
 #tweetPageLink {
     text-decoration: none;
-    font-family: 'Playpen Sans', sans-serif;
     position: absolute;
     left: 0.4rem;
     top: 0.2rem;
-    ;
+    color: black;
+}
+
+#tweetPageLink:visited {
+    color: black; /* Keep the color the same after being clicked */
 }
 
 #tweetPageImageContainer {
@@ -37,9 +43,6 @@
     padding: 2rem;
 }
 
-#tweetPageTweetText {
-    font-family: 'Playpen Sans', sans-serif;
-}
 
 @media screen and (max-width: 500px) {
     #tweetPageImage {

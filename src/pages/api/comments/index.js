@@ -32,7 +32,7 @@ export default async function handler(request, response) {
           await Tweet.findByIdAndUpdate(tweetId, {
             $pull: { tweets: tweetId },
           });
-          console.log("tweetToDelete", tweetToDelete);
+          
     
           return response
             .status(200)

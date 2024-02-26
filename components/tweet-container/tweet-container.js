@@ -24,9 +24,30 @@ font-family: 'Playpen Sans', sans-serif;
 position: relative;
 list-style-type: none;
 transition: box-shadow 0.3s ease; 
+
 &:hover {
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 }
+  
+&:hover .delete-button {
+  opacity: 1;
+}
+
+.delete-button {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #CCCCCC; 
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
 
 @media screen and (max-width: 500px){
      font-size: 0.8rem;
@@ -84,12 +105,13 @@ export default function TweetContainer({
         tweet.comments.map((comment, index) => (
           <CommentContainer
             key={index}
+            tweet={tweet}
             comment={comment}
-            handleDeleteComment={handleDeleteComment}
+            handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)}
           />
         ))}
       {session?.user?.name === tweet.userName && (
-        <DeleteButton showonhover={showDeleteButton} handleDeleteTweet={() => handleDeleteTweet(tweet._id)} tweetId={tweet._id}>
+        <DeleteButton className="delete-button" showonhover={showDeleteButton} handleDeleteTweet={() => handleDeleteTweet(tweet._id)} tweetId={tweet._id}>
           ❌
         </DeleteButton>
 

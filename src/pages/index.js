@@ -10,6 +10,7 @@ import Image from "next/image";
 import TweetContainer from "../../components/tweet-container/tweet-container";
 import HomepageMainDiv from "../../components/homepage-main-div/homepage-main-div";
 import { handleToggleLikes } from "@/utils/handleToggleLikes";
+import { handleDeleteComment } from "@/utils/handleDeleteComment";
 
 export default function Home() {
   const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
@@ -17,6 +18,8 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
   const [getTweetId, setTweetId] = useState("")
+
+
   const toggleComments = (tweetId) => {
     setVisibleComments((prevComments) => ({
       ...prevComments,
@@ -24,7 +27,7 @@ export default function Home() {
     }));
   };
 
- 
+
 
   const userId = session?.user?.userId;
 
@@ -65,17 +68,6 @@ export default function Home() {
     setTweetId(tweetId);
   };
 
-  async function handleDeleteComment(commentId, tweetId) {
-
-    const response = await fetch(`/api/comments/${commentId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: tweetId }),
-    });
-    mutate()
-  }
 
   if (isLoading) {
     return <div id="isLoadingText">...Loading</div>;

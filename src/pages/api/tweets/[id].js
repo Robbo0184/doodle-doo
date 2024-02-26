@@ -6,7 +6,7 @@ export default async function handler(request, response) {
   await dbConnect();
 
   const { id: tweetId } = request.query;
-  console.log("Logging req.query", request.query);
+  
 
   if (!tweetId) {
     return;

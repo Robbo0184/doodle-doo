@@ -17,9 +17,10 @@ const DeleteButtonContainer = styled.div`
   right: -0.5rem;
 `;
 
-export default function CommentContainer({ comment, handleDeleteComment, showOnHover, index }) {
+export default function CommentContainer({ comment, handleDeleteComment, index, tweet }) {
     const { data: session } = useSession();
     const [showDeleteButton, setShowDeleteButton] = useState(false);
+   
 
     return (
         <>
@@ -27,7 +28,7 @@ export default function CommentContainer({ comment, handleDeleteComment, showOnH
                 {comment.comment} - {comment.userName}
                 {session?.user?.name === comment.userName && (
                     <DeleteButtonContainer>
-                        <DeleteButton showonhover={showDeleteButton} handleDeleteComment={handleDeleteComment} commentId={comment._id}> ❌
+                        <DeleteButton showonhover={showDeleteButton} handleDeleteComment={handleDeleteComment} commentId={comment._id} tweetId={tweet._id} > ❌
                         </DeleteButton>
                     </DeleteButtonContainer>
                 )}
