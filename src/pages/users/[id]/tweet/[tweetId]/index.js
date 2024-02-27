@@ -16,7 +16,8 @@ export default function TweetPage() {
     const { id: userId, tweetId } = router.query;
     const [visibleComments, setVisibleComments] = useState({});
     const { data: tweet } = useSWR(`/api/tweets/${tweetId}`);
-   
+    console.log("tweetId in TweetPage:", tweetId);
+    
     const handleToggleComments = () => {
         toggleComments(tweetId, setVisibleComments);
     }
@@ -67,11 +68,12 @@ export default function TweetPage() {
                     </div>
                     {visibleComments[tweet._id] &&
                         tweet.comments.map((comment, index) => (
-                          <CommentContainer
-                            key={index}
-                            comment={comment}
-                            handleDeleteComment={handleDeleteComment}
-                          />
+                            <CommentContainer
+                                key={index}
+                                tweet={tweet}
+                                comment={comment}
+                                handleDeleteComment={handleDeleteComment}
+                            />
                         ))}
                 </div>
             </main>

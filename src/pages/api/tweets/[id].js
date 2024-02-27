@@ -14,7 +14,7 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     try {
-      const tweet = await Tweet.findById(tweetId);
+      const tweet = await Tweet.findById(tweetId).populate('comments');
       return response.status(200).json(tweet);
     } catch (error) {
       console.error(error);
@@ -56,7 +56,7 @@ export default async function handler(request, response) {
       await User.findByIdAndUpdate(userId, {
         $pull: { tweets: tweetId },
       });
-      console.log("tweetToDelete", tweetToDelete);
+      
 
       return response.status(200).json(tweetToDelete);
     } catch (e) {
