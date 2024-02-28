@@ -11,4 +11,5 @@ export async function handleDeleteComment(commentId, tweetId) {
       
     });
     mutate("/api/users")
+    mutate(`/api/tweets/${tweetId}`)
   }

@@ -80,7 +80,7 @@ export default function TweetContainer({
       <Link id='mainFeedTweetLink' href={`../users/${user._id}/tweet/${tweet._id}`}>
         <p id='homeFeedTweetText'>{tweet.tweet}</p>
         {tweet.image && (
-          <Image id="tweetImage" src={tweet.image} style={{ borderRadius: '15px' }} width={400} height={300} alt="tweet image" />
+          <Image id="tweetImage" className='tweetImage' src={tweet.image} style={{ borderRadius: '15px' }} width={400} height={300} alt="tweet image" />
         )}
       </Link>
       <ProfilePageLink user={user} tweet={tweet} />

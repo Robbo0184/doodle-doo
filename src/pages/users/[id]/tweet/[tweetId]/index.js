@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import Link from "next/link";
 import LikeButton from "../../../../../../components/like-button/like-button";
@@ -10,13 +11,15 @@ import ToggleCommentsButton from "../../../../../../components/toggle-comments-b
 import { toggleComments } from "@/utils/toggleComments";
 import CommentContainer from "../../../../../../components/comment-container/comment-container";
 import { handleDeleteComment } from "@/utils/handleDeleteComment";
+import DeleteButton from "../../../../../../components/homepage-delete-button/homepage-delete-button";
 
 export default function TweetPage() {
     const router = useRouter();
     const { id: userId, tweetId } = router.query;
     const [visibleComments, setVisibleComments] = useState({});
     const { data: tweet } = useSWR(`/api/tweets/${tweetId}`);
-    console.log("tweetId in TweetPage:", tweetId);
+    const { data: session } = useSession();
+    const [showDeleteButton, setShowDeleteButton] = useState(false);
     
     const handleToggleComments = () => {
         toggleComments(tweetId, setVisibleComments);
@@ -75,6 +78,11 @@ export default function TweetPage() {
                                 handleDeleteComment={handleDeleteComment}
                             />
                         ))}
+                        {session?.user?.name === tweet.userName && (
+                            <DeleteButton className="delete-button" showonhover={showDeleteButton} handleDeleteTweet={() => handleDeleteTweet(tweet._id)} tweetId={tweet._id}>
+                              ❌
+                            </DeleteButton>
+                            )}
                 </div>
             </main>
         </>

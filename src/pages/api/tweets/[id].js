@@ -1,12 +1,17 @@
 import dbConnect from "../../../../db/connect";
 import User from "../../../../db/models/User";
 import Tweet from "../../../../db/models/Tweet";
+import { Types } from 'mongoose';
 
 export default async function handler(request, response) {
   await dbConnect();
 
   const { id: tweetId } = request.query;
-  
+
+  if(!Types.ObjectId.isValid(tweetId)) {
+    return res.status(404).json({ error: 'Invalid tweet ID' })
+  }
+
 
   if (!tweetId) {
     return;
@@ -56,7 +61,7 @@ export default async function handler(request, response) {
       await User.findByIdAndUpdate(userId, {
         $pull: { tweets: tweetId },
       });
-      
+
 
       return response.status(200).json(tweetToDelete);
     } catch (e) {
