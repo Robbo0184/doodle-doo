@@ -4,10 +4,11 @@ import { useSession } from "next-auth/react";
 import useSWR, { useSWRConfig } from 'swr';
 
 
-const CommentModal = ({ tweetId, onClose }) => {
+const CommentModal = ({ tweet, tweetId, onClose }) => {
   const [comment, setComment] = useState("");
   const { data: session } = useSession();
   const { mutate } = useSWRConfig()
+  console.log("logging tweetId from modal", tweetId);
 
   const userName = session?.user?.name
 
@@ -18,6 +19,7 @@ const CommentModal = ({ tweetId, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form submitted!')
     try {
       const response = await fetch('/api/comments', {
         method: "POST",

@@ -10,7 +10,9 @@ export default async function handler(request, response) {
 
    if(request.method === "POST") {
         try {
-        const {tweetId, comment, userName, commentId} = request.body
+          console.log('tweetId from API route:', request.body.tweetId, typeof request.body.tweetId);
+          console.log("logging request.body from backend", request.body);
+        const {tweetId, comment, userName} = request.body
        
 
         const newComment = await Comment.create({comment, userName});

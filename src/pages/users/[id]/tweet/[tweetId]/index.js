@@ -12,15 +12,18 @@ import { toggleComments } from "@/utils/toggleComments";
 import CommentContainer from "../../../../../../components/comment-container/comment-container";
 import { handleDeleteComment } from "@/utils/handleDeleteComment";
 import DeleteButton from "../../../../../../components/homepage-delete-button/homepage-delete-button";
+import CommentModal from "../../../../../../components/comment-modal/comment-modal";
 
 export default function TweetPage() {
     const router = useRouter();
     const { id: userId, tweetId } = router.query;
     const [visibleComments, setVisibleComments] = useState({});
+    const [showModal, setShowModal] = useState(false);
     const { data: tweet } = useSWR(`/api/tweets/${tweetId}`);
     const { data: session } = useSession();
     const [showDeleteButton, setShowDeleteButton] = useState(false);
-    
+    const [getTweetId, setTweetId] = useState("")
+
     const handleToggleComments = () => {
         toggleComments(tweetId, setVisibleComments);
     }
@@ -83,6 +86,12 @@ export default function TweetPage() {
                               ❌
                             </DeleteButton>
                             )}
+                            {showModal && (
+                                <CommentModal
+                                  tweetId={getTweetId}
+                                  onClose={() => setShowModal(false)}
+                                />
+                              )}
                 </div>
             </main>
         </>

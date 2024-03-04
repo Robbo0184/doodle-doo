@@ -11,14 +11,14 @@ import TweetContainer from "../../components/tweet-container/tweet-container";
 import HomepageMainDiv from "../../components/homepage-main-div/homepage-main-div";
 import { handleToggleLikes } from "@/utils/handleToggleLikes";
 import { handleDeleteComment } from "@/utils/handleDeleteComment";
+import { handleAddCommentClick } from "@/utils/handleAddCommentClick";
 
 export default function Home() {
   const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
   const { data: session } = useSession();
   const [showModal, setShowModal] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
-  const [getTweetId, setTweetId] = useState("")
-
+  const [getTweetId, setTweetId] = useState('')
 
   const toggleComments = (tweetId) => {
     setVisibleComments((prevComments) => ({
@@ -26,8 +26,6 @@ export default function Home() {
       [tweetId]: !prevComments[tweetId],
     }));
   };
-
-
 
   const userId = session?.user?.userId;
 
@@ -47,7 +45,7 @@ export default function Home() {
     const tweetElement = document.getElementById(`tweet-${currentTweetId}`);
     if (tweetElement) {
       tweetElement.scrollIntoView({ behavior: 'instant' });
-
+      console.log('Timestamp inside useEffect:', Date.now());
     }
   }, []);
 
@@ -63,10 +61,10 @@ export default function Home() {
     mutate()
   }
 
-  const handleAddCommentClick = (tweetId) => {
-    setShowModal(true);
-    setTweetId(tweetId);
-  };
+  // const handleAddCommentClick = (tweetId) => {
+  //   setShowModal(true);
+  //   setTweetId(tweetId);
+  // };
 
 
   if (isLoading) {
@@ -76,7 +74,8 @@ export default function Home() {
   if (isError || users === undefined) {
     return <div>Error loading users data</div>;
   }
-
+ 
+  
   return (
     <>
 
@@ -95,21 +94,23 @@ export default function Home() {
                   )}
                   userId={userId}
                   handleToggleLikes={handleToggleLikes}
-                  handleAddCommentClick={handleAddCommentClick}
+                  handleAddCommentClick={() => handleAddCommentClick(tweet._id, setTweetId, setShowModal)}
                   toggleComments={toggleComments}
                   visibleComments={visibleComments}
                   handleDeleteComment={handleDeleteComment}
                   handleDeleteTweet={handleDeleteTweet}
                   session={session}
+                  setTweetId={setTweetId}
                 />
               ))}
 
-              {showModal && (
+              {showModal && allTweets ? (
                 <CommentModal
-                  tweetId={getTweetId}
-                  onClose={() => setShowModal(false)}
+                tweetId={getTweetId}
+                onClose={() => setShowModal(false)}
                 />
-              )}
+              ) : null}
+
             </ul>
           </>
         ) : (

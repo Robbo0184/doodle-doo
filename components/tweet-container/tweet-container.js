@@ -67,6 +67,10 @@ export default function TweetContainer({
   handleDeleteComment,
   handleDeleteTweet,
   session,
+  setShowModal,
+  setTweetId
+
+
 }) {
   const [showDeleteButton, setShowDeleteButton] = useState(false);
 
@@ -99,8 +103,11 @@ export default function TweetContainer({
         {tweet.comments.length > 0 && (
           <ToggleCommentsButton toggleComments={toggleComments} tweet={tweet} />
         )}
-        <AddCommentButton tweet={tweet} onClick={() => handleAddCommentClick(tweet._id)} />
-      </div>
+        <AddCommentButton
+          tweet={tweet}
+          onClick={() => handleAddCommentClick(tweet._id, setTweetId, setShowModal)}
+          setTweetId={setTweetId}
+        /> </div>
       {visibleComments[tweet._id] &&
         tweet.comments.map((comment, index) => (
           <CommentContainer

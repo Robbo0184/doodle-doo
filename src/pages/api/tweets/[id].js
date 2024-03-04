@@ -9,7 +9,7 @@ export default async function handler(request, response) {
   const { id: tweetId } = request.query;
 
   if(!Types.ObjectId.isValid(tweetId)) {
-    return res.status(404).json({ error: 'Invalid tweet ID' })
+    return response.status(404).json({ error: 'Invalid tweet ID' })
   }
 
 

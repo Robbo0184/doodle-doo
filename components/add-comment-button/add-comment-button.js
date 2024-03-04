@@ -21,12 +21,14 @@ const StyledButton = styled.button`
    }
 `;
 
-export default function AddCommentButton({ tweet, onClick }) {
+export default function AddCommentButton({ tweet, onClick, setTweetId }) {
     const [showModal, setShowModal] = useState(false);
-    const [getTweetId, setTweetId] = useState("")
     return (
         <>
-            <StyledButton onClick={() => onClick(tweet._id)}>
+            <StyledButton onClick={() => {
+                onClick(tweet._id);
+                setTweetId(tweet._id);
+            }}>
                 Add comment
             </StyledButton>
         </>

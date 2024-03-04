@@ -21,7 +21,6 @@ export default function CommentContainer({  comment, handleDeleteComment, index,
     const { data: session } = useSession();
     const [showDeleteButton, setShowDeleteButton] = useState(false);
     
-   console.log("logging tweet from comment container main page", tweet.comments);
     return (
         <>
             <StyledDiv onMouseEnter={() => setShowDeleteButton(true)} onMouseLeave={() => setShowDeleteButton(false)} key={index}>
