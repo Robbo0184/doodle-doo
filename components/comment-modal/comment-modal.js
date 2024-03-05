@@ -8,7 +8,7 @@ const CommentModal = ({ tweet, tweetId, onClose }) => {
   const [comment, setComment] = useState("");
   const { data: session } = useSession();
   const { mutate } = useSWRConfig()
-  console.log("logging tweetId from modal", tweetId);
+  
 
   const userName = session?.user?.name
 
@@ -29,6 +29,7 @@ const CommentModal = ({ tweet, tweetId, onClose }) => {
         body: JSON.stringify({ comment, tweetId, userName }),
       });
       mutate("/api/users")
+      mutate(`/api/tweets/${tweetId}`)
       
       if (response.ok) {
         const data = await response.json();

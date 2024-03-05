@@ -61,13 +61,8 @@ export default function Home() {
     mutate()
   }
 
-  // const handleAddCommentClick = (tweetId) => {
-  //   setShowModal(true);
-  //   setTweetId(tweetId);
-  // };
-
-
-  if (isLoading) {
+ 
+if (isLoading) {
     return <div id="isLoadingText">...Loading</div>;
   }
 

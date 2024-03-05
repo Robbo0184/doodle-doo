@@ -13,6 +13,7 @@ import CommentContainer from "../../../../../../components/comment-container/com
 import { handleDeleteComment } from "@/utils/handleDeleteComment";
 import DeleteButton from "../../../../../../components/homepage-delete-button/homepage-delete-button";
 import CommentModal from "../../../../../../components/comment-modal/comment-modal";
+import { handleAddCommentClick } from "@/utils/handleAddCommentClick";
 
 export default function TweetPage() {
     const router = useRouter();
@@ -70,7 +71,9 @@ export default function TweetPage() {
                         {tweet.comments.length > 0 && (
                             <ToggleCommentsButton toggleComments={handleToggleComments} tweet={tweet} />
                         )}
-                        <AddCommentButton tweet={tweet} onClick={() => handleAddCommentClick(tweet._id)} />
+                        <AddCommentButton 
+                        tweet={tweet} onClick={() => handleAddCommentClick(tweet._id, setTweetId, setShowModal)}
+                        setTweetId={setTweetId} />
                     </div>
                     {visibleComments[tweet._id] &&
                         tweet.comments.map((comment, index) => (
