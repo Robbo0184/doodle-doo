@@ -10,23 +10,23 @@ const CommentModal = ({ tweet, tweetId, onClose }) => {
   const { mutate } = useSWRConfig()
   
 
-  const userName = session?.user?.name
-
-  const handleCommentChange = (e) => {
+const userName = session?.user?.name
+const userId = session?.user?.userId
+  
+const handleCommentChange = (e) => {
     setComment(e.target.value);
 
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted!')
     try {
       const response = await fetch('/api/comments', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ comment, tweetId, userName }),
+        body: JSON.stringify({ comment, tweetId, userName, userId }),
       });
       mutate("/api/users")
       mutate(`/api/tweets/${tweetId}`)

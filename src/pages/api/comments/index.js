@@ -8,9 +8,9 @@ export default async function handler(request, response) {
   if (request.method === "POST") {
     try {
 
-      const { tweetId, comment, userName } = request.body
-
-      const newComment = await Comment.create({ comment, userName });
+      const { comment, tweetId, userName, userId } = request.body
+      
+      const newComment = await Comment.create({ comment, userName, commentUserId: userId  });
       await Tweet.findByIdAndUpdate(
         tweetId,
         { $push: { comments: newComment._id } },

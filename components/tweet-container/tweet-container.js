@@ -81,7 +81,7 @@ export default function TweetContainer({
       id={tweetElementId}
       onMouseEnter={() => setShowDeleteButton(true)}
       onMouseLeave={() => setShowDeleteButton(false)}>
-      <Link id='mainFeedTweetLink' href={`../users/${user._id}/tweet/${tweet._id}`}>
+      <Link id='mainFeedTweetLink' href={`/users/${user._id}/tweet/${tweet._id}`}>
         <p id='homeFeedTweetText'>{tweet.tweet}</p>
         {tweet.image && (
           <Image id="tweetImage" className='tweetImage' src={tweet.image} style={{ borderRadius: '15px' }} width={400} height={300} alt="tweet image" />
@@ -111,6 +111,7 @@ export default function TweetContainer({
       {visibleComments[tweet._id] &&
         tweet.comments.map((comment, index) => (
           <CommentContainer
+            user={user}
             key={index}
             tweet={tweet}
             comment={comment}
