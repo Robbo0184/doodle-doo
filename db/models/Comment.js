@@ -5,9 +5,9 @@ const { Schema } = mongoose;
 
 const commentSchema = new Schema({
   userName: String,
-  commentUserId: {  // Add commentUserId field
+  commentUserId: {  
       type: Schema.Types.ObjectId,
-      ref: 'User' // Reference the User model
+      ref: 'User' 
   }, 
   comment: String,
   date: { type: Date, default: Date.now }    

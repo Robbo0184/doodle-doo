@@ -10,7 +10,7 @@ const StyledButton = styled.button`
   cursor: pointer;
   position: absolute;
   top: 0;
-  right: 20px;
+  right: -20px;
   transition: opacity 0.5s ease, height 0.5s ease;  
    
   

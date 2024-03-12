@@ -21,13 +21,13 @@ const DeleteButtonContainer = styled.div`
 export default function CommentContainer({ comment, handleDeleteComment, index, tweet, user }) {
     const { data: session } = useSession();
     const [showDeleteButton, setShowDeleteButton] = useState(false);
-    console.log('comment.commentUserId:', comment.commentUserId); 
+    
     return (
         <>
             <StyledDiv onMouseEnter={() => setShowDeleteButton(true)} onMouseLeave={() => setShowDeleteButton(false)} key={index}>
                 <span>
                     {comment.comment} -
-                    <Link href={`/users/${comment.commentUserId}`}>{comment.userName}</Link>
+                    <Link id="commentProfilePageLink" href={`/users/${comment.commentUserId}`}>{comment.userName}</Link>
                 </span>
                 {session?.user?.name === comment.userName && (
                     <DeleteButtonContainer>

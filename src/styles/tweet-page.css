@@ -15,19 +15,34 @@
 #tweetPageLink {
     text-decoration: none;
     position: absolute;
-    left: 0.4rem;
+    right: 1.5rem;
     top: 0.2rem;
     color: black;
 }
 
 #tweetPageLink:visited {
-    color: black; /* Keep the color the same after being clicked */
+    color: black; 
+}
+
+#tweetPageUserProfileLink:visited{
+    color: black;
 }
 
 #tweetPageImageContainer {
     justify-content: center;
     display: flex;
-    margin-top: 1rem;
+    margin-top: 4rem;
+}
+
+.user--image--tweetpage{
+    position: absolute;
+    left: 1rem;
+}
+
+#tweetPageUsernameText{
+    position: absolute;
+    left: 1rem;
+    top: 5.4rem;
 }
 
 .tweetPageTweetTextContainer {

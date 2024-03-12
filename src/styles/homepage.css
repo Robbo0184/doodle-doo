@@ -18,15 +18,22 @@
   font-family: 'Playpen Sans', sans-serif;
 }
 
-#mainFeedTweetLink{
+#mainFeedTweetLink {
   text-decoration: none;
+  color: #E97451;
+  transition: color 0.3s ease;
+
 }
 
-#homeFeedTweetText{
+#mainFeedTweetLink:hover {
+  color: #00BFFF;
+}
+
+#homeFeedTweetText {
   margin-bottom: 2rem;
 }
 
-#isLoadingText{
+#isLoadingText {
   font-family: 'Playpen Sans', sans-serif;
 }
 
@@ -62,7 +69,7 @@
   }
 }
 
-@media screen and (max-width: 350px){
+@media screen and (max-width: 350px) {
   #tweetImage {
     height: 100px;
     width: 60px;

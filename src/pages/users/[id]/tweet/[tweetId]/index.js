@@ -24,6 +24,8 @@ export default function TweetPage() {
     const { data: session } = useSession();
     const [showDeleteButton, setShowDeleteButton] = useState(false);
     const [getTweetId, setTweetId] = useState("")
+    const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
+
 
     const handleToggleComments = () => {
         toggleComments(tweetId, setVisibleComments);
@@ -38,6 +40,18 @@ export default function TweetPage() {
         <>
             <main id="tweetPageMain">
                 <Link id="tweetPageLink" href={`/?tweetId=${tweetId || ''}`}>Back To Main Feed</Link>
+                <Link id="tweetPageUserProfileLink" href={`/users/${userId}`}>
+                <Image
+                    className="user--image--tweetpage"
+                    src={user?.image}
+                    width={80}
+                    height={80}
+                    alt="profile-pic"
+                    style={{ borderRadius: '50%' }}
+                />
+                <p id="tweetPageUsernameText">{user?.name}</p>
+                </Link>
+
                 <div id="tweetPageTweetContainer">
 
                     {
@@ -71,9 +85,9 @@ export default function TweetPage() {
                         {tweet.comments.length > 0 && (
                             <ToggleCommentsButton toggleComments={handleToggleComments} tweet={tweet} />
                         )}
-                        <AddCommentButton 
-                        tweet={tweet} onClick={() => handleAddCommentClick(tweet._id, setTweetId, setShowModal)}
-                        setTweetId={setTweetId} />
+                        <AddCommentButton
+                            tweet={tweet} onClick={() => handleAddCommentClick(tweet._id, setTweetId, setShowModal)}
+                            setTweetId={setTweetId} />
                     </div>
                     {visibleComments[tweet._id] &&
                         tweet.comments.map((comment, index) => (
@@ -84,17 +98,17 @@ export default function TweetPage() {
                                 handleDeleteComment={handleDeleteComment}
                             />
                         ))}
-                        {session?.user?.name === tweet.userName && (
-                            <DeleteButton className="delete-button" showonhover={showDeleteButton} handleDeleteTweet={() => handleDeleteTweet(tweet._id)} tweetId={tweet._id}>
-                              ❌
-                            </DeleteButton>
-                            )}
-                            {showModal && (
-                                <CommentModal
-                                  tweetId={getTweetId}
-                                  onClose={() => setShowModal(false)}
-                                />
-                              )}
+                    {session?.user?.name === tweet.userName && (
+                        <DeleteButton className="delete-button" showonhover={showDeleteButton} handleDeleteTweet={() => handleDeleteTweet(tweet._id)} tweetId={tweet._id}>
+                            ❌
+                        </DeleteButton>
+                    )}
+                    {showModal && (
+                        <CommentModal
+                            tweetId={getTweetId}
+                            onClose={() => setShowModal(false)}
+                        />
+                    )}
                 </div>
             </main>
         </>
