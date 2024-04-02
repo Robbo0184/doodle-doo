@@ -42,13 +42,20 @@
   justify-content: space-between;
 }
 
-@media screen and (max-width: 640px) {
-  #tweetImage {
-    height: 220px;
-    width: 300px;
+@media screen and (max-width: 1190px){
+    #tweetImage{
+      width: 280px
+    }
+
+}
+
+@media screen and (max-width: 825px){
+  #tweetImage{
+    width: 180px
   }
 
 }
+
 
 @media screen and (max-width: 500px) {
 

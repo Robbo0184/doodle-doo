@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useState } from 'react';
 import Image from 'next/image';
 import ProfilePageLink from '../main-feed-profile-link/main-feed-profile-link';
 import LikeButton from '../like-button/like-button';
@@ -8,6 +7,7 @@ import AddCommentButton from '../add-comment-button/add-comment-button';
 import CommentContainer from '../comment-container/comment-container';
 import DeleteButton from '../homepage-delete-button/homepage-delete-button';
 import Link from 'next/link';
+import { formatPostAge } from '@/utils/createCommentTweetAge';
 
 const StyledLi = styled.li`
 display: flex;
@@ -37,8 +37,8 @@ transition: box-shadow 0.3s ease;
   opacity: 0;
   transition: opacity 0.5s ease;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0;
+  right: 0;
   background-color: #CCCCCC; 
   color: #333;
   border: 1px solid #ccc;
@@ -53,6 +53,10 @@ transition: box-shadow 0.3s ease;
      font-size: 0.8rem;
      width: 55vw;
      padding-inline: 2rem;
+
+     .delete-button {
+      opacity: 1;
+  }
    }
 `;
 
@@ -68,21 +72,19 @@ export default function TweetContainer({
   handleDeleteTweet,
   session,
   setShowModal,
-  setTweetId
+  setTweetId, 
+  
 
 
 }) {
-  const [showDeleteButton, setShowDeleteButton] = useState(false);
 
   const tweetElementId = `tweet-${tweet._id}`;
 
   return (
     <StyledLi key={tweet._id}
-      id={tweetElementId}
-      onMouseEnter={() => setShowDeleteButton(true)}
-      onMouseLeave={() => setShowDeleteButton(false)}>
+      id={tweetElementId}>
       <Link id='mainFeedTweetLink' href={`/users/${user._id}/tweet/${tweet._id}`}>
-        <p id='homeFeedTweetText'>{tweet.tweet}</p>
+        <p id='homeFeedTweetText'>{tweet.tweet}  <br></br>{formatPostAge(tweet.date)}</p>
         {tweet.image && (
           <Image id="tweetImage" className='tweetImage' src={tweet.image} style={{ borderRadius: '15px' }} width={400} height={300} alt="tweet image" />
         )}
@@ -119,7 +121,10 @@ export default function TweetContainer({
           />
         ))}
       {session?.user?.name === tweet.userName && (
-        <DeleteButton className="delete-button" showonhover={showDeleteButton} handleDeleteTweet={() => handleDeleteTweet(tweet._id)} tweetId={tweet._id}>
+        <DeleteButton
+          className="delete-button"
+          handleDeleteTweet={() => handleDeleteTweet(tweet._id)}
+          tweetId={tweet._id}>
           ❌
         </DeleteButton>
 

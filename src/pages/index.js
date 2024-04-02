@@ -45,7 +45,7 @@ export default function Home() {
     const tweetElement = document.getElementById(`tweet-${currentTweetId}`);
     if (tweetElement) {
       tweetElement.scrollIntoView({ behavior: 'instant' });
-      console.log('Timestamp inside useEffect:', Date.now());
+      
     }
   }, []);
 

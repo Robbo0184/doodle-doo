@@ -14,7 +14,6 @@ import { handleToggleLikes } from "@/utils/handleToggleLikes";
 
 export default function ProfilePage() {
   const [showModal, setShowModal] = useState(false);
-  const [showDeleteButton, setShowDeleteButton] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
   const { id: userId } = router.query

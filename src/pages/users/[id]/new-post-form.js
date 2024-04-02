@@ -41,14 +41,10 @@ export default function NewPostForm() {
         const tweetData = {
             tweet: tweetContent,
             userName: userName,
+            date: new Date(),
         };
 
-        const currentDate = new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-        });
-        tweetData.date = currentDate;
+       
 
         if (imageFile) {
             const cloudinaryFormData = new FormData();

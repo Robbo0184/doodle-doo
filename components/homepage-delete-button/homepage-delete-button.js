@@ -11,20 +11,21 @@ const StyledButton = styled.button`
   position: absolute;
   top: 0;
   right: -20px;
-  transition: opacity 0.5s ease, height 0.5s ease;  
-   
   
-     @media screen and (max-width: 500px){
+  transition: opacity 0.5s ease, height 0.5s ease;
+  
+ 
+   @media screen and (max-width: 500px){
       right: 10px;
     }
 `;
 
-export default function DeleteButton({ showonhover, handleDeleteTweet, handleDeleteComment, commentId, tweetId }) {
+export default function DeleteButton({ className, handleDeleteTweet, handleDeleteComment, commentId, tweetId }) {
 
   const handleDeleteClick = () => {
     if (commentId) {
       handleDeleteComment(commentId, tweetId);
-      
+
     } else {
       handleDeleteTweet(tweetId);
     }
@@ -33,11 +34,14 @@ export default function DeleteButton({ showonhover, handleDeleteTweet, handleDel
   return (
     <>
 
-      {showonhover && (
-        <StyledButton type="button" onClick={handleDeleteClick}>
-          ❌
-        </StyledButton>
-      )}
+
+      <StyledButton
+        type="button"
+        className={className}
+        onClick={handleDeleteClick}>
+        ❌
+      </StyledButton>
+
     </>
   )
 }

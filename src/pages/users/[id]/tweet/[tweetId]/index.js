@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
@@ -14,6 +14,9 @@ import { handleDeleteComment } from "@/utils/handleDeleteComment";
 import DeleteButton from "../../../../../../components/homepage-delete-button/homepage-delete-button";
 import CommentModal from "../../../../../../components/comment-modal/comment-modal";
 import { handleAddCommentClick } from "@/utils/handleAddCommentClick";
+import Navbar from "../../../../../../components/navbar/navbar";
+import { formatDate } from "@/utils/dateUtils";
+import { formatPostAge } from "@/utils/createCommentTweetAge";
 
 export default function TweetPage() {
     const router = useRouter();
@@ -25,11 +28,25 @@ export default function TweetPage() {
     const [showDeleteButton, setShowDeleteButton] = useState(false);
     const [getTweetId, setTweetId] = useState("")
     const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
-
+    const [showUserInfo, setShowUserInfo] = useState(true);
 
     const handleToggleComments = () => {
         toggleComments(tweetId, setVisibleComments);
     }
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 20) { 
+                setShowUserInfo(false);
+            } else {
+                setShowUserInfo(true);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     if (!tweet) {
         return <div>Loading tweet...</div>;
@@ -39,20 +56,25 @@ export default function TweetPage() {
     return (
         <>
             <main id="tweetPageMain">
-                <Link id="tweetPageLink" href={`/?tweetId=${tweetId || ''}`}>Back To Main Feed</Link>
+
+                <Link id="tweetPageLink" className={!showUserInfo ? 'hidden' : ''} href={`/?tweetId=${tweetId || ''}`}>Back To Main Feed</Link>
                 <Link id="tweetPageUserProfileLink" href={`/users/${userId}`}>
-                <Image
-                    className="user--image--tweetpage"
-                    src={user?.image}
-                    width={80}
-                    height={80}
-                    alt="profile-pic"
-                    style={{ borderRadius: '50%' }}
-                />
-                <p id="tweetPageUsernameText">{user?.name}</p>
+                    <div id="userInfoContainer" className={!showUserInfo ? 'hidden' : ''}>
+                    {user?.image && (
+                        <Image
+                            className="user--image--tweetpage"
+                            src={user?.image}
+                            width={150}
+                            height={150}
+                            alt="profile-pic"
+                            style={{ borderRadius: '50%' }}
+                        />
+                        )}
+                        <p id="tweetPageUsernameText">{user?.name}</p>
+                    </div>
                 </Link>
 
-                <div id="tweetPageTweetContainer">
+                <div id="tweetPageTweetContainer" className={!tweet.image ? "no--image--tweet--container" : ""}>
 
                     {
                         tweet?.image &&
@@ -64,7 +86,7 @@ export default function TweetPage() {
                     {
                         tweet?.tweet &&
                         <div className={!tweet?.image ? "center-tweet-container" : "tweetPageTweetTextContainer"}>
-                            <p id="tweetPageTweetText">{tweet?.tweet}</p>
+                            <p id="tweetPageTweetText">{tweet?.tweet} <br></br> {formatPostAge(tweet.date)}</p>
                         </div>
 
                     }
@@ -76,9 +98,9 @@ export default function TweetPage() {
                         handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
                     />
                     {tweet.likes?.length === 1 ? (
-                        <p>1 like</p>
+                        <p className="tweet--page--likes">1 like</p>
                     ) : (
-                        <p>{tweet.likes?.length} likes</p>
+                        <p className="tweet--page--likes">{tweet.likes?.length} likes</p>
                     )}
 
                     <div id="commentButtonsDiv">
@@ -110,6 +132,8 @@ export default function TweetPage() {
                         />
                     )}
                 </div>
+                <Navbar>
+                </Navbar>
             </main>
         </>
     )

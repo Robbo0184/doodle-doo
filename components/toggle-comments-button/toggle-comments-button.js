@@ -2,19 +2,20 @@ import styled from "styled-components";
 import { useState } from "react";
 
 const StyledButton = styled.button`
-   background-color: #3498db; 
+   background: linear-gradient(to right, #48b1e2, #2696c4);   color: #fff;
    color: #fff; 
    border: none;
    border-radius: 0.5rem; 
    padding: 0.5rem 1rem;
    margin-right: 1rem; 
    cursor: pointer;
-   transition: background-color 0.3s ease; 
-
+   transition: transform 0.5s ease; 
+   
    &:hover {
-      background-color: #2980b9; 
+    transform: scale(1.05); 
    }
-
+   
+    
    @media screen and (max-width: 500px){
     font-size: 0.7rem;
     padding: 0.3rem
