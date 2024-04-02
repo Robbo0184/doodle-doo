@@ -10,11 +10,10 @@ import Head from "next/head";
 import AddBioButton from "../../../../components/add-bio-button/add-bio-button";
 import UserBioContainer from "../../../../components/user-bio-container/user-bio-container";
 import ProfilePageTweetContainer from "../../../../components/profile-page-tweet-container/profile-page-tweet-container";
-
+import { handleToggleLikes } from "@/utils/handleToggleLikes";
 
 export default function ProfilePage() {
   const [showModal, setShowModal] = useState(false);
-  const [showDeleteButton, setShowDeleteButton] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
   const { id: userId } = router.query

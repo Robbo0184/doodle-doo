@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../components/navbar/navbar";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
@@ -9,13 +9,17 @@ import DoodleDooLogo from "../../public/assets/hen.png"
 import Image from "next/image";
 import TweetContainer from "../../components/tweet-container/tweet-container";
 import HomepageMainDiv from "../../components/homepage-main-div/homepage-main-div";
+import { handleToggleLikes } from "@/utils/handleToggleLikes";
+import { handleDeleteComment } from "@/utils/handleDeleteComment";
+import { handleAddCommentClick } from "@/utils/handleAddCommentClick";
 
 export default function Home() {
   const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
   const { data: session } = useSession();
   const [showModal, setShowModal] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
-  const [getTweetId, setTweetId] = useState("")
+  const [getTweetId, setTweetId] = useState('')
+
   const toggleComments = (tweetId) => {
     setVisibleComments((prevComments) => ({
       ...prevComments,
@@ -26,6 +30,7 @@ export default function Home() {
   const userId = session?.user?.userId;
 
   let allTweets = [];
+
   if (users) {
     allTweets = users.reduce((tweets, user) => {
       tweets.push(...user.tweets);
@@ -35,19 +40,15 @@ export default function Home() {
     allTweets.sort((a, b) => new Date(b.date) - new Date(a.date));
   }
 
-async function handleToggleLikes(tweetId) {
-    const response = await fetch(`/api/tweets/${tweetId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userId),
-    });
-    if (response.ok) {
-      await response.json();
-      mutate();
+  useEffect(() => {
+    const currentTweetId = sessionStorage.getItem('currentTweetId');
+    const tweetElement = document.getElementById(`tweet-${currentTweetId}`);
+    if (tweetElement) {
+      tweetElement.scrollIntoView({ behavior: 'instant' });
+      
     }
-  }
+  }, []);
+
 
   async function handleDeleteTweet(tweetId) {
     const response = await fetch(`/api/tweets/${tweetId}`, {
@@ -60,32 +61,17 @@ async function handleToggleLikes(tweetId) {
     mutate()
   }
 
-  const handleAddCommentClick = (tweetId) => {
-    setShowModal(true);
-    setTweetId(tweetId);
-  };
-
-  async function handleDeleteComment(commentId, tweetId) {
-
-    const response = await fetch(`/api/comments/${commentId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: tweetId }),
-    });
-    mutate()
-  }
-
-  if (isLoading) {
-    return <div>...Loading</div>;
+ 
+if (isLoading) {
+    return <div id="isLoadingText">...Loading</div>;
   }
 
   if (isError || users === undefined) {
     return <div>Error loading users data</div>;
   }
-
-return (
+ 
+  
+  return (
     <>
 
       <HomepageMainDiv>
@@ -100,24 +86,26 @@ return (
                   tweet={tweet}
                   user={users.find((user) =>
                     user.tweets.some((t) => t._id === tweet._id)
-                  )} 
+                  )}
                   userId={userId}
                   handleToggleLikes={handleToggleLikes}
-                  handleAddCommentClick={handleAddCommentClick}
+                  handleAddCommentClick={() => handleAddCommentClick(tweet._id, setTweetId, setShowModal)}
                   toggleComments={toggleComments}
                   visibleComments={visibleComments}
                   handleDeleteComment={handleDeleteComment}
                   handleDeleteTweet={handleDeleteTweet}
                   session={session}
+                  setTweetId={setTweetId}
                 />
               ))}
 
-              {showModal && (
+              {showModal && allTweets ? (
                 <CommentModal
-                  tweetId={getTweetId}
-                  onClose={() => setShowModal(false)}
+                tweetId={getTweetId}
+                onClose={() => setShowModal(false)}
                 />
-              )}
+              ) : null}
+
             </ul>
           </>
         ) : (

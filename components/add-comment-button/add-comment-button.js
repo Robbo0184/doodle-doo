@@ -2,18 +2,17 @@ import styled from "styled-components";
 import { useState } from "react";
 
 const StyledButton = styled.button`
-   background-color: #3498db; 
-   color: #fff; 
+   background: linear-gradient(to right, #48b1e2, #2696c4);   color: #fff; 
    border: none;
    border-radius: 0.5rem; 
    padding: 0.5rem 1rem;
    margin-right: 1rem; 
    cursor: pointer;
-   transition: background-color 0.3s ease; 
+   transition: transform 0.5s ease; 
 
    &:hover {
-      background-color: #2980b9; 
-   }
+    transform: scale(1.05);    
+  }
 
    @media screen and (max-width: 500px){
     font-size: 0.7rem;
@@ -21,12 +20,14 @@ const StyledButton = styled.button`
    }
 `;
 
-export default function AddCommentButton({ tweet, onClick }) {
+export default function AddCommentButton({ tweet, onClick, setTweetId }) {
     const [showModal, setShowModal] = useState(false);
-    const [getTweetId, setTweetId] = useState("")
     return (
         <>
-            <StyledButton onClick={() => onClick(tweet._id)}>
+            <StyledButton onClick={() => {
+                onClick(tweet._id);
+                setTweetId(tweet._id);
+            }}>
                 Add comment
             </StyledButton>
         </>

@@ -4,14 +4,16 @@ import { useSession } from "next-auth/react";
 import useSWR, { useSWRConfig } from 'swr';
 
 
-const CommentModal = ({ tweetId, onClose }) => {
+const CommentModal = ({ tweet, tweetId, onClose }) => {
   const [comment, setComment] = useState("");
   const { data: session } = useSession();
   const { mutate } = useSWRConfig()
+  
 
-  const userName = session?.user?.name
-
-  const handleCommentChange = (e) => {
+const userName = session?.user?.name
+const userId = session?.user?.userId
+  
+const handleCommentChange = (e) => {
     setComment(e.target.value);
 
   };
@@ -24,9 +26,10 @@ const CommentModal = ({ tweetId, onClose }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ comment, tweetId, userName }),
+        body: JSON.stringify({ comment, tweetId, userName, userId }),
       });
       mutate("/api/users")
+      mutate(`/api/tweets/${tweetId}`)
       
       if (response.ok) {
         const data = await response.json();

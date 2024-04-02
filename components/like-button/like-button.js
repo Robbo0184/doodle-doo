@@ -8,11 +8,19 @@ import { useSession } from "next-auth/react";
 export const StyledButton = styled.button`
   border: none;
   background-color: white;
+  cursor: pointer; 
+  transition: transform 0.3s ease; 
+
+  &:hover {  
+    cursor: grab; 
+    transform: scale(1.5);
+  }
+}
   
 `;
 
 export default function LikeButton({ tweetId, isLiked, handleToggleLikes }) {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   const toggleLike = () => {
     handleToggleLikes(tweetId);

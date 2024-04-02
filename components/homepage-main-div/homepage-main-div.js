@@ -10,6 +10,8 @@ const StyledDiv = styled.div`
   padding-top: 0.5rem;
   gap: 1rem;
   margin-bottom: 40px;
+  padding-bottom: calc(10vh + 50px);
+
   `;
 
 export default function HomepageMainDiv({ children }) {

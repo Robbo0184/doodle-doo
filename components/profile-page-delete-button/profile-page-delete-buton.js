@@ -10,23 +10,8 @@ const StyledButton = styled.button`
   border-radius: 50%;
   padding: 0.2rem 0.4rem;
   cursor: pointer;
-  opacity: 0;
+  
   transition: opacity 0.3s ease-in-out;
-
-  .user--bio-container:hover & {
-    opacity: 1;
-  }
-
-  opacity: ${({ showonhover }) => (showonhover ? '1' : '0')};
-  pointer-events: ${({ showonhover }) => (showonhover ? 'auto' : 'none')};
-  visibility: ${({ showonhover }) => (showonhover ? 'visible' : 'hidden')};
-
-  &:hover,
-  &:focus {
-    opacity: 1;
-    pointer-events: auto;
-    visibility: visible;
-  }
 
   @media screen and (max-width: 500px) {
     opacity: 1;
@@ -37,18 +22,20 @@ const StyledButton = styled.button`
   }
 `;
 
-export default function DeleteButton({ showonhover, handleDeleteBio, userId, handleDeleteTweet, tweetId }) {
-    const handleDeleteClick = () => {
-        if (userId) {
-            handleDeleteBio(userId);
-        } else {
-            handleDeleteTweet(tweetId);
-        }
+export default function DeleteButton({ className, handleDeleteBio, userId, handleDeleteTweet, tweetId }) {
+  const handleDeleteClick = () => {
+    if (userId) {
+      handleDeleteBio(userId);
+    } else {
+      handleDeleteTweet(tweetId);
     }
+  }
 
-    return (
-        <>
-            <StyledButton type="button" showonhover={showonhover} onClick={handleDeleteClick}> ❌</StyledButton>
-        </>
-    )
+  return (
+    <>
+      <StyledButton type="button"
+        className={className}
+        onClick={handleDeleteClick}> ❌</StyledButton>
+    </>
+  )
 }

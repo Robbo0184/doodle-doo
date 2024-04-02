@@ -18,19 +18,44 @@
   font-family: 'Playpen Sans', sans-serif;
 }
 
+#mainFeedTweetLink {
+  text-decoration: none;
+  color: #E97451;
+  transition: color 0.3s ease;
+
+}
+
+#mainFeedTweetLink:hover {
+  color: #00BFFF;
+}
+
+#homeFeedTweetText {
+  margin-bottom: 2rem;
+}
+
+#isLoadingText {
+  font-family: 'Playpen Sans', sans-serif;
+}
 
 #commentButtonsDiv {
   display: flex;
   justify-content: space-between;
 }
 
-@media screen and (max-width: 640px) {
-  #tweetImage {
-    height: 220px;
-    width: 300px;
+@media screen and (max-width: 1190px){
+    #tweetImage{
+      width: 280px
+    }
+
+}
+
+@media screen and (max-width: 825px){
+  #tweetImage{
+    width: 180px
   }
 
 }
+
 
 @media screen and (max-width: 500px) {
 
@@ -51,7 +76,7 @@
   }
 }
 
-@media screen and (max-width: 350px){
+@media screen and (max-width: 350px) {
   #tweetImage {
     height: 100px;
     width: 60px;

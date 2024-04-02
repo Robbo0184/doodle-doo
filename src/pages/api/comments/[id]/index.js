@@ -2,13 +2,12 @@ import dbConnect from "../../../../../db/connect";
 import Tweet from "../../../../../db/models/Tweet";
 import Comment from "../../../../../db/models/Comment";
 
-
-
 export default async function handler(request, response) {
     await dbConnect()
+    
     const { id: commentId } = request.query;
-    const {id: tweetId} = request.body
-    console.log("Logging tweetID :", tweetId, commentId);
+    const tweetId = request.body.tweetId
+    
     
     if (request.method === "DELETE") {
         try {
@@ -17,7 +16,7 @@ export default async function handler(request, response) {
             await Tweet.findByIdAndUpdate(tweetId, {
                 $pull: { comments: commentId },
             });
-            console.log("commentToDelete", commentToDelete);
+            
             
           return response
             .status(200)
@@ -26,6 +25,8 @@ export default async function handler(request, response) {
           console.log(e);
         }
       }
+
+   
 
 }
 
