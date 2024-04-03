@@ -17,8 +17,23 @@
 .tweetPageTweetTextContainer {
     margin-top: 1rem;
     display: flex;
+    position: relative;
     flex-direction: column;
     text-align: center;
+}
+
+.tweetPageTweetTextContainer .delete-button {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    position: absolute;
+    top: 0;
+    right: -3rem;
+}
+
+.tweetPageTweetTextContainer:hover .delete-button {
+    opacity: 1;
+    visibility: visible;
 }
 
 .no--image--tweet--container {
@@ -26,7 +41,10 @@
     font-size: larger;
 }
 
+
+
 .center-tweet-container {
+    position: relative;
     margin-top: 35vh;
     min-width: 40vw;
     text-align: center;
@@ -37,12 +55,27 @@
     box-shadow: 0px 8px 15px rgba(240, 152, 73, 0.3);
     color: #333;
     transition: box-shadow 0.2s ease;
-    
+
 }
+
+.center-tweet-container .delete-button {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    position: absolute;
+    top: 0;
+    right: -1rem;
+}
+
+.center-tweet-container:hover .delete-button {
+    opacity: 1;
+    visibility: visible;
+}
+
 
 .center-tweet-container:hover {
     box-shadow: 0px 10px 20px rgba(240, 152, 73, 0.4);
-    
+
 }
 
 #tweetPageLink {
@@ -66,21 +99,21 @@
     position: fixed;
     top: 10px;
     left: 10px;
-    
+
 }
 
 #tweetPageImageContainer {
     justify-content: center;
     display: flex;
     margin-top: 4rem;
-    
+
 }
 
 
 .user--image--tweetpage {
     position: absolute;
     left: 1rem;
-    
+
 }
 
 #tweetPageUsernameText {
@@ -90,14 +123,14 @@
 }
 
 
-@media screen and (max-width: 1000px){
+@media screen and (max-width: 1000px) {
     #tweetPageImage {
         width: 400px
     }
 }
 
-@media screen and (max-width: 800px){
-    
+@media screen and (max-width: 800px) {
+
     #tweetPageImage {
         width: 300px;
         height: 350px;
@@ -116,10 +149,10 @@
 
 
 @media screen and (max-width: 550px) {
-    
+
     #userInfoContainer {
         position: fixed;
-        
+
     }
 
     #userInfoContainer.hidden {
@@ -129,12 +162,12 @@
     #tweetPageLink.hidden {
         display: none;
     }
-    
-    #tweetPageImageContainer{
+
+    #tweetPageImageContainer {
         padding-top: 8rem;
-        
+
     }
-    
+
     #tweetPageImage {
         width: 80vw;
         height: 50vh;
@@ -145,7 +178,7 @@
         font-size: 14px;
     }
 
-    #tweetPageLink{
+    #tweetPageLink {
         font-size: 14px;
     }
 

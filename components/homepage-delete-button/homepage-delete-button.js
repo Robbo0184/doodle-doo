@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { useRouter } from "next/router";
 
 const StyledButton = styled.button`
   background-color: #CCCCCC; 
@@ -20,14 +21,17 @@ const StyledButton = styled.button`
     }
 `;
 
-export default function DeleteButton({ className, handleDeleteTweet, handleDeleteComment, commentId, tweetId }) {
-
+export default function DeleteButton({ className, handleDeleteTweet, handleDeleteComment, commentId, tweetId, shouldRedirect = false  }) {
+  const router = useRouter()
   const handleDeleteClick = () => {
     if (commentId) {
       handleDeleteComment(commentId, tweetId);
 
     } else {
       handleDeleteTweet(tweetId);
+      if (shouldRedirect) {
+        router.push('/'); 
+      }
     }
   }
 

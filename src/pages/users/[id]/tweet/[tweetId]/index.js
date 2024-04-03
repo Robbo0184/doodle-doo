@@ -15,8 +15,8 @@ import DeleteButton from "../../../../../../components/homepage-delete-button/ho
 import CommentModal from "../../../../../../components/comment-modal/comment-modal";
 import { handleAddCommentClick } from "@/utils/handleAddCommentClick";
 import Navbar from "../../../../../../components/navbar/navbar";
-import { formatDate } from "@/utils/dateUtils";
 import { formatPostAge } from "@/utils/createCommentTweetAge";
+import { handleDeleteTweet } from "@/utils/handleDeleteTweet";
 
 export default function TweetPage() {
     const router = useRouter();
@@ -36,7 +36,7 @@ export default function TweetPage() {
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 20) { 
+            if (window.scrollY > 20) {
                 setShowUserInfo(false);
             } else {
                 setShowUserInfo(true);
@@ -60,15 +60,15 @@ export default function TweetPage() {
                 <Link id="tweetPageLink" className={!showUserInfo ? 'hidden' : ''} href={`/?tweetId=${tweetId || ''}`}>Back To Main Feed</Link>
                 <Link id="tweetPageUserProfileLink" href={`/users/${userId}`}>
                     <div id="userInfoContainer" className={!showUserInfo ? 'hidden' : ''}>
-                    {user?.image && (
-                        <Image
-                            className="user--image--tweetpage"
-                            src={user?.image}
-                            width={150}
-                            height={150}
-                            alt="profile-pic"
-                            style={{ borderRadius: '50%' }}
-                        />
+                        {user?.image && (
+                            <Image
+                                className="user--image--tweetpage"
+                                src={user?.image}
+                                width={150}
+                                height={150}
+                                alt="profile-pic"
+                                style={{ borderRadius: '50%' }}
+                            />
                         )}
                         <p id="tweetPageUsernameText">{user?.name}</p>
                     </div>
@@ -87,6 +87,11 @@ export default function TweetPage() {
                         tweet?.tweet &&
                         <div className={!tweet?.image ? "center-tweet-container" : "tweetPageTweetTextContainer"}>
                             <p id="tweetPageTweetText">{tweet?.tweet} <br></br> {formatPostAge(tweet.date)}</p>
+                            {session?.user?.name === tweet.userName && (
+                                <DeleteButton className="delete-button" showonhover={showDeleteButton} shouldRedirect={true} handleDeleteTweet={() => handleDeleteTweet(tweet._id)} tweetId={tweet._id}>
+                                    ❌
+                                </DeleteButton>
+                            )}
                         </div>
 
                     }
@@ -120,11 +125,6 @@ export default function TweetPage() {
                                 handleDeleteComment={handleDeleteComment}
                             />
                         ))}
-                    {session?.user?.name === tweet.userName && (
-                        <DeleteButton className="delete-button" showonhover={showDeleteButton} handleDeleteTweet={() => handleDeleteTweet(tweet._id)} tweetId={tweet._id}>
-                            ❌
-                        </DeleteButton>
-                    )}
                     {showModal && (
                         <CommentModal
                             tweetId={getTweetId}
