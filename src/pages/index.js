@@ -12,6 +12,7 @@ import HomepageMainDiv from "../../components/homepage-main-div/homepage-main-di
 import { handleToggleLikes } from "@/utils/handleToggleLikes";
 import { handleDeleteComment } from "@/utils/handleDeleteComment";
 import { handleAddCommentClick } from "@/utils/handleAddCommentClick";
+import { handleDeleteTweet } from "@/utils/handleDeleteTweet";
 
 export default function Home() {
   const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
@@ -50,19 +51,8 @@ export default function Home() {
   }, []);
 
 
-  async function handleDeleteTweet(tweetId) {
-    const response = await fetch(`/api/tweets/${tweetId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: userId }),
-    });
-    mutate()
-  }
-
  
-if (isLoading) {
+ if (isLoading) {
     return <div id="isLoadingText">...Loading</div>;
   }
 
