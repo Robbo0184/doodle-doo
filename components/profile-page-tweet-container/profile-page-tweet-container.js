@@ -5,6 +5,9 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { formatPostAge } from "@/utils/createCommentTweetAge";
+import CommentContainer from "../comment-container/comment-container";
+import ToggleCommentsButton from "../toggle-comments-button/toggle-comments-button";
+import AddCommentButton from "../add-comment-button/add-comment-button";
 
 
 const StyledLi = styled.li`
@@ -57,7 +60,7 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
 
-export default function ProfilePageTweetContainer({ tweets, handleDeleteTweet }) {
+export default function ProfilePageTweetContainer({ setTweetId, tweet, handleDeleteTweet, visibleComments, toggleComments }) {
     
     const { data: session } = useSession();
     const router = useRouter();
@@ -107,6 +110,26 @@ export default function ProfilePageTweetContainer({ tweets, handleDeleteTweet })
                       ❌
                     </DeleteButton>
                   )}
+                  <div id="commentButtonsDiv">
+                  {tweet.comments.length > 0 && (
+                    <ToggleCommentsButton toggleComments={toggleComments} tweet={tweet} />
+                  )}
+                  <AddCommentButton
+                    tweet={tweet}
+                    onClick={() => handleAddCommentClick(tweet._id, setTweetId, setShowModal)}
+                    setTweetId={setTweetId}
+                  /> </div>
+                  {visibleComments[tweet._id] &&
+                    tweet.comments.map((comment, index) => (
+                      <CommentContainer
+                        user={user}
+                        key={index}
+                        tweet={tweet}
+                        comment={comment}
+                        handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)}
+                      />
+                    ))}
+
                 </StyledLi>
               </div>
             );

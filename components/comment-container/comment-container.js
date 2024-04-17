@@ -39,7 +39,7 @@ const StyledDiv = styled.div`
   }
 
   #tweetPageCommentContainerSpan > div {
-    font-weight: 400;  // Slightly less bold than bold, adjust as necessary
+    font-weight: 400;  
     
   }
 

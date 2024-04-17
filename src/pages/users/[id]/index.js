@@ -14,10 +14,19 @@ import { handleToggleLikes } from "@/utils/handleToggleLikes";
 
 export default function ProfilePage() {
   const [showModal, setShowModal] = useState(false);
+  const [visibleComments, setVisibleComments] = useState({});
+  const [getTweetId, setTweetId] = useState('')
   const { data: session } = useSession();
   const router = useRouter();
   const { id: userId } = router.query
   const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
+
+  const toggleComments = (tweetId) => {
+    setVisibleComments((prevComments) => ({
+      ...prevComments,
+      [tweetId]: !prevComments[tweetId],
+    }));
+  };
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -97,13 +106,13 @@ export default function ProfilePage() {
               </BioModal>
             )}
           </div>
-          <ProfilePageTweetContainer handleDeleteTweet={handleDeleteTweet} tweets={user.tweets} />
+          <ProfilePageTweetContainer setTweetId={setTweetId} toggleComments={toggleComments} visibleComments={visibleComments} handleDeleteTweet={handleDeleteTweet} tweets={user.tweets} />
         </div>
         <Navbar>
         </Navbar>
       </main >
 
     </>
-  )
+  )    
 
 }
