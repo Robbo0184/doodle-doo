@@ -12,10 +12,16 @@ export default async function handler(request, response) {
             path: "tweets",
             populate: {
                 path: "comments",
-                model: "Comment"
+                model: "Comment",
+                populate: {
+                    path: "commentUserId",
+                    model: "User",
+                    select: 'image'
+                }
             }
+
         })
-      
+
         if (!users) {
             return response.status(404).json({ status: "Not found" })
         }

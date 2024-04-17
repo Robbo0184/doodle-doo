@@ -122,8 +122,7 @@ export default function TweetPage() {
                                 key={index}
                                 tweet={tweet}
                                 comment={comment}
-                                handleDeleteComment={handleDeleteComment}
-                            />
+                                handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)}                            />
                         ))}
                     {showModal && (
                         <CommentModal

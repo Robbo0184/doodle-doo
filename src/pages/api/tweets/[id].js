@@ -19,7 +19,15 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     try {
-      const tweet = await Tweet.findById(tweetId).populate('comments');
+      const tweet = await Tweet.findById(tweetId)
+      .populate({
+        path: 'comments', 
+        populate: {
+          path: 'commentUserId', 
+          model: 'User' 
+        }
+      });
+      
       return response.status(200).json(tweet);
     } catch (error) {
       console.error(error);
