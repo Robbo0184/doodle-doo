@@ -10,7 +10,9 @@ import Head from "next/head";
 import AddBioButton from "../../../../components/add-bio-button/add-bio-button";
 import UserBioContainer from "../../../../components/user-bio-container/user-bio-container";
 import ProfilePageTweetContainer from "../../../../components/profile-page-tweet-container/profile-page-tweet-container";
-import { handleToggleLikes } from "@/utils/handleToggleLikes";
+import { handleAddCommentClick } from "@/utils/handleAddCommentClick";
+import CommentModal from "../../../../components/comment-modal/comment-modal";
+import { handleDeleteComment } from "@/utils/handleDeleteComment";
 
 export default function ProfilePage() {
   const [showModal, setShowModal] = useState(false);
@@ -19,7 +21,11 @@ export default function ProfilePage() {
   const { data: session } = useSession();
   const router = useRouter();
   const { id: userId } = router.query
+  
+  
   const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
+
+ 
 
   const toggleComments = (tweetId) => {
     setVisibleComments((prevComments) => ({
@@ -106,13 +112,29 @@ export default function ProfilePage() {
               </BioModal>
             )}
           </div>
-          <ProfilePageTweetContainer setTweetId={setTweetId} toggleComments={toggleComments} visibleComments={visibleComments} handleDeleteTweet={handleDeleteTweet} tweets={user.tweets} />
+          <ProfilePageTweetContainer
+            user={user}
+            mutate={mutate}
+            handleAddCommentClick={handleAddCommentClick}
+            setShowModal={setShowModal}
+            setTweetId={setTweetId}
+            toggleComments={toggleComments}
+            visibleComments={visibleComments}
+            handleDeleteComment={handleDeleteComment}
+            handleDeleteTweet={handleDeleteTweet}
+            tweets={user.tweets} />
+          {showModal ? (
+            <CommentModal
+              tweetId={getTweetId}
+              onClose={() => setShowModal(false)}
+            />
+          ) : null}
         </div>
         <Navbar>
         </Navbar>
       </main >
 
     </>
-  )    
+  )
 
 }

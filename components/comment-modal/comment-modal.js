@@ -30,6 +30,7 @@ const handleCommentChange = (e) => {
       });
       mutate("/api/users")
       mutate(`/api/tweets/${tweetId}`)
+      mutate(`/api/users/${userId}`)
       
       if (response.ok) {
         const data = await response.json();

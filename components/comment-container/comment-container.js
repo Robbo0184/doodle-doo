@@ -64,19 +64,20 @@ const ImageWrapper = styled.div`
 
   `;
 
- 
 
-export default function CommentContainer({ comment, handleDeleteComment, index, tweet, user }) {
+
+export default function CommentContainer({ comment, handleDeleteComment, index, tweet, userId }) {
   const { data: session } = useSession();
   
   return (
     <>
+      
       <StyledDiv id="commentContainer" key={index}>
         <ImageWrapper>
           <Link id="commentProfilePageLink" href={`/users/${comment.commentUserId._id}`}>
             <Image id="commentContainerUserIcon" src={comment.commentUserId.image} style={{ borderRadius: '50px' }} height={40} width={40} alt="user-image" />
             <span id="commentContainerUserName">{comment.userName}</span>
-          </Link> 
+          </Link>
         </ImageWrapper>
         <span id="tweetPageCommentContainerSpan">
           <div>{comment.comment}</div>
@@ -84,11 +85,12 @@ export default function CommentContainer({ comment, handleDeleteComment, index, 
         </span>
         {session?.user?.name === comment.userName && (
           <DeleteButtonContainer>
-            <DeleteButton className="delete-button" handleDeleteComment={handleDeleteComment} commentId={comment._id} tweetId={tweet._id} > ❌
+            <DeleteButton className="delete-button" handleDeleteComment={handleDeleteComment} commentId={comment._id} tweetId={tweet._id} userId={userId}  > ❌
             </DeleteButton>
           </DeleteButtonContainer>
         )}
       </StyledDiv>
+      
     </>
   )
 }

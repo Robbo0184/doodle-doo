@@ -79,7 +79,6 @@ export default function TweetContainer({
 }) {
 
   const tweetElementId = `tweet-${tweet._id}`;
-  
   return (
     <StyledLi key={tweet._id}
       id={tweetElementId}>

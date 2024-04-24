@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import DeleteButton from "../profile-page-delete-button/profile-page-delete-buton";
 import Image from "next/image";
-import useSWR from "swr";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { formatPostAge } from "@/utils/createCommentTweetAge";
@@ -60,13 +59,11 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
 
-export default function ProfilePageTweetContainer({ setTweetId, tweet, handleDeleteTweet, visibleComments, toggleComments }) {
-    
+export default function ProfilePageTweetContainer({ user, mutate, setTweetId,  handleDeleteTweet, visibleComments, toggleComments, handleAddCommentClick, setShowModal, handleDeleteComment }) {
     const { data: session } = useSession();
     const router = useRouter();
     const { id: userId } = router.query;
-    const { data: user, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
-    
+
     let sortedTweets = [];
 
     if (user) {
@@ -102,7 +99,6 @@ export default function ProfilePageTweetContainer({ setTweetId, tweet, handleDel
                   {' '} - {formatPostAge(tweet.date)}
                   {session?.user?.userId === userId && (
                     <DeleteButton
-                      
                       className="delete-button"
                       handleDeleteTweet={() => handleDeleteTweet(tweet._id)}
                       tweetId={tweet._id}
@@ -122,11 +118,14 @@ export default function ProfilePageTweetContainer({ setTweetId, tweet, handleDel
                   {visibleComments[tweet._id] &&
                     tweet.comments.map((comment, index) => (
                       <CommentContainer
+                        mutate={mutate}
                         user={user}
                         key={index}
+                        userId={userId}
+                        isProfilePage={true}
                         tweet={tweet}
                         comment={comment}
-                        handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)}
+                        handleDeleteComment={handleDeleteComment}
                       />
                     ))}
 
