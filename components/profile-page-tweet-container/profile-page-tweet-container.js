@@ -1,14 +1,18 @@
 import styled from "styled-components";
 import DeleteButton from "../profile-page-delete-button/profile-page-delete-buton";
 import Image from "next/image";
-import useSWR from "swr";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { formatPostAge } from "@/utils/createCommentTweetAge";
+import CommentContainer from "../comment-container/comment-container";
+import ToggleCommentsButton from "../toggle-comments-button/toggle-comments-button";
+import AddCommentButton from "../add-comment-button/add-comment-button";
+import LikeButton from "../like-button/like-button";
 
 
 const StyledLi = styled.li`
 border: 2px solid #CCCCCC;
+align-items: center;
 box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
   padding: 1.5rem;
@@ -17,15 +21,14 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   max-width: 40vw;
   list-style-type: none;
   position: relative; 
-  transition: background-color 0.3s ease-in-out;
-  display: flex;
+  transition: box-shadow 0.3s ease;   display: flex;
   flex-direction: column;
   gap: 1rem;
-
+  
   &:hover {
-    background-color: #f0f0f0; 
-  };
-
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  }
+ 
   &:hover .delete-button {
     opacity: 1;
   }
@@ -57,21 +60,31 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
 
-export default function ProfilePageTweetContainer({ tweets, handleDeleteTweet }) {
-    
-    const { data: session } = useSession();
-    const router = useRouter();
-    const { id: userId } = router.query;
-    const { data: user, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
-    
-    let sortedTweets = [];
+export default function ProfilePageTweetContainer({
+  user,
+  mutate,
+  setTweetId,
+  handleDeleteTweet,
+  visibleComments,
+  toggleComments,
+  handleAddCommentClick,
+  setShowCommentModal,
+  handleDeleteComment,
+  handleToggleLikes }) {
 
-    if (user) {
-      sortedTweets = user.tweets.sort((a,b) => new Date(b.date) - new Date(a.date))
-    }
-    return (
-      <>
-        
+
+  const { data: session } = useSession();
+  const router = useRouter();
+  const { id: userId } = router.query;
+
+  let sortedTweets = [];
+
+  if (user) {
+    sortedTweets = user.tweets.sort((a, b) => new Date(b.date) - new Date(a.date))
+  }
+  return (
+    <>
+
       {sortedTweets.length > 0 ? (
         sortedTweets.map((tweet) => {
           const formattedDate = new Date(tweet.date).toLocaleDateString("en-US", {
@@ -79,39 +92,71 @@ export default function ProfilePageTweetContainer({ tweets, handleDeleteTweet })
             month: "2-digit",
             day: "2-digit",
           });
-  
-            return (
-              <div key={tweet._id}>
-                <StyledLi
-                  
-                >
-                  {tweet.tweet}
-                  {tweet.image && (
-                    <Image
-                      id="profilePageImage"
-                      src={tweet.image}
-                      style={{ borderRadius: '15px' }}
-                      width={400}
-                      height={250}
-                      alt="tweet image"
+
+          return (
+            <div key={tweet._id}>
+              <StyledLi
+
+              >
+                {tweet.tweet}
+                {tweet.image && (
+                  <Image
+                    id="profilePageImage"
+                    src={tweet.image}
+                    style={{ borderRadius: '15px' }}
+                    width={400}
+                    height={250}
+                    alt="tweet image"
+                  />
+                )}
+                {' '} - {formatPostAge(tweet.date)}
+                <LikeButton
+                className="like--button"
+                isLiked={tweet.likes.includes(userId)}
+                tweetId={tweet._id}
+                handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
+              />
+              {tweet.likes?.length === 1 ? (
+                <p>1 like</p>
+              ) : (
+                <p>{tweet.likes?.length} likes</p>
+              )}
+                {session?.user?.userId === userId && (
+                  <DeleteButton
+                    className="delete-button"
+                    handleDeleteTweet={() => handleDeleteTweet(tweet._id, userId)}
+                    tweetId={tweet._id}
+                  >
+                    ❌
+                  </DeleteButton>
+                )}
+                <div id="commentButtonsDiv">
+                  {tweet.comments.length > 0 && (
+                    <ToggleCommentsButton toggleComments={toggleComments} tweet={tweet} />
+                  )}
+                  <AddCommentButton
+                    tweet={tweet}
+                    onClick={() => handleAddCommentClick(tweet._id, setTweetId, setShowCommentModal)}
+                    setTweetId={setTweetId}
+                  /> </div>
+                {visibleComments[tweet._id] &&
+                  tweet.comments.map((comment, index) => (
+                    <CommentContainer
+                      mutate={mutate}
+                      user={user}
+                      key={index}
+                      userId={userId}
+                      tweet={tweet}
+                      comment={comment}
+                      handleDeleteComment={handleDeleteComment}
                     />
-                  )}
-                  {' '} - {formatPostAge(tweet.date)}
-                  {session?.user?.userId === userId && (
-                    <DeleteButton
-                      
-                      className="delete-button"
-                      handleDeleteTweet={() => handleDeleteTweet(tweet._id)}
-                      tweetId={tweet._id}
-                    >
-                      ❌
-                    </DeleteButton>
-                  )}
-                </StyledLi>
-              </div>
-            );
-          })
-        ) : <p id="noDoodleDooMessageProfilePage">No doodle doos to display...</p>}
-      </>
-    );
-  }
+                  ))}
+
+              </StyledLi>
+            </div>
+          );
+        })
+      ) : <p id="noDoodleDooMessageProfilePage">No doodle doos to display...</p>}
+    </>
+  );
+}

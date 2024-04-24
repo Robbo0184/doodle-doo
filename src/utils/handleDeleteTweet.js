@@ -11,4 +11,7 @@ export async function handleDeleteTweet(tweetId, userId) {
       body: JSON.stringify({ id: userId }),
     });
     mutate("/api/users")
+    
+
+   await mutate(`/api/users/${userId}`);
   }

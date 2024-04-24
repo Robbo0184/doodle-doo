@@ -21,19 +21,30 @@ const StyledButton = styled.button`
     }
 `;
 
-export default function DeleteButton({ className, handleDeleteTweet, handleDeleteComment, commentId, tweetId, shouldRedirect = false  }) {
-  const router = useRouter()
-  const handleDeleteClick = () => {
-    if (commentId) {
-      handleDeleteComment(commentId, tweetId);
+export default function DeleteButton({ 
+  className,
+  handleDeleteTweet,
+  handleDeleteComment,
+  userId,
+  commentId,
+  tweetId,
+  shouldRedirect = false }) {
 
-    } else {
+  const router = useRouter()
+  
+  const handleDeleteClick = () => {
+    if (commentId && handleDeleteComment) {
+      handleDeleteComment(commentId, tweetId, userId);
+    } else if (handleDeleteTweet) {
       handleDeleteTweet(tweetId);
-      if (shouldRedirect) {
-        router.push('/'); 
-      }
+    } else {
+      console.error("No delete function provided");
     }
-  }
+
+    if (shouldRedirect && router) {
+      router.push('/');
+    }
+  };
 
   return (
     <>

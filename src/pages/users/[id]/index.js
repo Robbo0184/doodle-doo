@@ -10,14 +10,30 @@ import Head from "next/head";
 import AddBioButton from "../../../../components/add-bio-button/add-bio-button";
 import UserBioContainer from "../../../../components/user-bio-container/user-bio-container";
 import ProfilePageTweetContainer from "../../../../components/profile-page-tweet-container/profile-page-tweet-container";
+import { handleAddCommentClick } from "@/utils/handleAddCommentClick";
+import CommentModal from "../../../../components/comment-modal/comment-modal";
+import { handleDeleteComment } from "@/utils/handleDeleteComment";
 import { handleToggleLikes } from "@/utils/handleToggleLikes";
+import { handleDeleteTweet } from "@/utils/handleDeleteTweet";
+import { handleDeleteBio } from "@/utils/handleDeleteBio";
 
 export default function ProfilePage() {
-  const [showModal, setShowModal] = useState(false);
+  const [showBioModal, setShowBioModal] = useState(false);
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [visibleComments, setVisibleComments] = useState({});
+  const [getTweetId, setTweetId] = useState('')
   const { data: session } = useSession();
   const router = useRouter();
   const { id: userId } = router.query
+
   const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
+
+  const toggleComments = (tweetId) => {
+    setVisibleComments((prevComments) => ({
+      ...prevComments,
+      [tweetId]: !prevComments[tweetId],
+    }));
+  };
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -28,27 +44,17 @@ export default function ProfilePage() {
 
   if (!user) return;
 
-  async function handleDeleteTweet(tweetId) {
-    const response = await fetch(`/api/tweets/${tweetId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ id: userId }),
-    });
-    mutate()
-  }
 
-  async function handleDeleteBio(userId) {
-    const response = await fetch('/api/bio', {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId })
-    });
-    mutate()
-  }
+  // async function handleDeleteBio(userId) {
+  //   const response = await fetch('/api/bio', {
+  //     method: "DELETE",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ userId })
+  //   });
+  //   mutate()
+  // }
 
   return (
     <>
@@ -85,19 +91,36 @@ export default function ProfilePage() {
               <AddBioButton
                 className="bio--button"
                 onClick={() => {
-                  setShowModal(true);
+                  setShowBioModal(true);
                 }}
               />
             }
             {user.bio && (
               <UserBioContainer user={user} handleDeleteBio={handleDeleteBio} />
             )}
-            {showModal && (
-              <BioModal onClose={() => setShowModal(false)}>
+            {showBioModal && (
+              <BioModal onClose={() => setShowBioModal(false)}>
               </BioModal>
             )}
           </div>
-          <ProfilePageTweetContainer handleDeleteTweet={handleDeleteTweet} tweets={user.tweets} />
+          <ProfilePageTweetContainer
+            user={user}
+            mutate={mutate}
+            handleAddCommentClick={handleAddCommentClick}
+            handleToggleLikes={handleToggleLikes}
+            setShowCommentModal={setShowCommentModal}
+            setTweetId={setTweetId}
+            toggleComments={toggleComments}
+            visibleComments={visibleComments}
+            handleDeleteComment={handleDeleteComment}
+            handleDeleteTweet={handleDeleteTweet}
+            tweets={user.tweets} />
+          {showCommentModal ? (
+            <CommentModal
+              tweetId={getTweetId}
+              onClose={() => setShowCommentModal(false)}
+            />
+          ) : null}
         </div>
         <Navbar>
         </Navbar>
