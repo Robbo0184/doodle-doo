@@ -11,6 +11,7 @@ import AddCommentButton from "../add-comment-button/add-comment-button";
 
 const StyledLi = styled.li`
 border: 2px solid #CCCCCC;
+align-items: center;
 box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
   padding: 1.5rem;
@@ -19,15 +20,14 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   max-width: 40vw;
   list-style-type: none;
   position: relative; 
-  transition: background-color 0.3s ease-in-out;
-  display: flex;
+  transition: box-shadow 0.3s ease;   display: flex;
   flex-direction: column;
   gap: 1rem;
-
+  
   &:hover {
-    background-color: #f0f0f0; 
-  };
-
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  }
+ 
   &:hover .delete-button {
     opacity: 1;
   }
@@ -59,19 +59,19 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
 
-export default function ProfilePageTweetContainer({ user, mutate, setTweetId,  handleDeleteTweet, visibleComments, toggleComments, handleAddCommentClick, setShowModal, handleDeleteComment }) {
-    const { data: session } = useSession();
-    const router = useRouter();
-    const { id: userId } = router.query;
+export default function ProfilePageTweetContainer({ user, mutate, setTweetId, handleDeleteTweet, visibleComments, toggleComments, handleAddCommentClick, setShowModal, handleDeleteComment }) {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const { id: userId } = router.query;
 
-    let sortedTweets = [];
+  let sortedTweets = [];
 
-    if (user) {
-      sortedTweets = user.tweets.sort((a,b) => new Date(b.date) - new Date(a.date))
-    }
-    return (
-      <>
-        
+  if (user) {
+    sortedTweets = user.tweets.sort((a, b) => new Date(b.date) - new Date(a.date))
+  }
+  return (
+    <>
+
       {sortedTweets.length > 0 ? (
         sortedTweets.map((tweet) => {
           const formattedDate = new Date(tweet.date).toLocaleDateString("en-US", {
@@ -79,34 +79,34 @@ export default function ProfilePageTweetContainer({ user, mutate, setTweetId,  h
             month: "2-digit",
             day: "2-digit",
           });
-  
-            return (
-              <div key={tweet._id}>
-                <StyledLi
-                  
-                >
-                  {tweet.tweet}
-                  {tweet.image && (
-                    <Image
-                      id="profilePageImage"
-                      src={tweet.image}
-                      style={{ borderRadius: '15px' }}
-                      width={400}
-                      height={250}
-                      alt="tweet image"
-                    />
-                  )}
-                  {' '} - {formatPostAge(tweet.date)}
-                  {session?.user?.userId === userId && (
-                    <DeleteButton
-                      className="delete-button"
-                      handleDeleteTweet={() => handleDeleteTweet(tweet._id)}
-                      tweetId={tweet._id}
-                    >
-                      ❌
-                    </DeleteButton>
-                  )}
-                  <div id="commentButtonsDiv">
+
+          return (
+            <div key={tweet._id}>
+              <StyledLi
+
+              >
+                {tweet.tweet}
+                {tweet.image && (
+                  <Image
+                    id="profilePageImage"
+                    src={tweet.image}
+                    style={{ borderRadius: '15px' }}
+                    width={400}
+                    height={250}
+                    alt="tweet image"
+                  />
+                )}
+                {' '} - {formatPostAge(tweet.date)}
+                {session?.user?.userId === userId && (
+                  <DeleteButton
+                    className="delete-button"
+                    handleDeleteTweet={() => handleDeleteTweet(tweet._id)}
+                    tweetId={tweet._id}
+                  >
+                    ❌
+                  </DeleteButton>
+                )}
+                <div id="commentButtonsDiv">
                   {tweet.comments.length > 0 && (
                     <ToggleCommentsButton toggleComments={toggleComments} tweet={tweet} />
                   )}
@@ -115,25 +115,25 @@ export default function ProfilePageTweetContainer({ user, mutate, setTweetId,  h
                     onClick={() => handleAddCommentClick(tweet._id, setTweetId, setShowModal)}
                     setTweetId={setTweetId}
                   /> </div>
-                  {visibleComments[tweet._id] &&
-                    tweet.comments.map((comment, index) => (
-                      <CommentContainer
-                        mutate={mutate}
-                        user={user}
-                        key={index}
-                        userId={userId}
-                        isProfilePage={true}
-                        tweet={tweet}
-                        comment={comment}
-                        handleDeleteComment={handleDeleteComment}
-                      />
-                    ))}
+                {visibleComments[tweet._id] &&
+                  tweet.comments.map((comment, index) => (
+                    <CommentContainer
+                      mutate={mutate}
+                      user={user}
+                      key={index}
+                      userId={userId}
+                      isProfilePage={true}
+                      tweet={tweet}
+                      comment={comment}
+                      handleDeleteComment={handleDeleteComment}
+                    />
+                  ))}
 
-                </StyledLi>
-              </div>
-            );
-          })
-        ) : <p id="noDoodleDooMessageProfilePage">No doodle doos to display...</p>}
-      </>
-    );
-  }
+              </StyledLi>
+            </div>
+          );
+        })
+      ) : <p id="noDoodleDooMessageProfilePage">No doodle doos to display...</p>}
+    </>
+  );
+}
