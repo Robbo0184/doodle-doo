@@ -7,6 +7,7 @@ import { formatPostAge } from "@/utils/createCommentTweetAge";
 import CommentContainer from "../comment-container/comment-container";
 import ToggleCommentsButton from "../toggle-comments-button/toggle-comments-button";
 import AddCommentButton from "../add-comment-button/add-comment-button";
+import LikeButton from "../like-button/like-button";
 
 
 const StyledLi = styled.li`
@@ -59,7 +60,19 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
 
-export default function ProfilePageTweetContainer({ user, mutate, setTweetId, handleDeleteTweet, visibleComments, toggleComments, handleAddCommentClick, setShowModal, handleDeleteComment }) {
+export default function ProfilePageTweetContainer({
+  user,
+  mutate,
+  setTweetId,
+  handleDeleteTweet,
+  visibleComments,
+  toggleComments,
+  handleAddCommentClick,
+  setShowCommentModal,
+  handleDeleteComment,
+  handleToggleLikes }) {
+
+
   const { data: session } = useSession();
   const router = useRouter();
   const { id: userId } = router.query;
@@ -97,10 +110,21 @@ export default function ProfilePageTweetContainer({ user, mutate, setTweetId, ha
                   />
                 )}
                 {' '} - {formatPostAge(tweet.date)}
+                <LikeButton
+                className="like--button"
+                isLiked={tweet.likes.includes(userId)}
+                tweetId={tweet._id}
+                handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
+              />
+              {tweet.likes?.length === 1 ? (
+                <p>1 like</p>
+              ) : (
+                <p>{tweet.likes?.length} likes</p>
+              )}
                 {session?.user?.userId === userId && (
                   <DeleteButton
                     className="delete-button"
-                    handleDeleteTweet={() => handleDeleteTweet(tweet._id)}
+                    handleDeleteTweet={() => handleDeleteTweet(tweet._id, userId)}
                     tweetId={tweet._id}
                   >
                     ❌
@@ -112,7 +136,7 @@ export default function ProfilePageTweetContainer({ user, mutate, setTweetId, ha
                   )}
                   <AddCommentButton
                     tweet={tweet}
-                    onClick={() => handleAddCommentClick(tweet._id, setTweetId, setShowModal)}
+                    onClick={() => handleAddCommentClick(tweet._id, setTweetId, setShowCommentModal)}
                     setTweetId={setTweetId}
                   /> </div>
                 {visibleComments[tweet._id] &&
@@ -122,7 +146,6 @@ export default function ProfilePageTweetContainer({ user, mutate, setTweetId, ha
                       user={user}
                       key={index}
                       userId={userId}
-                      isProfilePage={true}
                       tweet={tweet}
                       comment={comment}
                       handleDeleteComment={handleDeleteComment}
