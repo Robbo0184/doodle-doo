@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import styled from "styled-components";
 import useSWR from "swr";
 import Link from "next/link";
 import LikeButton from "../../../../../../components/like-button/like-button";
@@ -18,6 +19,16 @@ import Navbar from "../../../../../../components/navbar/navbar";
 import { formatPostAge } from "@/utils/createCommentTweetAge";
 import { handleDeleteTweet } from "@/utils/handleDeleteTweet";
 
+const LikeLink = styled.a`
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit; 
+
+  @media (min-width: 501px) {
+    pointer-events: none;
+  }
+`;
+
 export default function TweetPage() {
     const router = useRouter();
     const { id: userId, tweetId } = router.query;
@@ -29,6 +40,8 @@ export default function TweetPage() {
     const [getTweetId, setTweetId] = useState("")
     const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
     const [showUserInfo, setShowUserInfo] = useState(true);
+    const [isNarrowScreen, setIsNarrowScreen] = useState(false);
+    
 
     const handleToggleComments = () => {
         toggleComments(tweetId, setVisibleComments);
@@ -47,6 +60,19 @@ export default function TweetPage() {
 
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    useEffect(() => {
+        function handleResize() {
+          setIsNarrowScreen(window.innerWidth < 500);
+        }
+    
+        window.addEventListener('resize', handleResize);
+    
+        handleResize();
+    
+        return () => window.removeEventListener('resize', handleResize);
+      }, []); 
+    
 
     if (!tweet) {
         return <div>Loading tweet...</div>;
@@ -102,11 +128,13 @@ export default function TweetPage() {
                         tweetId={tweet?.tweet._id}
                         handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
                     />
-                    {tweet.likes?.length === 1 ? (
-                        <p className="tweet--page--likes">1 like</p>
-                    ) : (
-                        <p className="tweet--page--likes">{tweet.likes?.length} likes</p>
-                    )}
+                    {user && tweet && isNarrowScreen ? (
+                        <LikeLink href={`/users/${user._id}/tweet/${tweet._id}/likes`}>
+                          {tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}
+                        </LikeLink>
+                      ) : (
+                        <p>Loading...</p> // Or any other placeholder content
+                      )}
 
                     <div id="commentButtonsDiv">
                         {tweet.comments.length > 0 && (

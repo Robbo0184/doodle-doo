@@ -45,17 +45,6 @@ export default function ProfilePage() {
   if (!user) return;
 
 
-  // async function handleDeleteBio(userId) {
-  //   const response = await fetch('/api/bio', {
-  //     method: "DELETE",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ userId })
-  //   });
-  //   mutate()
-  // }
-
   return (
     <>
       <Head>

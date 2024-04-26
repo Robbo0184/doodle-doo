@@ -25,7 +25,12 @@ export default async function handler(request, response) {
         populate: {
           path: 'commentUserId', 
           model: 'User' 
-        }
+        },
+      })
+      .populate({
+        path: 'likes',
+        model: 'User', 
+        select: 'name image' 
       });
       
       return response.status(200).json(tweet);

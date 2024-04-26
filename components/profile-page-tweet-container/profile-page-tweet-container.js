@@ -8,7 +8,7 @@ import CommentContainer from "../comment-container/comment-container";
 import ToggleCommentsButton from "../toggle-comments-button/toggle-comments-button";
 import AddCommentButton from "../add-comment-button/add-comment-button";
 import LikeButton from "../like-button/like-button";
-
+import React, { useState, useEffect } from "react";
 
 const StyledLi = styled.li`
 border: 2px solid #CCCCCC;
@@ -60,6 +60,16 @@ box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
 
+const LikeLink = styled.a`
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit; 
+
+  @media (min-width: 501px) {
+    pointer-events: none;
+  }
+`;
+
 export default function ProfilePageTweetContainer({
   user,
   mutate,
@@ -76,12 +86,25 @@ export default function ProfilePageTweetContainer({
   const { data: session } = useSession();
   const router = useRouter();
   const { id: userId } = router.query;
+  const [isNarrowScreen, setIsNarrowScreen] = useState(false);
+
 
   let sortedTweets = [];
 
   if (user) {
     sortedTweets = user.tweets.sort((a, b) => new Date(b.date) - new Date(a.date))
   }
+useEffect(() => {
+    function handleResize() {
+      setIsNarrowScreen(window.innerWidth < 500);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []); 
   return (
     <>
 
@@ -116,10 +139,12 @@ export default function ProfilePageTweetContainer({
                 tweetId={tweet._id}
                 handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
               />
-              {tweet.likes?.length === 1 ? (
-                <p>1 like</p>
+              {isNarrowScreen ? (
+                <LikeLink href={`/users/${user._id}/tweet/${tweet._id}/likes`}>
+                  {tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}
+                </LikeLink>
               ) : (
-                <p>{tweet.likes?.length} likes</p>
+                <p>{tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}</p>
               )}
                 {session?.user?.userId === userId && (
                   <DeleteButton
