@@ -29,6 +29,13 @@
   color: #00BFFF;
 }
 
+#likeButtonAndLikeLinkContianer {
+  display: flex;          
+  align-items: center;   
+  gap: 25px;
+}
+
+
 #homeFeedTweetText {
   margin-bottom: 2rem;
 }

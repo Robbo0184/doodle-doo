@@ -114,19 +114,21 @@ export default function TweetContainer({
         )}
       </Link>
       <ProfilePageLink user={user} tweet={tweet} />
-      <LikeButton
-        className="like--button"
-        isLiked={tweet.likes.includes(userId)}
-        tweetId={tweet._id}
-        handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
-      />
-      {isNarrowScreen && tweet?.likes.length > 0 ? (
-        <LikeLink href={`users/${user._id}/tweet/${tweet._id}/likes`}>
-          {tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}
-        </LikeLink>
-      ) : (
-        <p>{tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}</p>
-      )}
+      <div id='likeButtonAndLikeLinkContianer'>
+        <LikeButton
+          className="like--button"
+          isLiked={tweet.likes.includes(userId)}
+          tweetId={tweet._id}
+          handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
+        />
+        {isNarrowScreen && tweet?.likes.length > 0 ? (
+          <LikeLink href={`users/${user._id}/tweet/${tweet._id}/likes`}>
+            {tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}
+          </LikeLink>
+        ) : (
+          <p>{tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}</p>
+        )}
+      </div>
 
       <div id="commentButtonsDiv">
         {tweet.comments.length > 0 && (
