@@ -139,7 +139,7 @@ useEffect(() => {
                 tweetId={tweet._id}
                 handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
               />
-              {isNarrowScreen ? (
+              {isNarrowScreen && tweet.likes.length > 0 ? (
                 <LikeLink href={`/users/${user._id}/tweet/${tweet._id}/likes`}>
                   {tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}
                 </LikeLink>

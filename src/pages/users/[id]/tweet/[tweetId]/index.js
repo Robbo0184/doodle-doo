@@ -128,13 +128,17 @@ export default function TweetPage() {
                         tweetId={tweet?.tweet._id}
                         handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
                     />
-                    {user && tweet && isNarrowScreen ? (
+                    {tweet && user && ( 
+                    <> 
+                    {isNarrowScreen && tweet?.likes.length > 0 ? (
                         <LikeLink href={`/users/${user._id}/tweet/${tweet._id}/likes`}>
                           {tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}
                         </LikeLink>
                       ) : (
-                        <p>Loading...</p> // Or any other placeholder content
+                        <p>{tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}</p>
                       )}
+                    </>
+                )} 
 
                     <div id="commentButtonsDiv">
                         {tweet.comments.length > 0 && (
