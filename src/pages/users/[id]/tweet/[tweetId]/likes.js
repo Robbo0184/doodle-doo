@@ -3,16 +3,16 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Navbar from "../../../../../../components/navbar/navbar";
 import Head from "next/head";
+import Link from "next/link";
 
 
 
 export default function LikesPage() {
     const router = useRouter();
     const { id: userId, tweetId } = router.query
-
-    const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
     const { data: tweet } = useSWR(`/api/tweets/${tweetId}`);
     const likes = tweet?.likes
+    
 
 
     return (
@@ -22,19 +22,18 @@ export default function LikesPage() {
             </Head>
             <main className="likes--page--main">
 
-                <h2>Liked by</h2>
-
+                <h2 id="likesPageLikedByHeading">Liked by</h2>
+                
+                <div id="likesPageLikesContainer">
                 {likes?.map((like, index) => (
-                    <div key={index}>
-                    <Image src={like.image} alt={like.name} style={{ borderRadius: '50px' }} width={60} height={60} />
+                    <Link href={`/users/${like._id}`} key={index} className="likes--page--profile--link">
+                    <div key={index} className="like-item">
+                        <Image src={like.image} alt={like.name} style={{ borderRadius: '50px' }} width={60} height={60} />
                         <p>{like.name}</p>
                     </div>
+                    </Link>
                 ))}
-
-
-
-
-
+            </div>
 
 
 
