@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Comment from "./Comment";
+import Comment from "./Comment.js";
 
 const { Schema } = mongoose;
 
@@ -8,7 +8,7 @@ const tweetSchema = new Schema({
   tweet: String,
   image: String,
   date: { type: Date, default: Date.now },
-  likes: [String],
+  likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],  
   comments: {type: [Schema.Types.ObjectId], ref: Comment }
 });
 

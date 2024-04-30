@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ProfilePageLink from '../main-feed-profile-link/main-feed-profile-link';
 import LikeButton from '../like-button/like-button';
@@ -60,6 +61,16 @@ transition: box-shadow 0.3s ease;
    }
 `;
 
+const LikeLink = styled.a`
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit; 
+
+  @media (min-width: 501px) {
+    pointer-events: none; 
+  }
+`;
+
 export default function TweetContainer({
   tweet,
   user,
@@ -72,13 +83,27 @@ export default function TweetContainer({
   handleDeleteTweet,
   session,
   setShowModal,
-  setTweetId, 
-  
-
+  setTweetId,
 
 }) {
 
+  const [isNarrowScreen, setIsNarrowScreen] = useState(false);
   const tweetElementId = `tweet-${tweet._id}`;
+
+  useEffect(() => {
+
+    function handleResize() {
+      setIsNarrowScreen(window.innerWidth < 500);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
   return (
     <StyledLi key={tweet._id}
       id={tweetElementId}>
@@ -95,11 +120,14 @@ export default function TweetContainer({
         tweetId={tweet._id}
         handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
       />
-      {tweet.likes?.length === 1 ? (
-        <p>1 like</p>
+      {isNarrowScreen && tweet?.likes.length > 0 ? (
+        <LikeLink href={`users/${user._id}/tweet/${tweet._id}/likes`}>
+          {tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}
+        </LikeLink>
       ) : (
-        <p>{tweet.likes?.length} likes</p>
+        <p>{tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}</p>
       )}
+
       <div id="commentButtonsDiv">
         {tweet.comments.length > 0 && (
           <ToggleCommentsButton toggleComments={toggleComments} tweet={tweet} />

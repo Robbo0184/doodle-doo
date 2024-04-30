@@ -14,12 +14,14 @@ import { handleDeleteComment } from "@/utils/handleDeleteComment";
 import { handleAddCommentClick } from "@/utils/handleAddCommentClick";
 import { handleDeleteTweet } from "@/utils/handleDeleteTweet";
 
+
 export default function Home() {
   const { data: users, isLoading, isError, mutate } = useSWR("/api/users");
   const { data: session } = useSession();
   const [showModal, setShowModal] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
   const [getTweetId, setTweetId] = useState('')
+  
 
   const toggleComments = (tweetId) => {
     setVisibleComments((prevComments) => ({
