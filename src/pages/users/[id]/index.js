@@ -16,6 +16,8 @@ import { handleDeleteComment } from "@/utils/handleDeleteComment";
 import { handleToggleLikes } from "@/utils/handleToggleLikes";
 import { handleDeleteTweet } from "@/utils/handleDeleteTweet";
 import { handleDeleteBio } from "@/utils/handleDeleteBio";
+import FollowUserButton from "../../../../components/follow-user-button/follow-user-button";
+import { handleToggleFollower } from "@/utils/handleToggleFollower";
 
 export default function ProfilePage() {
   const [showBioModal, setShowBioModal] = useState(false);
@@ -25,6 +27,7 @@ export default function ProfilePage() {
   const { data: session } = useSession();
   const router = useRouter();
   const { id: userId } = router.query
+  const sessionId = session?.user?.userId
 
   const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
 
@@ -76,12 +79,17 @@ export default function ProfilePage() {
             <h3 className="user--email--heading">
               {user.email}
             </h3>
-            {session?.user?.userId === userId &&
+
+            {session?.user?.userId === userId ?
               <AddBioButton
                 className="bio--button"
                 onClick={() => {
                   setShowBioModal(true);
                 }}
+              /> : <FollowUserButton
+                sessionId={sessionId}
+                handleToggleFollower={handleToggleFollower}
+                isFollower={user.followers.includes(sessionId)}
               />
             }
             {user.bio && (

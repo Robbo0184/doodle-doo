@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Image from "next/image";
 import likeIconEmpty from "../../public/assets/like-icon-empty.svg";
 import likeIconFull from "../../public/assets/like-icon-filled.svg";
-import { useSession } from "next-auth/react";
 
 export const StyledButton = styled.button`
   border: none;
@@ -20,7 +19,6 @@ export const StyledButton = styled.button`
 `;
 
 export default function LikeButton({ tweetId, isLiked, handleToggleLikes }) {
-  // const { data: session } = useSession();
 
   const toggleLike = () => {
     handleToggleLikes(tweetId);
