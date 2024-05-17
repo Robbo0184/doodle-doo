@@ -20,7 +20,7 @@
     grid-template-areas:
         "pic heading logo"
         "email . button"
-        "bio . .";
+        "bio . followers-count";
 
     grid-template-columns: 200px auto 200px;
     grid-template-rows: auto auto auto;
@@ -29,6 +29,13 @@
 #noDoodleDooMessageProfilePage{
     font-family: 'Playpen Sans', sans-serif;
     font-size: 1.1rem;
+}
+
+#profilePageFollowerCount{
+    font-family: 'Playpen Sans', sans-serif;
+    grid-area: followers-count;
+    margin-top: 5rem;
+    
 }
 
 .user--email--heading {
@@ -46,6 +53,7 @@
     justify-self: end;
     margin-right: -22%;
     font-size: 1rem;
+    margin-top: 10%
 
 }
 
@@ -100,7 +108,7 @@
         grid-template-areas:
             "pic heading logo"
             "email . button"
-            "bio . .";
+            "bio . followers-count";
 
         grid-template-columns: auto auto auto;
         grid-template-rows: auto auto auto;
@@ -125,20 +133,25 @@
         font-size: 0.8rem;
         width: 70px;
         margin-top: 10%;
-        margin-right: -15%;
+        margin-right: -18%;
     }
 
+    #profilePageFollowerCount{
+        margin-top: -5%;
+        margin-right: -55%
+
+    }
  
 
     .user--bio {
-        font-size: 0.7rem;
-        margin-left: 0;
+        font-size: 0.9rem;
+        margin-left: -10%;
     }
 
     .user--email--heading {
-        font-size: 0.75rem;
+        font-size: 0.9rem;
         margin-top: 5%;
-        margin-left: -38%;
+        margin-left: -42%;
     }
 
     .user--image {

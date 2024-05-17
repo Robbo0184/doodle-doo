@@ -3,9 +3,9 @@ import Navbar from "../../../../components/navbar/navbar";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import DoodleDoLogo from "../../../../public/assets/hen.png"
+import DoodleDoLogo from "../../../../public/assets/hen.png";
 import BioModal from "../../../../components/bio-modal/bio-modal";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import AddBioButton from "../../../../components/add-bio-button/add-bio-button";
 import UserBioContainer from "../../../../components/user-bio-container/user-bio-container";
@@ -18,35 +18,72 @@ import { handleDeleteTweet } from "@/utils/handleDeleteTweet";
 import { handleDeleteBio } from "@/utils/handleDeleteBio";
 import FollowUserButton from "../../../../components/follow-user-button/follow-user-button";
 import { handleToggleFollower } from "@/utils/handleToggleFollower";
+import styled from "styled-components";
+
+const FollowersLink = styled.a`
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit; 
+`;
 
 export default function ProfilePage() {
   const [showBioModal, setShowBioModal] = useState(false);
+  const [isNarrowScreen, setIsNarrowScreen] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
+  const [isFollower, setIsFollower] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
-  const [getTweetId, setTweetId] = useState('')
+  const [getTweetId, setTweetId] = useState('');
   const { data: session } = useSession();
   const router = useRouter();
-  const { id: userId } = router.query
-  const sessionId = session?.user?.userId
-
+  const { id: userId } = router.query;
+  const sessionId = session?.user?.userId;
+  const initialLoad = useRef(true);
+  
   const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
-
+  
+  
   const toggleComments = (tweetId) => {
     setVisibleComments((prevComments) => ({
       ...prevComments,
       [tweetId]: !prevComments[tweetId],
     }));
   };
+
+  useEffect(() => {
+    function handleResize() {
+      setIsNarrowScreen(window.innerWidth < 500);
+    }
+    
+    window.addEventListener('resize', handleResize);
+    
+    handleResize();
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  useEffect(() => {
+    if (user && initialLoad.current) {
+      setIsFollower(user.followers.includes(sessionId));
+      initialLoad.current = false; 
+    }
+  }, [user, sessionId]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error loading user data: {error.message} </div>;
+    return <div>Error loading user data: {error.message}</div>;
   }
 
   if (!user) return;
 
+  const toggleFollower = async () => {
+    console.log("Session ID:", sessionId); 
+    console.log("User ID:", userId);
+
+    await handleToggleFollower(setIsFollower, sessionId, userId, isFollower); 
+  };
 
   return (
     <>
@@ -88,20 +125,25 @@ export default function ProfilePage() {
                 }}
               /> : <FollowUserButton
                 sessionId={sessionId}
-                handleToggleFollower={handleToggleFollower}
-                isFollower={user.followers.includes(sessionId)}
+                toggleFollower={toggleFollower}
+                isFollower={isFollower}
               />
             }
             {user.bio && (
               <UserBioContainer user={user} handleDeleteBio={handleDeleteBio} />
             )}
+            <FollowersLink id="profilePageFollowerCount" href={isNarrowScreen && user.followers.length > 0 ? `/users/${user._id}/followers` : undefined} style={{ pointerEvents: isNarrowScreen ? 'auto' : 'none' }}>
+              <p>
+                {`${user.followers.length} ${user.followers.length === 1 ? 'Follower' : 'Followers'}`}
+              </p>
+            </FollowersLink>
             {showBioModal && (
-              <BioModal onClose={() => setShowBioModal(false)}>
-              </BioModal>
+              <BioModal onClose={() => setShowBioModal(false)} />
             )}
           </div>
           <ProfilePageTweetContainer
             user={user}
+            isNarrowScreen={isNarrowScreen}
             mutate={mutate}
             handleAddCommentClick={handleAddCommentClick}
             handleToggleLikes={handleToggleLikes}
@@ -111,7 +153,8 @@ export default function ProfilePage() {
             visibleComments={visibleComments}
             handleDeleteComment={handleDeleteComment}
             handleDeleteTweet={handleDeleteTweet}
-            tweets={user.tweets} />
+            tweets={user.tweets}
+          />
           {showCommentModal ? (
             <CommentModal
               tweetId={getTweetId}
@@ -119,11 +162,8 @@ export default function ProfilePage() {
             />
           ) : null}
         </div>
-        <Navbar>
-        </Navbar>
-      </main >
-
+        <Navbar />
+      </main>
     </>
-  )
-
+  );
 }

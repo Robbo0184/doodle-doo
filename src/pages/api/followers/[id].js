@@ -10,9 +10,9 @@ export default async function handler(request, response) {
         const { id: userId } = request.query;
         const { sessionId } = request.body;
 
-        if (!Types.ObjectId.isValid(userId)) {
-            return response.status(400).json({ error: 'Invalid user ID' });
-        }
+        if (!Types.ObjectId.isValid(userId) || !Types.ObjectId.isValid(sessionId)) {
+            return response.status(400).json({ error: "Invalid user ID or session ID" });
+          }
 
         const user = await User.findById(userId);
 

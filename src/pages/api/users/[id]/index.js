@@ -24,7 +24,11 @@ export default async function handler(request, response) {
           model: 'User' 
         }
       }
-    });
+    }).populate({
+      path: "followers",
+      model: "User",
+      select: "name image",
+    })
 
     if (!user) {
       return response.status(404).json({ status: "Not found" })

@@ -1,9 +1,11 @@
 import { mutate } from "swr";
 
-export async function handleToggleFollower(sessionId, userId) {
+export async function handleToggleFollower(setIsFollower, sessionId, userId, isFollower) {
+  
+
   if (!sessionId || !userId) {
-    console.error("Missing followerId or userId");
-    return; 
+    console.error("Missing sessionId or userId");
+    return;
   }
 
   const response = await fetch(`/api/followers/${userId}`, {
@@ -15,10 +17,13 @@ export async function handleToggleFollower(sessionId, userId) {
   });
 
   if (response.ok) {
-    mutate('/api/users');
-    mutate(`/api/users/${userId}`); 
-  } else {
+    setIsFollower(!isFollower);
     
+
+  
+    mutate(`/api/users/${userId}`);
+    
+  } else {
     const errorData = await response.json();
     console.error("Error toggling follower:", errorData.error);
   }

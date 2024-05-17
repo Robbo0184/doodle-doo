@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useRouter } from "next/router";
 
 
 const StyledButton = styled.button`
@@ -18,14 +17,7 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 `
 
-export default function FollowUserButton({ sessionId, handleToggleFollower, isFollower }) {
-    
-    const router = useRouter();
-    const { id: userId } = router.query
-
-    const toggleFollower = async () => {
-        handleToggleFollower(sessionId, userId);
-    };
+export default function FollowUserButton({ toggleFollower, isFollower }) {
 
     return (
         <>

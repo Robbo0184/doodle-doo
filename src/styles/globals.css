@@ -3,6 +3,7 @@
 @import url("./new-post-form.css");
 @import url("./tweet-page.css");
 @import url("./likes-page.css");
+@import url("./followers-page.css");
 
 * {
   margin: 0;
