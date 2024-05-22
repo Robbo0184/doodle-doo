@@ -38,10 +38,9 @@ export default function ProfilePage() {
   const { id: userId } = router.query;
   const sessionId = session?.user?.userId;
   const initialLoad = useRef(true);
-  
+
   const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
-  
-  
+
   const toggleComments = (tweetId) => {
     setVisibleComments((prevComments) => ({
       ...prevComments,
@@ -53,24 +52,22 @@ export default function ProfilePage() {
     function handleResize() {
       setIsNarrowScreen(window.innerWidth < 500);
     }
-    
+
     window.addEventListener('resize', handleResize);
-    
+
     handleResize();
-    
+
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
+
+
   useEffect(() => {
     if (user && initialLoad.current) {
-      setIsFollower(user.followers.includes(sessionId));
-      initialLoad.current = false; 
+
+      setIsFollower(user.followers.some(follower => follower._id === sessionId));
+      initialLoad.current = false;
     }
   }, [user, sessionId]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   if (error) {
     return <div>Error loading user data: {error.message}</div>;
@@ -79,10 +76,8 @@ export default function ProfilePage() {
   if (!user) return;
 
   const toggleFollower = async () => {
-    console.log("Session ID:", sessionId); 
-    console.log("User ID:", userId);
 
-    await handleToggleFollower(setIsFollower, sessionId, userId, isFollower); 
+    await handleToggleFollower(setIsFollower, sessionId, userId, isFollower);
   };
 
   return (
@@ -132,7 +127,10 @@ export default function ProfilePage() {
             {user.bio && (
               <UserBioContainer user={user} handleDeleteBio={handleDeleteBio} />
             )}
-            <FollowersLink id="profilePageFollowerCount" href={isNarrowScreen && user.followers.length > 0 ? `/users/${user._id}/followers` : undefined} style={{ pointerEvents: isNarrowScreen ? 'auto' : 'none' }}>
+            <FollowersLink
+              id="profilePageFollowerCount"
+              href={isNarrowScreen && user.followers.length > 0 ? `/users/${user._id}/followers` : undefined}
+              style={{ pointerEvents: isNarrowScreen ? 'auto' : 'none' }}>
               <p>
                 {`${user.followers.length} ${user.followers.length === 1 ? 'Follower' : 'Followers'}`}
               </p>

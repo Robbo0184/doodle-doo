@@ -34,7 +34,8 @@
 #profilePageFollowerCount{
     font-family: 'Playpen Sans', sans-serif;
     grid-area: followers-count;
-    margin-top: 5rem;
+    margin-top: 1.7rem;
+    margin-right: -12rem;
     
 }
 
@@ -71,7 +72,7 @@
 
 .user--bio {
     font-family: 'Playpen Sans', sans-serif;
-    margin-right: -10%;
+    margin-right: 6rem;
 
 }
 
@@ -145,7 +146,8 @@
 
     .user--bio {
         font-size: 0.9rem;
-        margin-left: -10%;
+        min-width: 15vw;
+       
     }
 
     .user--email--heading {
