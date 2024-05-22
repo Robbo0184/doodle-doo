@@ -1,17 +1,17 @@
-.likes--page--main {
+.followers--page--main {
     font-family: 'Playpen Sans', sans-serif;
 }
 
-#likesPageLikesContainer {
+#followersPageFollowersContainer {
     margin-top: 2rem;
     
 }
 
-#likesPageLikedByHeading {
-    margin-left: 0.5rem;
+#followersPageFollowedByHeading {
+    margin-left: 0.9rem;
 }
 
-.like-item {
+.follower-item {
     display: flex;          
     align-items: center;   
     gap: 10px;
@@ -19,7 +19,7 @@
     margin-left: 0.5rem;            
 }
 
-.likes--page--profile--link {
+.follower--page--profile--link {
     text-decoration: none;
     color: black;
 }
