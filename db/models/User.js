@@ -8,6 +8,7 @@ const userSchema = new Schema({
   coverImage: String,
   bio: String,
   followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   tweets: {type: [Schema.Types.ObjectId], ref: Tweet },
   images: [{type: String}]
 });
