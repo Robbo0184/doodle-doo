@@ -5,12 +5,17 @@ import { useRouter } from "next/router";
 
 
 const StyledDiv = styled.div`
-display: inline-block;
 grid-area: bio;
 position: relative;
-margin-top: 15%;
-margin-left: -60%;
-padding-right: 30%;
+max-width: 30vw; 
+display: block;
+margin-left: -6rem;
+margin-top: 2rem;
+padding-bottom: 3rem;
+white-space: normal;
+word-wrap: break-word; 
+overflow-wrap: break-word; 
+
 
 &:hover .delete-button {
     opacity: 1;
@@ -21,7 +26,7 @@ padding-right: 30%;
     transition: opacity 0.5s ease;
     position: absolute;
     top: 0;
-    right: 0;
+    right: -3rem;
     background-color: #CCCCCC; 
     color: #333;
     border: 1px solid #ccc;
@@ -31,12 +36,16 @@ padding-right: 30%;
     cursor: pointer;
   }
 
-@media screen and (max-width: 500px){
-    margin-left: -10%;
-    margin-right: 20%;
-    margin-top: -1%;
-    display: flex;
-}
+  @media screen and (max-width: 500px) {
+    margin-left: -1.5rem;
+    margin-right: 0;
+    margin-top: 1.7rem;
+    
+    justify-content: center;
+    font-size: 0.9rem;
+    min-width: 15vw;
+    max-width: 30vw;
+  }
 `
 
 export default function UserBioContainer({ user, handleDeleteBio }) {

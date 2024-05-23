@@ -20,23 +20,24 @@
     grid-template-areas:
         "pic heading logo"
         "email . button"
-        "bio . followers-count";
+        "bio bio followers-count";
 
     grid-template-columns: 200px auto 200px;
     grid-template-rows: auto auto auto;
+
 }
 
-#noDoodleDooMessageProfilePage{
+#noDoodleDooMessageProfilePage {
     font-family: 'Playpen Sans', sans-serif;
     font-size: 1.1rem;
 }
 
-#profilePageFollowerCount{
+#profilePageFollowerCount {
     font-family: 'Playpen Sans', sans-serif;
     grid-area: followers-count;
     margin-top: 1.7rem;
     margin-right: -12rem;
-    
+
 }
 
 .user--email--heading {
@@ -55,7 +56,6 @@
     margin-right: -22%;
     font-size: 1rem;
     margin-top: 10%
-
 }
 
 .user--image {
@@ -72,7 +72,13 @@
 
 .user--bio {
     font-family: 'Playpen Sans', sans-serif;
-    margin-right: 6rem;
+    max-width: 100%;
+    text-align: left;
+    margin-left: 0;
+    margin-right: auto;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 
 }
 
@@ -86,17 +92,17 @@
 #commentButtonsDiv {
     display: flex;
     justify-content: space-between;
-  }
+}
 
-@media screen and (max-width: 1150px){
-    #profilePageImage{
+@media screen and (max-width: 1150px) {
+    #profilePageImage {
         width: 250px;
         height: 150px;
     }
 }
 
-@media screen and (max-width: 750px){
-    #profilePageImage{
+@media screen and (max-width: 750px) {
+    #profilePageImage {
         width: 150px;
         height: 150px;
     }
@@ -137,17 +143,16 @@
         margin-right: -18%;
     }
 
-    #profilePageFollowerCount{
-        margin-top: -5%;
+    #profilePageFollowerCount {
+        margin-top: 1.5rem;
         margin-right: -55%
-
     }
- 
+
 
     .user--bio {
         font-size: 0.9rem;
         min-width: 15vw;
-       
+        max-width: 80vw;
     }
 
     .user--email--heading {
@@ -168,7 +173,7 @@
         margin-right: -35%;
     }
 
-    #profilePageImage{
+    #profilePageImage {
         width: 200px;
         height: 200px;
     }
