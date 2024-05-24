@@ -1,0 +1,25 @@
+.following--page--main {
+    font-family: 'Playpen Sans', sans-serif;
+}
+
+#followingPageFollowingContainer {
+    margin-top: 2rem;
+    
+}
+
+#followingPageFollowingHeading {
+    margin-left: 0.9rem;
+}
+
+.followee-item {
+    display: flex;          
+    align-items: center;   
+    gap: 10px;
+    margin-bottom: 1rem; 
+    margin-left: 0.5rem;            
+}
+
+.following--page--profile--link {
+    text-decoration: none;
+    color: black;
+}
