@@ -4,6 +4,7 @@
 @import url("./tweet-page.css");
 @import url("./likes-page.css");
 @import url("./followers-page.css");
+@import url("./following-page.css");
 
 * {
   margin: 0;

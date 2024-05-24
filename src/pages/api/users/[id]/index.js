@@ -30,6 +30,10 @@ export default async function handler(request, response) {
       path: "followers",
       model: "User",
       select: "name image",
+    }).populate({
+      path: "following",
+      model: "User",
+      select: "name image",
     })
 
     if (!user) {

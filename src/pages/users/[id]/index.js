@@ -135,6 +135,14 @@ export default function ProfilePage() {
                 {`${user.followers.length} ${user.followers.length === 1 ? 'Follower' : 'Followers'}`}
               </p>
             </FollowersLink>
+            <FollowersLink
+              id="profilePageFollowingCount"
+              href={isNarrowScreen && user.following.length > 0 ? `/users/${user._id}/following` : undefined}
+              style={{ pointerEvents: isNarrowScreen ? 'auto' : 'none' }}>
+              <p>
+                {`Following ${user.following.length} ${user.following.length === 1 ? "Person" : "People"}`}
+              </p>
+            </FollowersLink>
             {showBioModal && (
               <BioModal onClose={() => setShowBioModal(false)} />
             )}
