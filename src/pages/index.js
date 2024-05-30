@@ -20,8 +20,9 @@ export default function Home() {
   const { data: session } = useSession();
   const [showModal, setShowModal] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
+  const [isNarrowScreen, setIsNarrowScreen] = useState(false);
   const [getTweetId, setTweetId] = useState('')
-  
+
 
   const toggleComments = (tweetId) => {
     setVisibleComments((prevComments) => ({
@@ -48,21 +49,34 @@ export default function Home() {
     const tweetElement = document.getElementById(`tweet-${currentTweetId}`);
     if (tweetElement) {
       tweetElement.scrollIntoView({ behavior: 'instant' });
-      
+
     }
   }, []);
 
+  useEffect(() => {
 
- 
- if (isLoading) {
+    function handleResize() {
+      setIsNarrowScreen(window.innerWidth < 500);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
+
+  if (isLoading) {
     return <div id="isLoadingText">...Loading</div>;
   }
 
   if (isError || users === undefined) {
     return <div>Error loading users data</div>;
   }
- 
-  
+
+
   return (
     <>
 
@@ -88,13 +102,14 @@ export default function Home() {
                   handleDeleteTweet={handleDeleteTweet}
                   session={session}
                   setTweetId={setTweetId}
+                  isNarrowScreen={isNarrowScreen}
                 />
               ))}
 
               {showModal && allTweets ? (
                 <CommentModal
-                tweetId={getTweetId}
-                onClose={() => setShowModal(false)}
+                  tweetId={getTweetId}
+                  onClose={() => setShowModal(false)}
                 />
               ) : null}
 

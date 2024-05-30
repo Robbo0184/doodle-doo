@@ -18,10 +18,10 @@ export const StyledButton = styled.button`
   
 `;
 
-export default function LikeButton({ tweetId, isLiked, handleToggleLikes }) {
+export default function LikeButton({ tweetId, isLiked, handleToggleLikes, commentId, userId }) {
 
   const toggleLike = () => {
-    handleToggleLikes(tweetId);
+    handleToggleLikes(tweetId, userId, commentId);
   };
 
   return (
