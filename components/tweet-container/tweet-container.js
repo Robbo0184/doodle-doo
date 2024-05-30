@@ -35,6 +35,10 @@ transition: box-shadow 0.3s ease;
   opacity: 1;
 }
 
+@media screen and (max-width: 500px) {
+  min-width: 65vw;
+}
+
 .delete-button {
   opacity: 0;
   transition: opacity 0.5s ease;
@@ -81,13 +85,9 @@ export default function TweetContainer({
 
 }) {
 
-  
   const tweetElementId = `tweet-${tweet._id}`;
 
-
-
-
-  return (
+return (
     <StyledLi key={tweet._id}
       id={tweetElementId}>
       <Link id='mainFeedTweetLink' href={`/users/${user._id}/tweet/${tweet._id}`}>
