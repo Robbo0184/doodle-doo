@@ -1,8 +1,13 @@
 .profile--page--main {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
-    padding-bottom: calc(10vh + 50px);
+    text-align: center;
+    overflow: auto;
+    min-height: 100vh;  
+    padding-bottom: 150px;
+   
 }
 
 .profile-page-main-container {
@@ -10,7 +15,7 @@
     flex-direction: column;
     text-align: center;
     align-items: center;
-    margin-bottom: 100px;
+   
 }
 
 .personal--content--div {

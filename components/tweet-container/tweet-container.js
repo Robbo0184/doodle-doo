@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ProfilePageLink from '../main-feed-profile-link/main-feed-profile-link';
 import LikeButton from '../like-button/like-button';
@@ -8,7 +7,9 @@ import AddCommentButton from '../add-comment-button/add-comment-button';
 import CommentContainer from '../comment-container/comment-container';
 import DeleteButton from '../homepage-delete-button/homepage-delete-button';
 import Link from 'next/link';
-import { formatPostAge } from '@/utils/createCommentTweetAge';
+import { formatPostAge } from '@/utils/createCommentTweetAge'; 
+import LikeLink from '../like-link/like-link';
+
 
 const StyledLi = styled.li`
 display: flex;
@@ -32,6 +33,10 @@ transition: box-shadow 0.3s ease;
   
 &:hover .delete-button {
   opacity: 1;
+}
+
+@media screen and (max-width: 500px) {
+  min-width: 65vw;
 }
 
 .delete-button {
@@ -61,15 +66,7 @@ transition: box-shadow 0.3s ease;
    }
 `;
 
-const LikeLink = styled.a`
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit; 
 
-  @media (min-width: 501px) {
-    pointer-events: none; 
-  }
-`;
 
 export default function TweetContainer({
   tweet,
@@ -84,27 +81,13 @@ export default function TweetContainer({
   session,
   setShowModal,
   setTweetId,
+  isNarrowScreen
 
 }) {
 
-  const [isNarrowScreen, setIsNarrowScreen] = useState(false);
   const tweetElementId = `tweet-${tweet._id}`;
 
-  useEffect(() => {
-
-    function handleResize() {
-      setIsNarrowScreen(window.innerWidth < 500);
-    }
-
-    window.addEventListener('resize', handleResize);
-
-    handleResize();
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-
-  return (
+return (
     <StyledLi key={tweet._id}
       id={tweetElementId}>
       <Link id='mainFeedTweetLink' href={`/users/${user._id}/tweet/${tweet._id}`}>
@@ -143,9 +126,12 @@ export default function TweetContainer({
         tweet.comments.map((comment, index) => (
           <CommentContainer
             user={user}
+            isNarrowScreen={isNarrowScreen}
             key={index}
             tweet={tweet}
             comment={comment}
+            userId={userId}
+            handleToggleLikes={() => handleToggleLikes(null, userId, comment._id)}            
             handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)}
           />
         ))}

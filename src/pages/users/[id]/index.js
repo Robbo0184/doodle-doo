@@ -26,6 +26,8 @@ const FollowersLink = styled.a`
   color: inherit; 
 `;
 
+
+
 export default function ProfilePage() {
   const [showBioModal, setShowBioModal] = useState(false);
   const [isNarrowScreen, setIsNarrowScreen] = useState(false);
@@ -85,91 +87,91 @@ export default function ProfilePage() {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
+
       <main className="profile--page--main">
-        <div className="profile-page-main-container">
-          <div className="personal--content--div">
-            <Image
-              className="user--image"
-              src={user.image}
-              width={160}
-              height={160}
-              alt="profile-pic"
-              style={{ borderRadius: '50%' }}
-            />
 
-            <h1 className="profile--page--header">
-              {user.name}
-            </h1>
-
-            <Image
-              className="doodle--doo--logo"
-              src={DoodleDoLogo}
-              width={160}
-              alt="doodle-doo-logo"
-            />
-
-            <h3 className="user--email--heading">
-              {user.email}
-            </h3>
-
-            {session?.user?.userId === userId ?
-              <AddBioButton
-                className="bio--button"
-                onClick={() => {
-                  setShowBioModal(true);
-                }}
-              /> : <FollowUserButton
-                sessionId={sessionId}
-                toggleFollower={toggleFollower}
-                isFollower={isFollower}
-              />
-            }
-            {user.bio && (
-              <UserBioContainer user={user} handleDeleteBio={handleDeleteBio} />
-            )}
-            <FollowersLink
-              id="profilePageFollowerCount"
-              href={isNarrowScreen && user.followers.length > 0 ? `/users/${user._id}/followers` : undefined}
-              style={{ pointerEvents: isNarrowScreen ? 'auto' : 'none' }}>
-              <p>
-                {`${user.followers.length} ${user.followers.length === 1 ? 'Follower' : 'Followers'}`}
-              </p>
-            </FollowersLink>
-            <FollowersLink
-              id="profilePageFollowingCount"
-              href={isNarrowScreen && user.following.length > 0 ? `/users/${user._id}/following` : undefined}
-              style={{ pointerEvents: isNarrowScreen ? 'auto' : 'none' }}>
-              <p>
-                {`Following ${user.following.length} ${user.following.length === 1 ? "Person" : "People"}`}
-              </p>
-            </FollowersLink>
-            {showBioModal && (
-              <BioModal onClose={() => setShowBioModal(false)} />
-            )}
-          </div>
-          <ProfilePageTweetContainer
-            user={user}
-            isNarrowScreen={isNarrowScreen}
-            mutate={mutate}
-            handleAddCommentClick={handleAddCommentClick}
-            handleToggleLikes={handleToggleLikes}
-            setShowCommentModal={setShowCommentModal}
-            setTweetId={setTweetId}
-            toggleComments={toggleComments}
-            visibleComments={visibleComments}
-            handleDeleteComment={handleDeleteComment}
-            handleDeleteTweet={handleDeleteTweet}
-            tweets={user.tweets}
+        <div className="personal--content--div">
+          <Image
+            className="user--image"
+            src={user.image}
+            width={160}
+            height={160}
+            alt="profile-pic"
+            style={{ borderRadius: '50%' }}
           />
-          {showCommentModal ? (
-            <CommentModal
-              tweetId={getTweetId}
-              onClose={() => setShowCommentModal(false)}
+
+          <h1 className="profile--page--header">
+            {user.name}
+          </h1>
+
+          <Image
+            className="doodle--doo--logo"
+            src={DoodleDoLogo}
+            width={160}
+            alt="doodle-doo-logo"
+          />
+
+          <h3 className="user--email--heading">
+            {user.email}
+          </h3>
+
+          {session?.user?.userId === userId ?
+            <AddBioButton
+              className="bio--button"
+              onClick={() => {
+                setShowBioModal(true);
+              }}
+            /> : <FollowUserButton
+              sessionId={sessionId}
+              toggleFollower={toggleFollower}
+              isFollower={isFollower}
             />
-          ) : null}
+          }
+          {user.bio && (
+            <UserBioContainer user={user} handleDeleteBio={handleDeleteBio} />
+          )}
+          <FollowersLink
+            id="profilePageFollowerCount"
+            href={isNarrowScreen && user.followers.length > 0 ? `/users/${user._id}/followers` : undefined}
+            style={{ pointerEvents: isNarrowScreen ? 'auto' : 'none' }}>
+            <p>
+              {`${user.followers.length} ${user.followers.length === 1 ? 'Follower' : 'Followers'}`}
+            </p>
+          </FollowersLink>
+          <FollowersLink
+            id="profilePageFollowingCount"
+            href={isNarrowScreen && user.following.length > 0 ? `/users/${user._id}/following` : undefined}
+            style={{ pointerEvents: isNarrowScreen ? 'auto' : 'none' }}>
+            <p>
+              {`Following ${user.following.length} ${user.following.length === 1 ? "Person" : "People"}`}
+            </p>
+          </FollowersLink>
+          {showBioModal && (
+            <BioModal onClose={() => setShowBioModal(false)} />
+          )}
         </div>
-        <Navbar />
+        <ProfilePageTweetContainer
+          user={user}
+          isNarrowScreen={isNarrowScreen}
+          mutate={mutate}
+          handleAddCommentClick={handleAddCommentClick}
+          handleToggleLikes={handleToggleLikes}
+          setShowCommentModal={setShowCommentModal}
+          setTweetId={setTweetId}
+          toggleComments={toggleComments}
+          visibleComments={visibleComments}
+          handleDeleteComment={handleDeleteComment}
+          handleDeleteTweet={handleDeleteTweet}
+          tweets={user.tweets}
+        />
+        {showCommentModal ? (
+          <CommentModal
+            tweetId={getTweetId}
+            onClose={() => setShowCommentModal(false)}
+          />
+        ) : null}
       </main>
+      <Navbar />
     </>
   );
 }

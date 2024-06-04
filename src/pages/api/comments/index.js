@@ -22,21 +22,4 @@ export default async function handler(request, response) {
     }
   }
 
-  if (request.method === "DELETE") {
-    try {
-      const { id: tweetId } = request.body
-      const commentToDelete = await Comment.findByIdAndDelete(commentId);
-      await Tweet.findByIdAndUpdate(tweetId, {
-        $pull: { tweets: tweetId },
-      });
-
-
-      return response
-        .status(200)
-        .json(tweetToDelete);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
 }
