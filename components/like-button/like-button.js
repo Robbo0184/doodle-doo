@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import likeIconEmpty from "../../public/assets/like-icon-empty.svg";
@@ -19,10 +19,13 @@ export const StyledButton = styled.button`
 `;
 
 export default function LikeButton({ tweetId, isLiked, handleToggleLikes, commentId, userId }) {
-
+ 
+  
   const toggleLike = () => {
+    
     handleToggleLikes(tweetId, userId, commentId);
   };
+
 
   return (
     <StyledButton onClick={toggleLike}>

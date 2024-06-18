@@ -8,7 +8,7 @@ export default async function handler(request, response) {
 
   const { id: tweetId } = request.query;
 
-  if(!Types.ObjectId.isValid(tweetId)) {
+  if (!Types.ObjectId.isValid(tweetId)) {
     return response.status(404).json({ error: 'Invalid tweet ID' })
   }
 
@@ -39,7 +39,7 @@ export default async function handler(request, response) {
           model: 'User',
           select: 'name image'
         });
-  
+
       return response.status(200).json(tweet);
     } catch (error) {
       console.error(error);

@@ -163,6 +163,7 @@ export default function ProfilePageTweetContainer({
                       tweet={tweet}
                       comment={comment}
                       handleDeleteComment={handleDeleteComment}
+                      handleToggleLikes={handleToggleLikes}
                     />
                   ))}
 

@@ -117,13 +117,28 @@ const ImageWrapper = styled.div`
 export default function CommentContainer({ comment, handleDeleteComment, index, tweet, userId, isNarrowScreen, handleToggleLikes, user }) {
   const { data: session } = useSession();
 
+  const isLiked = Array.isArray(comment?.likes) && comment?.likes.length > 0
+  ? (typeof comment.likes[0] === 'string' ? comment.likes.includes(userId) : comment.likes.some(like => like._id === userId))
+  : false;
+  
+  if (!comment || !comment.commentUserId) {
+    return null;
+  }
+
   return (
     <>
 
       <StyledDiv id="commentContainer" key={index}>
         <ImageWrapper>
           <Link id="commentProfilePageLink" href={`/users/${comment.commentUserId._id}`}>
-            <Image id="commentContainerUserIcon" src={comment.commentUserId.image} style={{ borderRadius: '50px' }} height={40} width={40} alt="user-image" />
+            <Image id="commentContainerUserIcon"
+              src={comment.commentUserId.image}
+              style={{ borderRadius: '50px' }}
+              height={40}
+              width={40}
+              alt="user-image"
+              
+            />
             <span id="commentContainerUserName">{comment.userName}</span>
           </Link>
         </ImageWrapper>
@@ -135,8 +150,9 @@ export default function CommentContainer({ comment, handleDeleteComment, index, 
           <LikeButton
             userId={userId}
             className="like--button"
-            isLiked={comment.likes.includes(userId)}
+            isLiked={isLiked}
             commentId={comment._id}
+            tweetId={tweet._id}
             handleToggleLikes={handleToggleLikes} />
           {isNarrowScreen && comment?.likes.length > 0 ? (
             <LikeLink href={`users/${user._id}/tweet/${tweet._id}/comment/${comment._id}/likes`}>

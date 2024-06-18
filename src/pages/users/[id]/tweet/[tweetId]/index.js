@@ -41,7 +41,9 @@ export default function TweetPage() {
     const { data: user, isLoading, mutate, error } = useSWR(userId ? `/api/users/${userId}` : null);
     const [showUserInfo, setShowUserInfo] = useState(true);
     const [isNarrowScreen, setIsNarrowScreen] = useState(false);
-    
+    const isLiked = Array.isArray(tweet?.likes) && tweet?.likes.length > 0
+        ? (typeof tweet.likes[0] === 'string' ? tweet.likes.includes(userId) : tweet.likes.some(like => like._id === userId))
+        : false;
 
     const handleToggleComments = () => {
         toggleComments(tweetId, setVisibleComments);
@@ -63,16 +65,16 @@ export default function TweetPage() {
 
     useEffect(() => {
         function handleResize() {
-          setIsNarrowScreen(window.innerWidth < 500);
+            setIsNarrowScreen(window.innerWidth < 500);
         }
-    
+
         window.addEventListener('resize', handleResize);
-    
+
         handleResize();
-    
+
         return () => window.removeEventListener('resize', handleResize);
-      }, []); 
-    
+    }, []);
+
 
     if (!tweet) {
         return <div>Loading tweet...</div>;
@@ -124,21 +126,22 @@ export default function TweetPage() {
 
                     <LikeButton
                         className="like--button"
-                        isLiked={tweet?.likes.includes(userId)}
+                        isLiked={isLiked}
                         tweetId={tweet?.tweet._id}
+                        userId={userId}
                         handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
                     />
-                    {tweet && user && ( 
-                    <> 
-                    {isNarrowScreen && tweet?.likes.length > 0 ? (
-                        <LikeLink href={`/users/${user._id}/tweet/${tweet._id}/likes`}>
-                          {tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}
-                        </LikeLink>
-                      ) : (
-                        <p>{tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}</p>
-                      )}
-                    </>
-                )} 
+                    {tweet && user && (
+                        <>
+                            {isNarrowScreen && tweet?.likes.length > 0 ? (
+                                <LikeLink href={`/users/${user._id}/tweet/${tweet._id}/likes`}>
+                                    {tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}
+                                </LikeLink>
+                            ) : (
+                                <p>{tweet.likes?.length === 1 ? '1 like' : `${tweet.likes?.length} likes`}</p>
+                            )}
+                        </>
+                    )}
 
                     <div id="commentButtonsDiv">
                         {tweet.comments.length > 0 && (
@@ -152,9 +155,13 @@ export default function TweetPage() {
                         tweet.comments.map((comment, index) => (
                             <CommentContainer
                                 key={index}
+                                user={user}
                                 tweet={tweet}
                                 comment={comment}
-                                handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)}                            />
+                                userId={userId}
+                                isNarrowScreen={isNarrowScreen}
+                                handleToggleLikes={() => handleToggleLikes(tweet._id, userId, comment._id)}
+                                handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)} />
                         ))}
                     {showModal && (
                         <CommentModal
