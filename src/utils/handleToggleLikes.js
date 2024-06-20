@@ -1,50 +1,29 @@
 import { mutate } from 'swr';
 
-export async function handleToggleLikes(tweetId, userId, commentId) {
+export async function handleToggleLikes(tweetId, userId, commentId = null) {
     try {
-        let response;
+        const isComment = commentId !== null;
+        const url = isComment ? `/api/comments/${commentId}` : `/api/tweets/${tweetId}`;
 
-        if (tweetId) {
+        const response = await fetch(url, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: userId })
+        });
 
-            response = await fetch(`/api/tweets/${tweetId}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ id: userId }),
-            });
-
-            if (response.ok) {
-                await mutate("/api/users");
-                await mutate(`/api/tweets/${tweetId}`);
-                await mutate(`/api/users/${userId}`);
-            } else {
-                console.error('Error toggling like: ', response.status, response.statusText);
-                throw new Error('Like update failed');
-            }
-        } else if (commentId) {
-
-            response = await fetch(`/api/comments/${commentId}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ id: userId }),
-            });
-
-
-            if (response.ok) {
-                await mutate("/api/users");
-                await mutate(`/api/users/${userId}`);
-                await mutate(`/api/comments/${commentId}`); 
-                
-            } else {
-                console.error('Error toggling like: ', response.status, response.statusText);
-                throw new Error('Like update failed');
-            }
+        if (!response.ok) {
+            throw new Error('Like update failed');
         }
+
+        await mutate(`/api/tweets/${tweetId}`);
+        await mutate(`/api/users/${userId}`);
+        await mutate("/api/users");
+
     } catch (error) {
         console.error('An error occurred:', error);
-        throw error;
     }
 }
+
+
+
+
