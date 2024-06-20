@@ -148,12 +148,16 @@
 
     }
 
+    
+
     .bio--button {
         font-size: 0.8rem;
         width: 70px;
         margin-top: 10%;
         margin-right: -18%;
     }
+
+    
 
     #profilePageFollowerCount {
         margin-top: 1.5rem;

@@ -10,6 +10,9 @@ import LikeLink from "../like-link/like-link";
 
 const StyledDiv = styled.div`
   margin-bottom: 0.3rem; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   margin-top: 1.2rem;
   padding-inline: 2rem;
@@ -164,7 +167,7 @@ export default function CommentContainer({ comment, handleDeleteComment, index, 
         </LikeContainer>
         {session?.user?.name === comment.userName && (
           <DeleteButtonContainer>
-            <DeleteButton className="delete-button" handleDeleteComment={handleDeleteComment} commentId={comment._id} tweetId={tweet._id} userId={userId}  > ❌
+            <DeleteButton className="comment--container--delete--button" handleDeleteComment={handleDeleteComment} commentId={comment._id} tweetId={tweet._id} userId={userId}  > ❌
             </DeleteButton>
           </DeleteButtonContainer>
         )}
