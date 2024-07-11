@@ -7,7 +7,7 @@ import AddCommentButton from '../add-comment-button/add-comment-button';
 import CommentContainer from '../comment-container/comment-container';
 import DeleteButton from '../homepage-delete-button/homepage-delete-button';
 import Link from 'next/link';
-import { formatPostAge } from '@/utils/createCommentTweetAge'; 
+import { formatPostAge } from '@/utils/createCommentTweetAge';
 import LikeLink from '../like-link/like-link';
 
 
@@ -87,7 +87,7 @@ export default function TweetContainer({
 
   const tweetElementId = `tweet-${tweet._id}`;
 
-return (
+  return (
     <StyledLi key={tweet._id}
       id={tweetElementId}>
       <Link id='mainFeedTweetLink' href={`/users/${user._id}/tweet/${tweet._id}`}>
@@ -126,12 +126,13 @@ return (
         tweet.comments.map((comment, index) => (
           <CommentContainer
             user={user}
+            setTweetId={setTweetId}
             isNarrowScreen={isNarrowScreen}
             key={index}
             tweet={tweet}
             comment={comment}
             userId={userId}
-            handleToggleLikes={() => handleToggleLikes(null, userId, comment._id)}            
+            handleToggleLikes={() => handleToggleLikes(null, userId, comment._id)}
             handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)}
           />
         ))}

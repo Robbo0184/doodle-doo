@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import React, { useState } from 'react';
 import DeleteButton from "../homepage-delete-button/homepage-delete-button";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -6,12 +7,15 @@ import { formatPostAge } from "@/utils/createCommentTweetAge";
 import Image from "next/image";
 import LikeButton from "../like-button/like-button";
 import LikeLink from "../like-link/like-link";
+import CommentButton from "../comment-on-comment-button/comment-button";
+import CommentModal from "../comment-modal/comment-modal";
 
 
 const StyledDiv = styled.div`
   margin-bottom: 0.3rem; 
   display: flex;
   flex-direction: column;
+  min-width: 70%;
   align-items: center;
   position: relative;
   margin-top: 1.2rem;
@@ -86,9 +90,10 @@ const StyledDiv = styled.div`
 const LikeContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   margin-top: 0.5rem;
-
+  min-width: 90%;
+ 
   p, a {
     margin-left: 0.7rem;
     font-size: 1rem;
@@ -119,14 +124,21 @@ const ImageWrapper = styled.div`
 
 export default function CommentContainer({ comment, handleDeleteComment, index, tweet, userId, isNarrowScreen, handleToggleLikes, user }) {
   const { data: session } = useSession();
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [currentCommentId, setCurrentCommentId] = useState(null);
 
   const isLiked = Array.isArray(comment?.likes) && comment?.likes.length > 0
-  ? (typeof comment.likes[0] === 'string' ? comment.likes.includes(userId) : comment.likes.some(like => like._id === userId))
-  : false;
-  
+    ? (typeof comment.likes[0] === 'string' ? comment.likes.includes(userId) : comment.likes.some(like => like._id === userId))
+    : false;
+
   if (!comment || !comment.commentUserId) {
     return null;
   }
+
+  const openCommentModal = (commentId) => {
+    setCurrentCommentId(commentId);
+    setShowCommentModal(true);
+  };
 
   return (
     <>
@@ -140,7 +152,7 @@ export default function CommentContainer({ comment, handleDeleteComment, index, 
               height={40}
               width={40}
               alt="user-image"
-              
+
             />
             <span id="commentContainerUserName">{comment.userName}</span>
           </Link>
@@ -164,6 +176,10 @@ export default function CommentContainer({ comment, handleDeleteComment, index, 
           ) : (
             <p>{comment.likes?.length === 1 ? '1 like' : `${comment.likes?.length} likes`}</p>
           )}
+          <CommentButton
+            commentId={comment._id}
+            onClick={() => openCommentModal(comment._id)}
+          />
         </LikeContainer>
         {session?.user?.name === comment.userName && (
           <DeleteButtonContainer>
@@ -172,7 +188,12 @@ export default function CommentContainer({ comment, handleDeleteComment, index, 
           </DeleteButtonContainer>
         )}
       </StyledDiv>
-
+      {showCommentModal && (
+        <CommentModal
+          commentId={currentCommentId}
+          onClose={() => setShowCommentModal(false)}
+        />
+      )}
     </>
   )
 }

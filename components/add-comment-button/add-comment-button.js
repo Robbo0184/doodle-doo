@@ -12,7 +12,7 @@ const StyledButton = styled.button`
 
    &:hover {
     transform: scale(1.05);    
-  }
+  }yy
 
    @media screen and (max-width: 500px){
     font-size: 0.7rem;
