@@ -125,6 +125,7 @@ export default function TweetContainer({
       {visibleComments[tweet._id] &&
         tweet.comments.map((comment, index) => (
           <CommentContainer
+            formatPostAge={formatPostAge}
             user={user}
             setTweetId={setTweetId}
             isNarrowScreen={isNarrowScreen}

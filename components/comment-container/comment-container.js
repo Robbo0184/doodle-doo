@@ -122,11 +122,11 @@ const ImageWrapper = styled.div`
 
 
 
-export default function CommentContainer({ comment, handleDeleteComment, index, tweet, userId, isNarrowScreen, handleToggleLikes, user }) {
+export default function CommentContainer({ comment, handleDeleteComment, index, formatPostAge, tweet, userId, isNarrowScreen, handleToggleLikes, user }) {
   const { data: session } = useSession();
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [currentCommentId, setCurrentCommentId] = useState(null);
-
+  console.log("logging comment", comment);
   const isLiked = Array.isArray(comment?.likes) && comment?.likes.length > 0
     ? (typeof comment.likes[0] === 'string' ? comment.likes.includes(userId) : comment.likes.some(like => like._id === userId))
     : false;
@@ -180,6 +180,12 @@ export default function CommentContainer({ comment, handleDeleteComment, index, 
             commentId={comment._id}
             onClick={() => openCommentModal(comment._id)}
           />
+          {comment.comments.length > 0 && comment.comments.map((nestedComment) => (
+            <div key={nestedComment._id}>
+              <p>{nestedComment.commentUserId.name}</p>
+              <p>{nestedComment.comment} {formatPostAge(nestedComment.date)}</p>
+            </div>
+          ))}
         </LikeContainer>
         {session?.user?.name === comment.userName && (
           <DeleteButtonContainer>
