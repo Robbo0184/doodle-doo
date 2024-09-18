@@ -9,7 +9,7 @@ import LikeButton from "../like-button/like-button";
 import LikeLink from "../like-link/like-link";
 import CommentButton from "../comment-on-comment-button/comment-button";
 import CommentModal from "../comment-modal/comment-modal";
-
+import NestedCommentContainer from "../nested-comment-container/nested-comment-container";
 
 const StyledDiv = styled.div`
   margin-bottom: 0.3rem; 
@@ -126,7 +126,6 @@ export default function CommentContainer({ comment, handleDeleteComment, index, 
   const { data: session } = useSession();
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [currentCommentId, setCurrentCommentId] = useState(null);
-  console.log("logging comment", comment);
   const isLiked = Array.isArray(comment?.likes) && comment?.likes.length > 0
     ? (typeof comment.likes[0] === 'string' ? comment.likes.includes(userId) : comment.likes.some(like => like._id === userId))
     : false;
@@ -139,6 +138,8 @@ export default function CommentContainer({ comment, handleDeleteComment, index, 
     setCurrentCommentId(commentId);
     setShowCommentModal(true);
   };
+  console.log("comment._id", comment._id);
+
 
   return (
     <>
@@ -163,12 +164,12 @@ export default function CommentContainer({ comment, handleDeleteComment, index, 
         </span>
         <LikeContainer>
           <LikeButton
+            tweetId={tweet._id}
             userId={userId}
             className="like--button"
             isLiked={isLiked}
             commentId={comment._id}
-            tweetId={tweet._id}
-            handleToggleLikes={handleToggleLikes} />
+            handleToggleLikes={() => handleToggleLikes(tweet._id, userId, comment._id)}/>
           {isNarrowScreen && comment?.likes.length > 0 ? (
             <LikeLink href={`users/${user._id}/tweet/${tweet._id}/comment/${comment._id}/likes`}>
               {comment.likes?.length === 1 ? '1 like' : `${comment.likes?.length} likes`}
@@ -181,10 +182,17 @@ export default function CommentContainer({ comment, handleDeleteComment, index, 
             onClick={() => openCommentModal(comment._id)}
           />
           {comment.comments.length > 0 && comment.comments.map((nestedComment) => (
-            <div key={nestedComment._id}>
-              <p>{nestedComment.commentUserId.name}</p>
-              <p>{nestedComment.comment} {formatPostAge(nestedComment.date)}</p>
-            </div>
+            <NestedCommentContainer
+              key={nestedComment._id}
+              comment={comment}
+              nestedComment={nestedComment}
+              handleToggleLikes={handleToggleLikes}
+              userId={userId}
+              tweetId={tweet._id}
+              openCommentModal={openCommentModal}
+            />
+
+
           ))}
         </LikeContainer>
         {session?.user?.name === comment.userName && (

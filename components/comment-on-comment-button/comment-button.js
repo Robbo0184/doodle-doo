@@ -18,7 +18,6 @@ export const StyledButton = styled.button`
 `;
 
 export default function CommentButton({ commentId, onClick }) {
-  console.log("logging commentId", commentId);
   return (
     <StyledButton onClick={() => onClick(commentId)}>
       <Image src={addCommentButton} alt="Add comment" width={20} height={20} />

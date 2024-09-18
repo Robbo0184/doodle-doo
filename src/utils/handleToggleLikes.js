@@ -1,6 +1,8 @@
 import { mutate } from 'swr';
 
 export async function handleToggleLikes(tweetId, userId, commentId = null) {
+    console.log('handleToggleLikes called with:', { tweetId, userId, commentId });
+
     try {
         const isComment = commentId !== null;
         const url = isComment ? `/api/comments/${commentId}` : `/api/tweets/${tweetId}`;
@@ -23,7 +25,4 @@ export async function handleToggleLikes(tweetId, userId, commentId = null) {
         console.error('An error occurred:', error);
     }
 }
-
-
-
 

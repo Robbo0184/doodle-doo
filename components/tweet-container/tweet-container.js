@@ -99,9 +99,9 @@ export default function TweetContainer({
       <ProfilePageLink user={user} tweet={tweet} />
       <div id='likeButtonAndLikeLinkContianer'>
         <LikeButton
+          tweetId={tweet._id}
           className="like--button"
           isLiked={tweet.likes.includes(userId)}
-          tweetId={tweet._id}
           handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
         />
         {isNarrowScreen && tweet?.likes.length > 0 ? (
@@ -133,7 +133,10 @@ export default function TweetContainer({
             tweet={tweet}
             comment={comment}
             userId={userId}
-            handleToggleLikes={() => handleToggleLikes(null, userId, comment._id)}
+            // handleToggleLikes={() => handleToggleLikes(null, userId, comment._id)}
+            handleToggleLikes={handleToggleLikes}
+
+
             handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)}
           />
         ))}
