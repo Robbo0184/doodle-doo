@@ -24,7 +24,7 @@ const CommentModal = ({ tweet, tweetId, commentId, onClose }) => {
 
 
       const url = commentId ? `/api/comments/${commentId}` : '/api/comments';
-      const body = commentId ? { comment, userName, userId } : { comment, tweetId, userName, userId };
+      const body = { comment, tweetId, userName, userId };
 
       const response = await fetch(url, {
         method: "POST",

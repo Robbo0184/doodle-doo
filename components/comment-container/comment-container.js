@@ -209,6 +209,7 @@ export default function CommentContainer({ comment, handleDeleteComment, index, 
       {showCommentModal && (
         <CommentModal
           commentId={currentCommentId}
+          tweetId={tweet._id}
           onClose={() => setShowCommentModal(false)}
         />
       )}

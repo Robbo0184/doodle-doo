@@ -9,9 +9,8 @@ export default async function handler(request, response) {
 
     if (request.method === "POST") {
         try {
-            const { comment, userName, userId } = request.body;
-    
-            const newComment = await Comment.create({ comment, userName, commentUserId: userId });
+            const { comment, tweetId, userName, userId } = request.body    
+            const newComment = await Comment.create({ comment, userName, commentUserId: userId, tweetId });
             
             const updatedComment = await Comment.findByIdAndUpdate(
                 commentId,
