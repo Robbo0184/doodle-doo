@@ -133,10 +133,7 @@ export default function TweetContainer({
             tweet={tweet}
             comment={comment}
             userId={userId}
-            // handleToggleLikes={() => handleToggleLikes(null, userId, comment._id)}
             handleToggleLikes={handleToggleLikes}
-
-
             handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)}
           />
         ))}

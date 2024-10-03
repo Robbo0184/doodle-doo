@@ -19,11 +19,9 @@ export const StyledButton = styled.button`
 `;
 
 export default function LikeButton({ tweetId, userId, isLiked, commentId, handleToggleLikes }) {
-  console.log('LikeButton Props:', { tweetId, userId, isLiked, commentId });
 
   
   const toggleLike = () => {
-    console.log('LikeButton clicked with:', { userId, commentId, tweetId });
     handleToggleLikes(tweetId, userId, commentId);
   };
 
