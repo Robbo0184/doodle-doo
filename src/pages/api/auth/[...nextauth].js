@@ -3,6 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google"
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "../../../../db/mongodb";
+import User from "../../../../db/models/User";
 
 export const authOptions = {
     // Configure one or more authentication providers
@@ -21,19 +22,21 @@ export const authOptions = {
                 };
             },
         }),
-        
+
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-           
+
         })
     ],
     adapter: MongoDBAdapter(clientPromise),
 
     callbacks: {
         async session({ session, user }) {
-            session.user.userId = user.id;
+            const dbUser = await User.findOne({ email: session.user.email });
 
+            session.user.userId = user.id;
+            session.user.isAdmin = dbUser.isAdmin;
             return session;
         },
     },

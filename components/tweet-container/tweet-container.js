@@ -86,15 +86,16 @@ export default function TweetContainer({
 }) {
 
   const tweetElementId = `tweet-${tweet._id}`;
+  
 
   return (
     <StyledLi key={tweet._id}
       id={tweetElementId}>
       <Link id='mainFeedTweetLink' href={`/users/${user._id}/tweet/${tweet._id}`}>
-        <p id='homeFeedTweetText'>{tweet.tweet}  <br></br>{formatPostAge(tweet.date)}</p>
-        {tweet.image && (
-          <Image id="tweetImage" className='tweetImage' src={tweet.image} style={{ borderRadius: '15px' }} width={400} height={300} alt="tweet image" />
-        )}
+      {tweet.image && (
+        <Image id="tweetImage" className='tweetImage' src={tweet.image} style={{ borderRadius: '15px' }} width={400} height={300} alt="tweet image" />
+      )}
+      <p id='homeFeedTweetText'>{tweet.tweet}  <br></br>{formatPostAge(tweet.date)}</p>
       </Link>
       <ProfilePageLink user={user} tweet={tweet} />
       <div id='likeButtonAndLikeLinkContianer'>
@@ -137,14 +138,13 @@ export default function TweetContainer({
             handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)}
           />
         ))}
-      {session?.user?.name === tweet.userName && (
+      {(session?.user?.name === tweet.userName || session?.user?.isAdmin) && (
         <DeleteButton
           className="delete-button"
           handleDeleteTweet={() => handleDeleteTweet(tweet._id)}
           tweetId={tweet._id}>
           ❌
         </DeleteButton>
-
       )}
     </StyledLi>
   );

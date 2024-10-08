@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import DeleteButton from "../homepage-delete-button/homepage-delete-button";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { formatPostAge } from "@/utils/createCommentTweetAge";
 import Image from "next/image";
 import LikeButton from "../like-button/like-button";
 import LikeLink from "../like-link/like-link";
