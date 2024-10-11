@@ -56,9 +56,16 @@ export default function NestedCommentContainer({
     openCommentModal
 }) {
     const { data: session } = useSession();
+    console.log("nestedComment",nestedComment); 
+    console.log("nestedComment.commentUserId",nestedComment?.commentUserId);
+
+    if (!nestedComment || !nestedComment.commentUserId) {
+        return null;
+    }
+
     const isLiked = nestedComment.likes?.includes(userId);
-    
-    
+
+
     return (
         <>
             <StyledDiv key={nestedComment._id}>
@@ -93,9 +100,25 @@ export default function NestedCommentContainer({
                 </ButtonsDiv>
                 {session?.user?.name === nestedComment?.commentUserId?.name && (
                     <DeleteButtonContainer>
-                        <DeleteButton className="nestedComment--container--delete--button" handleDeleteComment={handleDeleteComment} commentId={nestedComment._id}  userId={userId}  > ❌
+                        <DeleteButton className="nestedComment--container--delete--button" handleDeleteComment={handleDeleteComment} commentId={nestedComment._id} userId={userId}  > ❌
                         </DeleteButton>
                     </DeleteButtonContainer>
+                )}
+
+                {nestedComment.comments && nestedComment.comments.length > 0 && (
+                    <div style={{ marginLeft: '2rem' }}>
+                        {nestedComment.comments.map((childComment) => (
+                            <NestedCommentContainer
+                                key={childComment._id}
+                                nestedComment={childComment}
+                                tweetId={tweetId}
+                                userId={userId}
+                                handleToggleLikes={handleToggleLikes}
+                                handleDeleteComment={handleDeleteComment}
+                                openCommentModal={openCommentModal}
+                            />
+                        ))}
+                    </div>
                 )}
             </StyledDiv>
         </>

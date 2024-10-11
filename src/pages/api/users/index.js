@@ -1,7 +1,23 @@
 import dbConnect from "../../../../db/connect";
 import User from "../../../../db/models/User";
+import Comment from "../../../../db/models/Comment";
 
+async function populateComments(comments) {
+    return Promise.all(comments.map(async comment => {
+        const populatedComment = await Comment.findById(comment._id)
+            .populate({
+                path: 'commentUserId',
+                select: 'image name'
+            })
+            .lean(); 
 
+        if (populatedComment.comments && populatedComment.comments.length > 0) {
+            populatedComment.comments = await populateComments(populatedComment.comments);
+        }
+
+        return populatedComment;
+    }));
+}
 
 export default async function handler(request, response) {
     await dbConnect();
@@ -13,25 +29,19 @@ export default async function handler(request, response) {
                 populate: {
                     path: "comments",
                     model: "Comment",
-                    populate: [
-                        {
-                            path: "commentUserId",
-                            model: "User",
-                            select: 'image'
-                        },
-                        {
-                            path: "comments",
-                            model: "Comment",
-                            select: "commentUserId comment likes comments date",
-                            populate: {
-                                path: "commentUserId",
-                                model: "User",
-                                select: 'image name'
-                            }
-                        }
-                    ]
+                    populate: {
+                        path: "commentUserId",
+                        model: "User",
+                        select: 'image'
+                    }
                 }
-            });
+            }).lean();
+
+            for (const user of users) {
+                for (const tweet of user.tweets) {
+                    tweet.comments = await populateComments(tweet.comments);
+                }
+            }
 
             response.status(200).json(users);
         } catch (error) {
