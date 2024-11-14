@@ -21,12 +21,10 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [visibleComments, setVisibleComments] = useState({});
   const [isNarrowScreen, setIsNarrowScreen] = useState(false);
-  const [getTweetId, setTweetId] = useState('')
+  const [getTweetId, setTweetId] = useState('');
 
   
-
-
-  const toggleComments = (tweetId) => {
+const toggleComments = (tweetId) => {
     setVisibleComments((prevComments) => ({
       ...prevComments,
       [tweetId]: !prevComments[tweetId],
@@ -46,7 +44,7 @@ export default function Home() {
     allTweets.sort((a, b) => new Date(b.date) - new Date(a.date));
   }
 
-  
+
 
   useEffect(() => {
     const currentTweetId = sessionStorage.getItem('currentTweetId');

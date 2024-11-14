@@ -1,6 +1,7 @@
 import dbConnect from "../../../../db/connect";
 import User from "../../../../db/models/User";
 import Tweet from "../../../../db/models/Tweet";
+import Comment from "../../../../db/models/Comment";
 import { Types } from 'mongoose';
 
 export default async function handler(request, response) {
@@ -78,6 +79,9 @@ export default async function handler(request, response) {
     try {
       const { id: userId } = request.body;
       const tweetToDelete = await Tweet.findByIdAndDelete(tweetId);
+      
+      await Comment.deleteMany({ tweetId });
+
       await User.findByIdAndUpdate(userId, {
         $pull: { tweets: tweetId },
       });

@@ -7,7 +7,7 @@ import AddCommentButton from '../add-comment-button/add-comment-button';
 import CommentContainer from '../comment-container/comment-container';
 import DeleteButton from '../homepage-delete-button/homepage-delete-button';
 import Link from 'next/link';
-import { formatPostAge } from '@/utils/createCommentTweetAge'; 
+import { formatPostAge } from '@/utils/createCommentTweetAge';
 import LikeLink from '../like-link/like-link';
 
 
@@ -86,22 +86,23 @@ export default function TweetContainer({
 }) {
 
   const tweetElementId = `tweet-${tweet._id}`;
+  
 
-return (
+  return (
     <StyledLi key={tweet._id}
       id={tweetElementId}>
       <Link id='mainFeedTweetLink' href={`/users/${user._id}/tweet/${tweet._id}`}>
-        <p id='homeFeedTweetText'>{tweet.tweet}  <br></br>{formatPostAge(tweet.date)}</p>
-        {tweet.image && (
-          <Image id="tweetImage" className='tweetImage' src={tweet.image} style={{ borderRadius: '15px' }} width={400} height={300} alt="tweet image" />
-        )}
+      {tweet.image && (
+        <Image id="tweetImage" className='tweetImage' src={tweet.image} style={{ borderRadius: '15px' }} width={400} height={300} alt="tweet image" />
+      )}
+      <p id='homeFeedTweetText'>{tweet.tweet}  <br></br>{formatPostAge(tweet.date)}</p>
       </Link>
       <ProfilePageLink user={user} tweet={tweet} />
       <div id='likeButtonAndLikeLinkContianer'>
         <LikeButton
+          tweetId={tweet._id}
           className="like--button"
           isLiked={tweet.likes.includes(userId)}
-          tweetId={tweet._id}
           handleToggleLikes={() => handleToggleLikes(tweet._id, userId)}
         />
         {isNarrowScreen && tweet?.likes.length > 0 ? (
@@ -125,24 +126,25 @@ return (
       {visibleComments[tweet._id] &&
         tweet.comments.map((comment, index) => (
           <CommentContainer
+            formatPostAge={formatPostAge}
             user={user}
+            setTweetId={setTweetId}
             isNarrowScreen={isNarrowScreen}
             key={index}
             tweet={tweet}
             comment={comment}
             userId={userId}
-            handleToggleLikes={() => handleToggleLikes(null, userId, comment._id)}            
+            handleToggleLikes={handleToggleLikes}
             handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)}
           />
         ))}
-      {session?.user?.name === tweet.userName && (
+      {(session?.user?.name === tweet.userName || session?.user?.isAdmin) && (
         <DeleteButton
           className="delete-button"
           handleDeleteTweet={() => handleDeleteTweet(tweet._id)}
           tweetId={tweet._id}>
           ❌
         </DeleteButton>
-
       )}
     </StyledLi>
   );

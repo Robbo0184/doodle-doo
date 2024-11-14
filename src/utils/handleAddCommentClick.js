@@ -1,6 +1,4 @@
-export function handleAddCommentClick(  tweetId, setTweetId, setShowModal) {
+export function handleAddCommentClick(tweetId, setTweetId, setShowModal ) {
     setShowModal(true);
-    setTweetId(tweetId);
-
+    setTweetId(tweetId)
   }
-  

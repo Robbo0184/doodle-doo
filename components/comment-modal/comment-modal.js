@@ -4,16 +4,16 @@ import { useSession } from "next-auth/react";
 import useSWR, { useSWRConfig } from 'swr';
 
 
-const CommentModal = ({ tweet, tweetId, onClose }) => {
+const CommentModal = ({ tweet, tweetId, commentId, onClose }) => {
   const [comment, setComment] = useState("");
   const { data: session } = useSession();
   const { mutate } = useSWRConfig()
-  
 
-const userName = session?.user?.name
-const userId = session?.user?.userId
-  
-const handleCommentChange = (e) => {
+
+  const userName = session?.user?.name
+  const userId = session?.user?.userId
+
+  const handleCommentChange = (e) => {
     setComment(e.target.value);
 
   };
@@ -21,17 +21,26 @@ const handleCommentChange = (e) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/comments', {
+
+
+      const url = commentId ? `/api/comments/${commentId}` : '/api/comments';
+      const body = { comment, tweetId, userName, userId };
+
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ comment, tweetId, userName, userId }),
+        body: JSON.stringify(body),
       });
       mutate("/api/users")
       mutate(`/api/tweets/${tweetId}`)
       mutate(`/api/users/${userId}`)
-      
+
+      if (commentId) {
+        mutate(`/api/comments/${commentId}`);
+      }
+
       if (response.ok) {
         const data = await response.json();
         onClose();
