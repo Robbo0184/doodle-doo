@@ -3,20 +3,41 @@ import User from "../../../../db/models/User";
 import Comment from "../../../../db/models/Comment";
 
 async function populateComments(comments) {
-    return Promise.all(comments.map(async comment => {
-        const populatedComment = await Comment.findById(comment._id)
-            .populate({
-                path: 'commentUserId',
-                select: 'image name'
-            })
-            .lean(); 
+    
+    if (!comments || !Array.isArray(comments)) {
+        return [];
+    }
 
-        if (populatedComment.comments && populatedComment.comments.length > 0) {
-            populatedComment.comments = await populateComments(populatedComment.comments);
+    return Promise.all(comments.map(async comment => {
+       
+        if (!comment || !comment._id) {
+            return null;
         }
 
-        return populatedComment;
-    }));
+        try {
+            const populatedComment = await Comment.findById(comment._id)
+                .populate({
+                    path: 'commentUserId',
+                    select: 'image name'
+                })
+                .lean();
+
+           
+            if (!populatedComment) {
+                return null;
+            }
+
+            
+            if (populatedComment.comments && populatedComment.comments.length > 0) {
+                populatedComment.comments = await populateComments(populatedComment.comments);
+            }
+
+            return populatedComment;
+        } catch (error) {
+            console.error(`Error populating comment ${comment._id}:`, error);
+            return null;
+        }
+    })).then(comments => comments.filter(Boolean)); 
 }
 
 export default async function handler(request, response) {
@@ -24,31 +45,36 @@ export default async function handler(request, response) {
 
     if (request.method === "GET") {
         try {
-            const users = await User.find().populate({
-                path: "tweets",
-                populate: {
-                    path: "comments",
-                    model: "Comment",
+            const users = await User.find()
+                .populate({
+                    path: "tweets",
                     populate: {
-                        path: "commentUserId",
-                        model: "User",
-                        select: 'image'
+                        path: "comments",
+                        model: "Comment",
+                        populate: {
+                            path: "commentUserId",
+                            model: "User",
+                            select: 'image name'
+                        }
                     }
-                }
-            }).lean();
+                })
+                .lean();
 
+            
             for (const user of users) {
-                for (const tweet of user.tweets) {
-                    tweet.comments = await populateComments(tweet.comments);
+                if (user.tweets && Array.isArray(user.tweets)) {
+                    for (const tweet of user.tweets) {
+                        if (tweet.comments) {
+                            tweet.comments = await populateComments(tweet.comments);
+                        }
+                    }
                 }
             }
 
             response.status(200).json(users);
         } catch (error) {
-            console.error(error);
+            console.error("Error in users GET handler:", error);
             response.status(500).json({ error: "Internal Server Error" });
         }
-    } else {
-        response.status(405).json({ error: `Method ${request.method} Not Allowed` });
     }
 }
