@@ -4,33 +4,44 @@ import ProfilePageLink from '../main-feed-profile-link/main-feed-profile-link';
 import LikeButton from '../like-button/like-button';
 import ToggleCommentsButton from '../toggle-comments-button/toggle-comments-button';
 import AddCommentButton from '../add-comment-button/add-comment-button';
-import CommentContainer from '../comment-container/comment-container';
 import DeleteButton from '../homepage-delete-button/homepage-delete-button';
 import Link from 'next/link';
 import { formatPostAge } from '@/utils/createCommentTweetAge';
 import LikeLink from '../like-link/like-link';
 
-
 const StyledLi = styled.li`
 display: flex;
 flex-direction: column;
-gap: 0.2rem;
+gap: 0.5rem;
+margin-top: 3rem;
 align-items: center;
-border: 2px solid #CCCCCC;
-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-border-radius: 20px;
-padding: 1.5rem 2rem 2rem;
-margin: 1rem;
-width: 35vw;
+border: 0.2px solid #e0e0e0; 
+border-bottom: none;
+box-shadow: ${props => props.hasVisibleComments ?
+    '-3px 0 3px -3px rgba(0, 0, 0, 0.1), 3px 0 3px -3px rgba(0, 0, 0, 0.1), 0 -3px 3px -3px rgba(0, 0, 0, 0.1)' :
+    '0px 2px 4px rgba(0, 0, 0, 0.1)'
+  };
+
+&:hover {
+    box-shadow: ${props => props.hasVisibleComments ?
+    '-5px 0 5px -4px rgba(0, 0, 0, 0.2), 5px 0 5px -4px rgba(0, 0, 0, 0.2), 0 -5px 5px -4px rgba(0, 0, 0, 0.2)' :
+    '0px 6px 12px rgba(0, 0, 0, 0.2)'
+  };
+}
+border-radius: ${props => props.hasVisibleComments ? '20px 20px 0 0' : '20px'};
+padding: 30px 60px; 
+width: 65vw;
+cursor: pointer;
 font-family: 'Playpen Sans', sans-serif;
 position: relative;
 list-style-type: none;
+
+${props => props.hasVisibleComments && `
+    border-bottom: none;
+  `}
+
 transition: box-shadow 0.3s ease; 
 
-&:hover {
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
-}
-  
 &:hover .delete-button {
   opacity: 1;
 }
@@ -75,27 +86,29 @@ export default function TweetContainer({
   handleToggleLikes,
   handleAddCommentClick,
   toggleComments,
-  visibleComments,
-  handleDeleteComment,
   handleDeleteTweet,
   session,
   setShowModal,
   setTweetId,
-  isNarrowScreen
+  isNarrowScreen,
+  visibleComments
 
 }) {
 
   const tweetElementId = `tweet-${tweet._id}`;
-  
+
 
   return (
-    <StyledLi key={tweet._id}
-      id={tweetElementId}>
+    <StyledLi
+      key={tweet._id}
+      id={tweetElementId}
+      hasVisibleComments={visibleComments && visibleComments[tweet._id]}    >
+
       <Link id='mainFeedTweetLink' href={`/users/${user._id}/tweet/${tweet._id}`}>
-      {tweet.image && (
-        <Image id="tweetImage" className='tweetImage' src={tweet.image} style={{ borderRadius: '15px' }} width={400} height={300} alt="tweet image" />
-      )}
-      <p id='homeFeedTweetText'>{tweet.tweet}  <br></br>{formatPostAge(tweet.date)}</p>
+        {tweet.image && (
+          <Image id="tweetImage" className='tweetImage' src={tweet.image} style={{ borderRadius: '15px' }} width={400} height={300} alt="tweet image" />
+        )}
+        <p id='homeFeedTweetText'>{tweet.tweet}  <br></br>{formatPostAge(tweet.date)}</p>
       </Link>
       <ProfilePageLink user={user} tweet={tweet} />
       <div id='likeButtonAndLikeLinkContianer'>
@@ -123,21 +136,7 @@ export default function TweetContainer({
           onClick={() => handleAddCommentClick(tweet._id, setTweetId, setShowModal)}
           setTweetId={setTweetId}
         /> </div>
-      {visibleComments[tweet._id] &&
-        tweet.comments.map((comment, index) => (
-          <CommentContainer
-            formatPostAge={formatPostAge}
-            user={user}
-            setTweetId={setTweetId}
-            isNarrowScreen={isNarrowScreen}
-            key={index}
-            tweet={tweet}
-            comment={comment}
-            userId={userId}
-            handleToggleLikes={handleToggleLikes}
-            handleDeleteComment={(commentId) => handleDeleteComment(commentId, tweet._id)}
-          />
-        ))}
+
       {(session?.user?.name === tweet.userName || session?.user?.isAdmin) && (
         <DeleteButton
           className="delete-button"

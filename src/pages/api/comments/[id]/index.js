@@ -42,30 +42,67 @@ export default async function handler(request, response) {
 
     if (request.method === "DELETE") {
         try {
-            const { tweetId } = request.body;
+            const { tweetId, parentCommentId } = request.body;
+            
 
+         
+            const commentToDelete = await Comment.findById(commentId);
+            
+
+            if (!commentToDelete) {
+                return response.status(404).json({ error: "Comment not found" });
+            }
+    
             async function getAllNestedComments(commentId, accumulator = []) {
-
                 const nestedComments = await Comment.find({ parentCommentId: commentId });
                 accumulator.push(commentId);
                 for (const comment of nestedComments) {
                     await getAllNestedComments(comment._id, accumulator);
                 }
-
                 return accumulator;
             }
-
+    
+           
             const commentsToDelete = await getAllNestedComments(commentId);
+    
+            
+            if (parentCommentId) {
+                const parentComment = await Comment.findById(parentCommentId);
+                if (parentComment) {
+                   
+                    await Comment.findByIdAndUpdate(
+                        parentCommentId,
+                        { $pull: { comments: commentId } },
+                        { new: true }
+                    );
+                  
+
+                }
+            }
+    
+           
             await Comment.deleteMany({ _id: { $in: commentsToDelete } });
-
-            await Tweet.findByIdAndUpdate(tweetId, {
-                $pull: { comments: commentId }
+    
+           
+            if (!parentCommentId) {
+                await Tweet.findByIdAndUpdate(tweetId, {
+                    $pull: { comments: commentId }
+                });
+            }
+    
+          
+            return response.status(200).json({
+                message: "Comments deleted",
+                deletedComments: commentsToDelete,
+                parentCommentId,
+                tweetId
             });
-
-            return response.status(200).json({ message: "Comments deleted" });
         } catch (error) {
             console.error(error);
-            return response.status(500).json({ error: "Internal Server Error" });
+            return response.status(500).json({ 
+                error: "Internal Server Error",
+                details: error.message 
+            });
         }
     }
 

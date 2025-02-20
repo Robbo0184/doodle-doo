@@ -7,20 +7,44 @@ import Link from "next/link";
 import DeleteButton from "../homepage-delete-button/homepage-delete-button";
 import { useSession } from "next-auth/react";
 
+const StyledDeleteButton = styled(DeleteButton)`
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #cccccc;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+  
+     @media screen and (max-width: 500px) {
+       opacity: 1;
+     }
+  
+  `
+
 const StyledDiv = styled.div`
-     border: 1px solid #e0e0e0; 
+     border: 0.2px solid #e0e0e0; 
      border-radius: 10px; 
      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-     padding: 10px 50px;
+     padding: 20px 40px;
      margin-bottom: 15px;
      display: flex;
      flex-direction: column;
-     width: 100%;
+     align-items: center;
      position: relative;
-     &:hover .delete-button {
-        opacity: 1;
+     font-family: "Playpen Sans", sans-serif;
+
+
+     &:hover ${StyledDeleteButton} {
+     opacity: 1;
       }
-     `
+
+      `
 
 
 const ButtonsDiv = styled.div`
@@ -34,9 +58,11 @@ const ButtonsDiv = styled.div`
 const ImageWrapper = styled.div`
          display: flex;
          justify-content: space-evenly;
+         align-items: center;
          width: calc(100% + 100px); 
          margin-left: -50px; 
          margin-right: -50px; 
+         gap: 1.5rem;
          
     `
 
@@ -56,8 +82,7 @@ export default function NestedCommentContainer({
     openCommentModal
 }) {
     const { data: session } = useSession();
-    console.log("nestedComment",nestedComment); 
-    console.log("nestedComment.commentUserId",nestedComment?.commentUserId);
+
 
     if (!nestedComment || !nestedComment.commentUserId) {
         return null;
@@ -68,22 +93,22 @@ export default function NestedCommentContainer({
 
     return (
         <>
-            <StyledDiv key={nestedComment._id}>
+            <StyledDiv key={nestedComment._id} style={{ marginLeft: '1rem' }}>
                 <Link id="commentProfilePageLink" href={`/users/${nestedComment.commentUserId._id}`}>
 
                     <ImageWrapper>
                         <Image id="commentContainerUserIcon"
                             src={nestedComment.commentUserId.image}
                             style={{ borderRadius: '50px' }}
-                            height={35}
-                            width={35}
+                            height={40}
+                            width={40}
                             alt="user-image" />
 
-                        <div>{nestedComment.commentUserId.name}</div>
+                        <div id="nestedCommentUserName">{nestedComment.commentUserId.name}</div>
                     </ImageWrapper>
                 </Link>
 
-                <p id="nestedCommentComment"><strong>{nestedComment.comment}</strong></p>
+                <p id="nestedCommentComment">{nestedComment.comment}</p>
                 <p><small>{formatPostAge(nestedComment.date)}</small></p>
                 <ButtonsDiv>
                     <LikeButton
@@ -100,27 +125,39 @@ export default function NestedCommentContainer({
                 </ButtonsDiv>
                 {session?.user?.name === nestedComment?.commentUserId?.name && (
                     <DeleteButtonContainer>
-                        <DeleteButton className="nestedComment--container--delete--button" handleDeleteComment={handleDeleteComment} commentId={nestedComment._id} userId={userId}  > ❌
-                        </DeleteButton>
+                        <StyledDeleteButton
+                            className="nestedComment--container--delete--button"
+                            handleDeleteComment={() => handleDeleteComment(
+                                nestedComment._id,
+                                tweetId,
+                                userId,
+                                nestedComment.parentCommentId
+                            )}
+                            commentId={nestedComment._id}
+                            userId={userId}
+                        >
+                            ❌
+                        </StyledDeleteButton>
                     </DeleteButtonContainer>
                 )}
 
-                {nestedComment.comments && nestedComment.comments.length > 0 && (
-                    <div style={{ marginLeft: '2rem' }}>
-                        {nestedComment.comments.map((childComment) => (
-                            <NestedCommentContainer
-                                key={childComment._id}
-                                nestedComment={childComment}
-                                tweetId={tweetId}
-                                userId={userId}
-                                handleToggleLikes={handleToggleLikes}
-                                handleDeleteComment={handleDeleteComment}
-                                openCommentModal={openCommentModal}
-                            />
-                        ))}
-                    </div>
-                )}
+
             </StyledDiv>
+            {nestedComment.comments && nestedComment.comments.length > 0 && (
+                <div style={{ marginLeft: '2rem' }}>
+                    {nestedComment.comments.map((childComment) => (
+                        <NestedCommentContainer
+                            key={childComment._id}
+                            nestedComment={childComment}
+                            tweetId={tweetId}
+                            userId={userId}
+                            handleToggleLikes={handleToggleLikes}
+                            handleDeleteComment={handleDeleteComment}
+                            openCommentModal={openCommentModal}
+                        />
+                    ))}
+                </div>
+            )}
         </>
 
     )
