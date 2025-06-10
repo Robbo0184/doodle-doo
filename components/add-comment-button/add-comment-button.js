@@ -5,7 +5,7 @@ const StyledButton = styled.button`
    background: linear-gradient(to right, #48b1e2, #2696c4);   color: #fff; 
    border: none;
    border-radius: 0.5rem; 
-   padding: 0.5rem 1rem;
+   padding: 0.3rem 0.7rem;
    margin-right: 1rem; 
    cursor: pointer;
    transition: transform 0.5s ease; 
@@ -28,7 +28,7 @@ export default function AddCommentButton({ tweet, onClick, setTweetId }) {
                 onClick(tweet._id);
                 setTweetId(tweet._id);
             }}>
-                Add comment
+                Add Comment
             </StyledButton>
         </>
     )

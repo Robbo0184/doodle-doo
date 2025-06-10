@@ -6,7 +6,7 @@ const StyledButton = styled.button`
    color: #fff; 
    border: none;
    border-radius: 0.5rem; 
-   padding: 0.5rem 1rem;
+   padding: 0.3rem 0.7rem;
    margin-right: 1rem; 
    cursor: pointer;
    transition: transform 0.5s ease; 

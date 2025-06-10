@@ -1,13 +1,15 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import DeleteButton from "../homepage-delete-button/homepage-delete-button";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
+
+import DeleteButton from "../homepage-delete-button/homepage-delete-button";
 import LikeButton from "../like-button/like-button";
 import LikeLink from "../like-link/like-link";
 import CommentButton from "../comment-on-comment-button/comment-button";
 import CommentModal from "../comment-modal/comment-modal";
+
 
 const StyledDeleteButton = styled(DeleteButton)`
   opacity: 0;
@@ -23,74 +25,87 @@ const StyledDeleteButton = styled(DeleteButton)`
   font-size: 0.7rem;
   cursor: pointer;
   
- 
-    
-    @media screen and (max-width: 500px) {
-       opacity: 1;
-     }
-  
-  `
+  @media screen and (max-width: 500px) {
+    opacity: 1;
+  }
+`;
+
 const StyledDiv = styled.div`
-  margin-bottom: 0;
   display: flex;
-  position: relative;
   flex-direction: column;
-  width: 65vw;
-  align-items: center;
+  align-items: flex-start;
+  position: relative;
+  width: 40vw;
   cursor: pointer;
   border: 0.2px solid #e0e0e0;   
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px 40px;
+  padding: 0.8rem 1rem;
   font-family: "Playpen Sans", sans-serif;
-
-    &:hover ${StyledDeleteButton} {
+  
+  
+  &:hover ${StyledDeleteButton} {
     opacity: 1;
-  }
-
-  @media screen and (max-width: 500px) {
-    padding: 20px 50px;
-    margin: 10px 0;
-    padding-inline: 1rem;
-    font-size: 0.9rem;
-    min-width: 52vw;
-    margin-top: 1.6rem;
-  }
-   
-  #commentContainerUserName {
-    position: relative;
-    top: -0.8rem;
-    left: 0.7rem;
+    }
     
-  }
+    @media screen and (max-width: 500px) {
+      padding: 20px 50px;
+      margin: 10px 0;
+      padding-inline: 1rem;
+      font-size: 0.9rem;
+      min-width: 52vw;
+      margin-top: 1.6rem;
+      }
+      
+      #tweetPageCommentContainerSpan {
+        margin-left: 3.2rem;
+        margin-top: -0.2rem;
+        font-size: 1.2rem;
+        }
+        
+        }
+        `;
 
-  #tweetPageCommentContainerSpan > div:first-child {
-    font-weight: 400;
-    margin-top: -18px;
-  }
+const UserInfo = styled.div`
+        display: flex;
+        gap: 0.5rem;
+        width: 100%;
+        
+        
+        a {
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          color: inherit;
+          }
+          
+          #commentContainerUserName {
+            margin-left: 0.5rem; 
+            }
+          `
 
-  #tweetPageCommentContainerSpan > div:nth-child(2) {
-    margin-top: 2px;
-  }
-
-  `;
-
+const DateDisplay = styled.small`
+            display: flex;
+            align-self: center; 
+            
+            `;
 
 const LikeContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin-top: 0.5rem;
-  min-width: 90%;
+            display: flex;
+            width: 100%;
+            margin-top: 0.4rem;
+            gap: 1rem;
+            margin-left: 3rem; 
+            
+  
+            p,
+            a {
+    
+             font-size: 1rem;
+             color: #555;
 
-  p,
-  a {
-    margin-left: 0.7rem;
-    font-size: 1rem;
-    color: #555;
-
-    @media screen and (max-width: 500px) {
-      font-size: 0.9rem;
+             @media screen and (max-width: 500px) {
+            font-size: 0.9rem;
     }
   }
 `;
@@ -101,12 +116,7 @@ const DeleteButtonContainer = styled.div`
   right: -1rem;
 `;
 
-const ImageWrapper = styled.div`
-  margin-left: -3.5rem;
-  margin-bottom: -0.2rem;
-  position: relative;
-  top: -12px;
-`;
+
 
 export default function CommentContainer({
   comment,
@@ -122,16 +132,14 @@ export default function CommentContainer({
   setShowCommentModal,
   currentCommentId,
   setCurrentCommentId
-
 }) {
   const { data: session } = useSession();
 
-  const isLiked =
-    Array.isArray(comment?.likes) && comment?.likes.length > 0
-      ? typeof comment.likes[0] === "string"
-        ? comment.likes.includes(userId)
-        : comment.likes.some((like) => like._id === userId)
-      : false;
+  const isLiked = Array.isArray(comment?.likes) && comment?.likes.length > 0
+    ? typeof comment.likes[0] === "string"
+      ? comment.likes.includes(userId)
+      : comment.likes.some((like) => like._id === userId)
+    : false;
 
   if (!comment || !comment.commentUserId) {
     return null;
@@ -145,7 +153,7 @@ export default function CommentContainer({
   return (
     <>
       <StyledDiv id="commentContainer" key={index}>
-        <ImageWrapper>
+        <UserInfo>
           <Link
             id="commentProfilePageLink"
             href={`/users/${comment.commentUserId._id}`}
@@ -158,13 +166,18 @@ export default function CommentContainer({
               width={40}
               alt="user-image"
             />
-            <span id="commentContainerUserName">{comment.userName}</span>
+            <span id="commentContainerUserName">
+              {comment.userName}
+            </span>
           </Link>
-        </ImageWrapper>
+          <DateDisplay>{formatPostAge(comment.date)}</DateDisplay>
+        </UserInfo>
+
         <span id="tweetPageCommentContainerSpan">
           <div>{comment.comment}</div>
-          <div><small>{formatPostAge(comment.date)}</small></div>
+
         </span>
+
         <LikeContainer>
           <LikeButton
             tweetId={tweet._id}
@@ -172,23 +185,15 @@ export default function CommentContainer({
             className="like--button"
             isLiked={isLiked}
             commentId={comment._id}
-            handleToggleLikes={() =>
-              handleToggleLikes(tweet._id, userId, comment._id)
-            }
+            handleToggleLikes={() => handleToggleLikes(tweet._id, userId, comment._id)}
           />
           {isNarrowScreen && comment?.likes.length > 0 ? (
-            <LikeLink
-              href={`users/${user._id}/tweet/${tweet._id}/comment/${comment._id}/likes`}
-            >
-              {comment.likes?.length === 1
-                ? "1 like"
-                : `${comment.likes?.length} likes`}
+            <LikeLink href={`users/${user._id}/tweet/${tweet._id}/comment/${comment._id}/likes`}>
+              {comment.likes?.length === 1 ? "1 like" : `${comment.likes?.length} likes`}
             </LikeLink>
           ) : (
             <p>
-              {comment.likes?.length === 1
-                ? "1 like"
-                : `${comment.likes?.length} likes`}
+              {comment.likes?.length === 1 ? "1 like" : `${comment.likes?.length} likes`}
             </p>
           )}
           <CommentButton
@@ -206,12 +211,12 @@ export default function CommentContainer({
               tweetId={tweet._id}
               userId={userId}
             >
-              {" "}
               ❌
             </StyledDeleteButton>
           </DeleteButtonContainer>
         )}
       </StyledDiv>
+
       {showCommentModal && (
         <CommentModal
           commentId={currentCommentId}
